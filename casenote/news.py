@@ -8,7 +8,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlparse
 
 import feedparser
 import requests
@@ -65,8 +65,14 @@ def parse_feed(content: bytes, origin: str, hint: str | None = None) -> list[New
         src = e.get("source")
         if isinstance(src, dict):
             source = clean_text(src.get("title"))
-        m = _SUFFIX_SOURCE.search(title)
-        if m and (not source or m.group(1).strip() == source):
+        raw_source = source
+        if source.startswith("http"):
+            source = urlparse(source).netloc.removeprefix("www.") or source
+        # 언론사 제목에 이미 '- 매체명'이 있고 구글이 한 번 더 붙이는 경우가 있어 두 번까지 뗀다
+        for _ in range(2):
+            m = _SUFFIX_SOURCE.search(title)
+            if not m or (source and m.group(1).strip() not in (source, raw_source)):
+                break
             source = source or m.group(1).strip()
             title = title[: m.start()].strip()
         published = None
@@ -168,6 +174,30 @@ def collect_news(sources: dict, lookback_hours: float = 30, timeout: float = 15,
     return dedupe(fresh), errors
 
 
+_TOKEN = re.compile(r"[0-9A-Za-z가-힣%]+")
+_LEADING_TAGS = re.compile(r"^(\s*[\[\(【<][^\]\)】>]{0,20}[\]\)】>]\s*)+")
+
+
+def _subject_and_tokens(title: str) -> tuple[str, set[str]]:
+    """제목 맨 앞 주어(대개 회사 이름)와 두 글자 이상 단어 집합."""
+    t = _LEADING_TAGS.sub("", title).strip().strip("'\"‘’“”")
+    tokens = [w for w in _TOKEN.findall(t) if len(w) >= 2]
+    subject = tokens[0] if tokens else ""
+    return subject, set(tokens)
+
+
+def same_story(a: NewsItem, b: NewsItem) -> bool:
+    """같은 회사(주어)로 시작하고 핵심 단어를 2개 이상 더 공유하면 같은 사건으로 본다."""
+    sa, ta = _subject_and_tokens(a.title)
+    sb, tb = _subject_and_tokens(b.title)
+    if not sa or not sb:
+        return False
+    short, long_ = sorted((sa, sb), key=len)
+    if not (short == long_ or (len(short) >= 3 and long_.startswith(short))):
+        return False
+    return len((ta & tb) - {sa, sb}) >= 2
+
+
 def categorize(items: list[NewsItem], categories: list[dict], per_category: int) -> dict[str, list[NewsItem]]:
     buckets: dict[str, list[NewsItem]] = {c["key"]: [] for c in categories}
     for it in items:
@@ -179,8 +209,18 @@ def categorize(items: list[NewsItem], categories: list[dict], per_category: int)
         if it.published:
             hours = max(0.0, (datetime.now(KST) - it.published).total_seconds() / 3600)
             recency = max(0.0, 2 - hours / 12)
-        it.score = score + min(it.coverage, 6) * 1.2 + recency
+        direct = 1.0 if it.origin != "구글뉴스" else 0.0  # 주요 언론사 직접 피드를 조금 앞세운다
+        it.score = score + recency + direct
+        merged = next((k for k in buckets[key] if same_story(k, it)), None)
+        if merged:
+            merged.coverage += it.coverage
+            if it.source and it.source != merged.source and it.source not in merged.also:
+                merged.also.append(it.source)
+            continue
         buckets[key].append(it)
+    for key in buckets:
+        for it in buckets[key]:
+            it.score += min(it.coverage, 6) * 1.2
     for key in buckets:
         buckets[key].sort(key=lambda it: it.score, reverse=True)
         buckets[key] = buckets[key][:per_category]

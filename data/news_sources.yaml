@@ -32,7 +32,7 @@ categories:
   - key: governance
     label: 지배구조·규제·세제
     cards: [governance]
-    keywords: [상법, 지배구조, 행동주의, 주주제안, 이사회, 공정위, 공정거래위원회, 과징금, 세법, 법인세, 금융위, 금감원, 감독원]
+    keywords: [상법, 지배구조, 행동주의, 주주제안, 소액주주, 독립이사, 집중투표, 공정위, 공정거래위원회, 과징금, 담합, 세법, 법인세, 상속세, 배당소득, 세제 개편, 의무공개매수]
   - key: macro
     label: 거시경제
     cards: [macro]
