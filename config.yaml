@@ -1,0 +1,30 @@
+# 매일 기업 케이스 노트 설정
+# 키(DART_API_KEY, ANTHROPIC_API_KEY)는 여기 적지 말고 환경변수나 GitHub Secrets로 넣는다.
+
+report:
+  title: "매일 기업 케이스 노트"
+  key_cases: 3              # 핵심 사례로 깊게 볼 공시 수
+  news_per_category: 5      # 분류별로 보여줄 기사 수
+  filings_per_type: 12      # 공시 유형별로 목록에 보여줄 최대 건수
+  markets: [Y, K]           # 공시 수집 대상 시장. Y 유가증권시장, K 코스닥(IPO는 비상장사도 포함)
+  max_window_days: 7        # 리포트를 며칠 건너뛰었을 때 한 번에 모아볼 최대 일수
+
+watchlist:                  # 관심 기업. 공시가 나오면 핵심 사례 우선순위가 올라간다
+  - 삼성전자
+  - 현대차
+  - NAVER
+
+dart:
+  request_interval_sec: 0.2 # DART 호출 간격(초). 하루 2만 건 한도라 넉넉하다
+  scale_refresh_days: 30    # 업종 규모 지도 다시 만드는 주기(일)
+  include_employees: true   # 규모 지도에 직원 수·평균 연봉 포함
+
+news:
+  lookback_hours: 30        # 이 시간 안에 나온 기사만 모은다
+  timeout_sec: 15
+
+ai:
+  enabled: auto             # auto: ANTHROPIC_API_KEY가 있을 때만 사용, false: 끔
+  model: claude-opus-5-5
+  effort: medium            # low / medium / high. 높을수록 해설이 깊어지고 비용이 늘어난다
+  max_cases: 3

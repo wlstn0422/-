@@ -1,0 +1,53 @@
+name: 점검
+
+on:
+  push:
+    paths-ignore:
+      - "reports/**"
+      - "docs/**"
+      - "data/archive/**"
+      - "data/generated/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt pytest
+
+      - name: 테스트
+        run: python -m pytest
+
+      - name: 실제 뉴스로 시험 실행(DART 없이)
+        run: |
+          python -m casenote daily --no-dart --no-ai --out smoke
+          f=$(ls smoke/*.md | head -1)
+          {
+            echo "## 시험 실행 결과(뉴스만)"
+            echo
+            sed -n '1,12p' "$f"
+            echo
+            echo "### 뉴스 브리핑 일부"
+            sed -n '/## 4. 뉴스 브리핑/,/## 5. /p' "$f" | head -40
+          } >> "$GITHUB_STEP_SUMMARY"
+          grep -c "^- \[" "$f" || true
+
+      - name: 시험 결과 보관
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-report
+          path: smoke/
+          retention-days: 7

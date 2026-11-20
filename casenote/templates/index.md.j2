@@ -1,0 +1,32 @@
+# {{ title }}
+
+매일 아침 자동으로 쌓이는 기업 사례 공부 노트입니다. 최신 노트부터 보세요.
+
+{% if has_scale %}
+- [업종별 규모 지도](scale.md): 업계 1위와 대표 기업의 매출·이익·직원·연봉, 규모 기준선
+
+{% endif %}
+## 일일 노트
+
+{% for d in dailies %}
+- [{{ d.date_ko }}]({{ d.path }}){% if d.cases %}: {{ d.cases|join(', ') }}{% endif +%}
+{% else %}
+아직 노트가 없습니다.
+{% endfor %}
+
+{% if weeklies %}
+## 주간 복습
+
+{% for w in weeklies %}
+- [{{ w.name }}]({{ w.path }})
+{% endfor %}
+
+{% endif %}
+{% if companies %}
+## 기업 분석
+
+{% for c in companies %}
+- [{{ c.name }}]({{ c.path }})
+{% endfor %}
+
+{% endif %}

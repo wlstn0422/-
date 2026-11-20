@@ -1,0 +1,73 @@
+# {{ week }} 복습 노트
+
+{{ start.isoformat() }} ~ {{ day.isoformat() }} · {{ generated_at }} 생성
+
+한 주 동안 본 사례를 다시 훑고, 퀴즈로 기억을 확인하는 날입니다.
+
+## 1. 이번 주 공시 흐름
+
+{% if counts %}
+| 유형 묶음 | 건수 |
+|---|---|
+{% for label, n in counts %}
+| {{ label }} | {{ n }} |
+{% endfor %}
+{% else %}
+공시 기록이 없습니다.
+{% endif %}
+
+## 2. 이번 주 핵심 사례
+
+{% if cases %}
+| 날짜 | 회사 | 유형 | 규모 | 원문 |
+|---|---|---|---|---|
+{% for c in cases %}
+| {{ c.day }} | {{ c.corp_name }} | {{ c.label }} | {% if c.amount %}{{ c.amount_label }} {{ c.amount|krw }}{% else %}-{% endif %} | [보기]({{ c.url }}) |
+{% endfor %}
+{% else %}
+핵심 사례 기록이 없습니다.
+{% endif %}
+
+## 3. 이번 주 오늘의 기업
+
+{% for c in companies %}
+- {{ c.day }}: {{ c.name }}
+{% else %}
+- 기록 없음
+{% endfor %}
+
+## 4. 다시 보는 개념카드
+
+{% set seen = [] %}
+{% for card in cards %}
+{% if card.id not in seen %}
+{% set _ = seen.append(card.id) %}
+- {{ card.title }}: {{ card.summary }}
+{% endif %}
+{% endfor %}
+
+## 5. 복습 퀴즈
+
+{% for q in quiz %}
+**Q{{ loop.index }}.** {{ q.q }}
+
+{% for ch in q.choices %}
+- {{ "ABCD"[loop.index0] }}. {{ ch }}
+{% endfor %}
+
+<details markdown="1"><summary>정답 보기</summary>
+
+정답 {{ "ABCD"[q.answer] }}. {{ q.choices[q.answer] }}. {{ q.explain }}
+
+</details>
+
+{% endfor %}
+## 6. 주말 과제
+
+이번 주 사례 중 하나를 골라 다섯 줄로 정리해 보세요. 입사 후 보고서 첫 장이 이 구조입니다.
+
+1. 무슨 일인가(한 문장)
+2. 왜 했을까(경영 의도)
+3. 숫자로 보면(회사 규모 대비 거래 크기)
+4. 회계로 보면(어떤 기준서, 어떤 계정)
+5. 세금으로 보면(과세이연 요건, 의제배당, 증여세 쟁점)

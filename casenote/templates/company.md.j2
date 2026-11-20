@@ -1,0 +1,84 @@
+# {{ c.name }} 기업 분석 노트
+
+{{ corp.stock_code }} · {{ c.year }}년 사업보고서({{ c.fs_label }}) 기준 · {{ generated_at }} 생성
+
+이 노트는 숫자를 외우려는 게 아니라, 회사 하나를 볼 때 늘 같은 순서로 보는 습관을 들이려는 용도입니다. 규모 → 수익성 → 현금 → 세금 → 주주환원 순서로 읽으세요.
+
+## 1. 숫자와 규모
+
+{% include "_company_body.md.j2" %}
+
+## 2. 감사의견
+
+{% set audit = extra.audit %}
+{% if audit %}
+| 사업연도 | 감사인 | 감사의견 | 강조사항 | 핵심감사사항 |
+|---|---|---|---|---|
+{% for a in audit[:3] %}
+| {{ a.get('bsns_year')|cell }} | {{ a.get('adtor')|cell }} | {{ a.get('adt_opinion')|cell }} | {{ (a.get('emphs_matter') or '-')|cell|truncate(80) }} | {{ (a.get('core_adt_matter') or '-')|cell|truncate(120) }} |
+{% endfor %}
+
+핵심감사사항(KAM)은 감사인이 가장 신경 써서 본 회계 이슈입니다. 수익인식, 손상검사, 충당부채처럼 판단이 많이 들어가는 항목이 주로 나옵니다.
+{% else %}
+자료를 가져오지 못했습니다.
+{% endif %}
+
+## 3. 배당
+
+{% set div = extra.dividends %}
+{% if div %}
+| 구분 | 주식 종류 | 당기 | 전기 | 전전기 |
+|---|---|---|---|---|
+{% for d in div %}
+{% if '배당' in (d.get('se') or '') or '순이익' in (d.get('se') or '') %}
+| {{ d.get('se')|cell }} | {{ d.get('stock_knd')|cell }} | {{ d.get('thstrm')|cell }} | {{ d.get('frmtrm')|cell }} | {{ d.get('lwfr')|cell }} |
+{% endif %}
+{% endfor %}
+
+배당성향(배당총액 ÷ 순이익)과 주당배당금 추세를 보세요. 2026년 배당분부터 고배당 상장사 배당은 분리과세(최고 30%)를 선택할 수 있어 배당 정책 변화가 잦습니다.
+{% else %}
+자료를 가져오지 못했습니다.
+{% endif %}
+
+## 4. 최대주주와 특수관계인
+
+{% set holders = extra.holders %}
+{% if holders %}
+| 이름 | 관계 | 주식 종류 | 기말 주식 수 | 기말 지분율 |
+|---|---|---|---|---|
+{% for h in holders[:10] %}
+| {{ h.get('nm')|cell }} | {{ h.get('relate')|cell }} | {{ h.get('stock_knd')|cell }} | {{ h.get('trmend_posesn_stock_co')|cell }} | {{ h.get('trmend_posesn_stock_qota_rt')|cell }}% |
+{% endfor %}
+
+지분 구조는 합병비율·분할 방식·자사주 정책이 누구에게 유리한지 판단하는 출발점입니다.
+{% else %}
+자료를 가져오지 못했습니다.
+{% endif %}
+
+## 5. 같이 보면 좋은 개념카드
+
+{% for card in cards %}
+### {{ card.title }}
+
+{{ card.summary }}
+
+{% for a in card.accounting %}
+- 회계: {{ a }}
+{% endfor %}
+{% for t in card.tax %}
+- 세무: {{ t }}
+{% endfor %}
+
+{% endfor %}
+
+## 6. 스스로 써볼 다섯 줄 메모
+
+1. 이 회사는 무엇으로 돈을 버는가(매출 구성은 사업보고서 'II. 사업의 내용')
+2. 업종 1위와 비교해 규모·이익률이 어떤가
+3. 이익이 현금으로 들어오고 있는가(영업현금흐름 ÷ 순이익)
+4. 유효세율이 법정세율과 다르다면 이유는 무엇일까(법인세 주석의 세율 조정 내역)
+5. 주주에게 얼마나 돌려주는가(배당·자사주)
+
+---
+
+자료: DART 전자공시. 숫자는 공시 원문 기준이며 공부용으로 요약한 것입니다.

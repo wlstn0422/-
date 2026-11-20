@@ -1,0 +1,79 @@
+# 업종별 규모 지도
+
+{{ year }}년 사업보고서 기준 · {{ generated_at }} 생성
+
+어느 정도 매출이면 큰 회사인지, 업계 1위는 어느 정도인지 감을 잡기 위한 표입니다. 연결재무제표가 있으면 연결 기준, 없으면 별도 기준이고 직원 수와 평균 급여는 별도(본사) 기준입니다. 목록은 `data/industries.yaml`에서 바꿀 수 있습니다.
+
+## 1. 법과 제도가 달라지는 규모 기준선
+
+| 기준선 | 의미 |
+|---|---|
+{% for r in bm.asset_ladder %}
+| {{ r.label }} | {{ r.meaning }} |
+{% endfor %}
+
+## 2. 매출 감각 사다리
+
+| 매출 | 의미 |
+|---|---|
+{% for r in bm.revenue_ladder %}
+| {{ r.label }} | {{ r.meaning }} |
+{% endfor %}
+
+## 3. 큰 숫자 기준점
+
+| 항목 | 금액 | 근거 |
+|---|---|---|
+{% for a in bm.anchors %}
+| {{ a.label }} | {{ a.amount|krw }} | {{ a.source }} |
+{% endfor %}
+
+{% if top %}
+## 4. 매출 상위 20개사(이 목록 기준, 금융업 제외)
+
+| 순위 | 회사 | 업종 | 매출 | 영업이익률 | 총자산 |
+|---|---|---|---|---|---|
+{% for x in top %}
+| {{ loop.index }} | {{ x.name }} | {{ x.industry }} | {{ x.revenue|krw }} | {{ x.get('op_margin')|pct }} | {{ x.get('assets')|krw }} |
+{% endfor %}
+
+{% endif %}
+## 5. 업종별 표
+
+{% for ind in industries %}
+### {{ ind.name }}
+
+{% if ind.rows %}
+| 회사 | 매출 | 1위 대비 | 영업이익 | 영업이익률 | 순이익 | 총자산 | 부채비율 | 직원 수 | 평균 급여 |
+|---|---|---|---|---|---|---|---|---|---|
+{% for x in ind.rows %}
+| {{ x.name }} | {{ x.get('revenue')|krw }} | {{ x.get('vs_leader')|pct(0) }} | {{ x.get('operating_income')|krw }} | {{ x.get('op_margin')|pct }} | {{ x.get('net_income')|krw }} | {{ x.get('assets')|krw }} | {{ x.get('debt_ratio')|pct(0) }} | {{ x.get('employees')|intf('명') }} | {{ x.get('avg_salary')|krw }} |
+{% endfor %}
+{% if ind.financial %}
+
+금융업은 매출 대신 영업수익·이자수익 구조라 다른 업종과 직접 비교하지 않습니다. DART 재무 API가 금융업 일부를 다루지 않아 빈칸이 있을 수 있습니다.
+{% endif %}
+{% else %}
+자료 없음.
+{% endif %}
+
+{% endfor %}
+{% if salary %}
+## 6. 평균 급여 상위 15개사(별도 기준)
+
+| 회사 | 업종 | 평균 급여 | 직원 수 |
+|---|---|---|---|
+{% for x in salary %}
+| {{ x.name }} | {{ x.industry }} | {{ x.avg_salary|krw }} | {{ x.get('employees')|intf('명') }} |
+{% endfor %}
+
+{% endif %}
+## 7. 세율 메모
+
+{% for n in bm.tax_notes %}
+- {{ n }}
+{% endfor %}
+
+---
+
+{{ bm.note }} (기준 시점 {{ bm.as_of }})

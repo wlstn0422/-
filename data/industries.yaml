@@ -1,0 +1,167 @@
+# 업종별 대표 기업 목록
+# - 규모 지도(scale), 오늘의 기업(daily), 업계 1위 비교에 쓰인다.
+# - code는 6자리 종목코드. 이름은 표시용이고 실제 조회는 종목코드로 DART 고유번호를 찾아서 한다.
+# - financial: true 인 업종은 DART 재무 API가 금융업을 다루지 않는 경우가 있어 숫자가 비어 나올 수 있다.
+# - 관심 업종·기업을 자유롭게 더하거나 빼도 된다.
+
+industries:
+  - name: 반도체
+    companies:
+      - {name: 삼성전자, code: "005930"}
+      - {name: SK하이닉스, code: "000660"}
+      - {name: 한미반도체, code: "042700"}
+      - {name: DB하이텍, code: "000990"}
+  - name: 전자·부품·디스플레이
+    companies:
+      - {name: LG전자, code: "066570"}
+      - {name: 삼성전기, code: "009150"}
+      - {name: LG이노텍, code: "011070"}
+      - {name: LG디스플레이, code: "034220"}
+  - name: 자동차·부품
+    companies:
+      - {name: 현대차, code: "005380"}
+      - {name: 기아, code: "000270"}
+      - {name: 현대모비스, code: "012330"}
+      - {name: HL만도, code: "204320"}
+  - name: 2차전지·소재
+    companies:
+      - {name: LG에너지솔루션, code: "373220"}
+      - {name: 삼성SDI, code: "006400"}
+      - {name: 에코프로비엠, code: "247540"}
+      - {name: 포스코퓨처엠, code: "003670"}
+      - {name: 엘앤에프, code: "066970"}
+  - name: 정유·화학
+    companies:
+      - {name: SK이노베이션, code: "096770"}
+      - {name: S-Oil, code: "010950"}
+      - {name: LG화학, code: "051910"}
+      - {name: 롯데케미칼, code: "011170"}
+      - {name: 한화솔루션, code: "009830"}
+  - name: 철강·비철금속
+    companies:
+      - {name: POSCO홀딩스, code: "005490"}
+      - {name: 현대제철, code: "004020"}
+      - {name: 고려아연, code: "010130"}
+  - name: 조선
+    companies:
+      - {name: HD한국조선해양, code: "009540"}
+      - {name: HD현대중공업, code: "329180"}
+      - {name: 한화오션, code: "042660"}
+      - {name: 삼성중공업, code: "010140"}
+  - name: 방산·항공우주
+    companies:
+      - {name: 한화에어로스페이스, code: "012450"}
+      - {name: 한국항공우주, code: "047810"}
+      - {name: LIG넥스원, code: "079550"}
+      - {name: 현대로템, code: "064350"}
+  - name: 전력기기·플랜트
+    companies:
+      - {name: 두산에너빌리티, code: "034020"}
+      - {name: HD현대일렉트릭, code: "267260"}
+      - {name: LS ELECTRIC, code: "010120"}
+      - {name: 효성중공업, code: "298040"}
+  - name: 건설
+    companies:
+      - {name: 삼성물산, code: "028260"}
+      - {name: 현대건설, code: "000720"}
+      - {name: 대우건설, code: "047040"}
+      - {name: GS건설, code: "006360"}
+      - {name: DL이앤씨, code: "375500"}
+  - name: 전력·가스(공기업)
+    companies:
+      - {name: 한국전력, code: "015760"}
+      - {name: 한국가스공사, code: "036460"}
+  - name: 통신
+    companies:
+      - {name: SK텔레콤, code: "017670"}
+      - {name: KT, code: "030200"}
+      - {name: LG유플러스, code: "032640"}
+  - name: 인터넷·IT서비스
+    companies:
+      - {name: NAVER, code: "035420"}
+      - {name: 카카오, code: "035720"}
+      - {name: 삼성에스디에스, code: "018260"}
+  - name: 게임
+    companies:
+      - {name: 크래프톤, code: "259960"}
+      - {name: 넷마블, code: "251270"}
+      - {name: 엔씨소프트, code: "036570"}
+      - {name: 펄어비스, code: "263750"}
+  - name: 엔터·미디어
+    companies:
+      - {name: 하이브, code: "352820"}
+      - {name: CJ ENM, code: "035760"}
+      - {name: 에스엠, code: "041510"}
+      - {name: JYP Ent., code: "035900"}
+      - {name: 와이지엔터테인먼트, code: "122870"}
+  - name: 유통
+    companies:
+      - {name: 이마트, code: "139480"}
+      - {name: 롯데쇼핑, code: "023530"}
+      - {name: 신세계, code: "004170"}
+      - {name: 현대백화점, code: "069960"}
+      - {name: BGF리테일, code: "282330"}
+      - {name: GS리테일, code: "007070"}
+  - name: 식품
+    companies:
+      - {name: CJ제일제당, code: "097950"}
+      - {name: 오리온, code: "271560"}
+      - {name: 농심, code: "004370"}
+      - {name: 삼양식품, code: "003230"}
+      - {name: 롯데웰푸드, code: "280360"}
+      - {name: 오뚜기, code: "007310"}
+  - name: 화장품
+    companies:
+      - {name: 아모레퍼시픽, code: "090430"}
+      - {name: LG생활건강, code: "051900"}
+      - {name: 에이피알, code: "278470"}
+      - {name: 코스맥스, code: "192820"}
+      - {name: 한국콜마, code: "161890"}
+  - name: 제약·바이오
+    companies:
+      - {name: 삼성바이오로직스, code: "207940"}
+      - {name: 셀트리온, code: "068270"}
+      - {name: 유한양행, code: "000100"}
+      - {name: 한미약품, code: "128940"}
+      - {name: SK바이오팜, code: "326030"}
+      - {name: 알테오젠, code: "196170"}
+  - name: 항공·해운·물류
+    companies:
+      - {name: 대한항공, code: "003490"}
+      - {name: HMM, code: "011200"}
+      - {name: 팬오션, code: "028670"}
+      - {name: 현대글로비스, code: "086280"}
+      - {name: CJ대한통운, code: "000120"}
+  - name: 지주회사
+    companies:
+      - {name: SK, code: "034730"}
+      - {name: LG, code: "003550"}
+      - {name: HD현대, code: "267250"}
+      - {name: 한화, code: "000880"}
+      - {name: CJ, code: "001040"}
+      - {name: LS, code: "006260"}
+      - {name: 두산, code: "000150"}
+      - {name: GS, code: "078930"}
+  - name: 은행·금융지주
+    financial: true
+    companies:
+      - {name: KB금융, code: "105560"}
+      - {name: 신한지주, code: "055550"}
+      - {name: 하나금융지주, code: "086790"}
+      - {name: 우리금융지주, code: "316140"}
+      - {name: 카카오뱅크, code: "323410"}
+  - name: 증권
+    financial: true
+    companies:
+      - {name: 미래에셋증권, code: "006800"}
+      - {name: 한국금융지주, code: "071050"}
+      - {name: 키움증권, code: "039490"}
+      - {name: 삼성증권, code: "016360"}
+      - {name: NH투자증권, code: "005940"}
+  - name: 보험
+    financial: true
+    companies:
+      - {name: 삼성생명, code: "032830"}
+      - {name: 삼성화재, code: "000810"}
+      - {name: DB손해보험, code: "005830"}
+      - {name: 한화생명, code: "088350"}

@@ -1,0 +1,114 @@
+{% set cur = c.cur %}
+{% set r = c.ratios %}
+{% if c.company %}
+{% set est = c.company.get('est_dt', '') %}
+{{ c.company.get('corp_name', c.name) }}{% if c.company.get('ceo_nm') %} · 대표 {{ c.company.get('ceo_nm') }}{% endif %}{% if est|length == 8 %} · 설립 {{ est[:4] }}.{{ est[4:6] }}.{{ est[6:] }}{% endif %}{% if c.company.get('acc_mt') %} · {{ c.company.get('acc_mt') }}월 결산{% endif %}{% if c.company.get('hm_url') %} · 홈페이지 {{ c.company.get('hm_url') }}{% endif +%}
+
+{% endif %}
+**{{ c.year }}년 {{ c.fs_label }} 기준 핵심 숫자**
+
+| 매출 | 영업이익(이익률) | 순이익 | 총자산 | 자기자본 | 부채비율 |
+|---|---|---|---|---|---|
+| {{ cur.get('revenue')|krw }} | {{ cur.get('operating_income')|krw }} ({{ r.op_margin|pct }}) | {{ cur.get('net_income')|krw }} | {{ cur.get('assets')|krw }} | {{ cur.get('equity')|krw }} | {{ r.debt_ratio|pct(0) }} |
+
+{% if c.trend|length > 1 %}
+**연도별 흐름**
+
+| 연도 | 매출 | 영업이익 | 영업이익률 | 순이익 | 총자산 | 부채비율 |
+|---|---|---|---|---|---|---|
+{% for t in c.trend %}
+| {{ t.year }} | {{ t.revenue|krw }} | {{ t.operating_income|krw }} | {{ t.op_margin|pct }} | {{ t.net_income|krw }} | {{ t.assets|krw }} | {{ t.debt_ratio|pct(0) }} |
+{% endfor %}
+
+{% if r.rev_growth is not none %}
+전년 대비 매출 {{ r.rev_growth|pct(1, true) }}, 영업이익 {{ r.op_growth|pct(1, true) }}, 순이익 {{ r.ni_growth|pct(1, true) }}.
+
+{% endif %}
+{% endif %}
+**규모 진단**: {{ c.size_class }}
+
+| 기준 | 해당 여부 | 의미 |
+|---|---|---|
+{% for name, status, meaning in c.checklist %}
+| {{ name }} | {{ status }} | {{ meaning }} |
+{% endfor %}
+
+{% set lad = c.ladder %}
+{% if lad.asset_below or lad.asset_above %}
+- 자산 사다리: {% if lad.asset_below %}'{{ lad.asset_below.label }}' 기준선 위{% else %}가장 낮은 기준선 아래{% endif %}{% if lad.asset_above %}. 다음 기준선은 '{{ lad.asset_above.label }}' — {{ lad.asset_above.meaning }}{% endif +%}
+{% endif %}
+{% if lad.rev_below or lad.rev_above %}
+- 매출 사다리: {% if lad.rev_below %}'{{ lad.rev_below.label }}' 구간({{ lad.rev_below.meaning }}){% endif %}{% if lad.rev_above %}. 다음은 '{{ lad.rev_above.label }}'{% endif +%}
+{% endif %}
+
+{% if c.leader or c.industry_table %}
+**업계에서의 위치**{% if c.industry %} ({{ c.industry }}){% endif +%}
+
+{% for line in c.leader %}
+- {{ line }}
+{% endfor %}
+
+{% if c.industry_table %}
+| 회사 | 매출 | 영업이익률 | 총자산 | 직원 수 | 평균 급여 |
+|---|---|---|---|---|---|
+{% for x in c.industry_table %}
+| {% if x.get('corp_code') == c.corp_code %}**{{ x.name }}**{% else %}{{ x.name }}{% endif %} | {{ x.get('revenue')|krw }} | {{ x.get('op_margin')|pct }} | {{ x.get('assets')|krw }} | {{ x.get('employees')|intf('명') }} | {{ x.get('avg_salary')|krw }} |
+{% endfor %}
+
+{% endif %}
+{% endif %}
+**회계사·세무사의 눈으로**
+
+{% if c.dupont %}
+- 듀퐁 분해: ROE {{ c.dupont.roe|pct }} = 순이익률 {{ c.dupont.net_margin|pct }} × 총자산회전율 {{ '%.2f'|format(c.dupont.asset_turnover) }}회 × 재무레버리지 {{ '%.2f'|format(c.dupont.leverage) }}배. 이익률·효율·빚 중 무엇이 ROE를 만드는지 본다.
+{% endif %}
+{% if c.lifecycle %}
+- 현금흐름 생애주기: 영업 {{ cur.get('ocf')|krw }} / 투자 {{ cur.get('icf')|krw }} / 재무 {{ cur.get('fin_cf')|krw }} → {{ c.lifecycle[0] }}. {{ c.lifecycle[1] }}.
+{% endif %}
+{% if r.gross_margin is not none or r.sga_ratio is not none %}
+- 원가 구조: 매출총이익률 {{ r.gross_margin|pct }}, 판관비율 {{ r.sga_ratio|pct }}, 영업이익률 {{ r.op_margin|pct }}.
+{% endif %}
+{% if r.inventory_days is not none or r.receivable_days is not none %}
+- 운전자본: 재고 보유 {{ '%.0f'|format(r.inventory_days) if r.inventory_days is not none else '-' }}일, 매출채권 회수 {{ '%.0f'|format(r.receivable_days) if r.receivable_days is not none else '-' }}일(기말 잔액 기준 단순 계산).
+{% endif %}
+{% if r.fcf is not none %}
+- 잉여현금흐름(영업현금 − 설비투자): {{ r.fcf|krw }}{% if cur.get('dividends_paid') %}, 배당 지급 {{ cur.get('dividends_paid')|krw }}{% endif %}{% if r.get('ebitda') %}, EBITDA {{ r.get('ebitda')|krw }}{% endif %}.
+{% endif %}
+{% for q in c.quality %}
+- {{ q }}
+{% endfor %}
+{% if c.tax %}
+{% set tv = c.tax %}
+- 유효세율: {% if tv.get('etr') is not none %}{{ tv.etr|pct }}(법인세비용 {{ tv.tax|krw }} ÷ 세전이익 {{ tv.pretax|krw }}). 같은 금액을 과세표준으로 본 단순 법정세율은 {{ tv.expected|pct }}, 최고세율은 지방세 포함 {{ tv.statutory_top|pct }}.{% else %}세전손실이라 계산하지 않음.{% endif %}{% if tv.get('paid') %} 현금흐름표상 법인세 납부액 {{ tv.paid|krw }}.{% endif +%}
+
+{% for n in tv.notes %}
+  - {{ n }}
+{% endfor %}
+{% endif %}
+
+{% if c.money %}
+**돈 감각으로 바꿔 보기**
+
+| 환산 | 값 |
+|---|---|
+{% for label, value in c.money %}
+| {{ label }} | {{ value }} |
+{% endfor %}
+
+{% endif %}
+{% if c.drills %}
+**예산 감각 연습**
+
+{% for d in c.drills %}
+{{ loop.index }}. {{ d.q }}
+{% endfor %}
+
+<details markdown="1"><summary>답 보기</summary>
+
+{% for d in c.drills %}
+{{ loop.index }}. {{ d.a }}
+{% endfor %}
+
+</details>
+
+{% endif %}

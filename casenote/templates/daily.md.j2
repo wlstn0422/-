@@ -1,0 +1,220 @@
+# {{ date_ko }} 기업 케이스 노트
+
+공시 접수일 {{ window[0].isoformat() }}{% if window[0] != window[1] %} ~ {{ window[1].isoformat() }}{% endif %} · 뉴스 {{ news_total }}건 수집 · {{ generated_at }} 생성
+
+{% if warnings %}
+{% for w in warnings %}
+> {{ w }}
+{% if not loop.last %}>
+{% endif %}
+{% endfor %}
+
+{% endif %}
+## 오늘 한눈에
+
+{% if case_blocks %}
+- 핵심 사례: {% for b in case_blocks %}{{ b.ev.corp_name }}({{ b.ev.rule.label }}){% if not loop.last %}, {% endif %}{% endfor +%}
+{% endif %}
+{% if groups %}
+- 공시 {{ events_total }}건: {% for g in groups %}{{ g.label }} {{ g.count }}{% if not loop.last %} · {% endif %}{% endfor +%}
+{% endif %}
+{% if company %}
+- 오늘의 기업: {{ company.name }}{% if company.industry %}({{ company.industry }}){% endif %}, {{ company.size_class }}
+{% endif %}
+{% if news_sections %}
+- 뉴스: {% for s in news_sections %}{{ s.label }} {{ s.entries|length }}{% if not loop.last %} · {% endif %}{% endfor +%}
+{% endif %}
+- 개념카드: {% for c in cards %}{{ c.title }}{% if not loop.last %}, {% endif %}{% endfor +%}
+
+
+## 1. 핵심 사례
+
+{% if not case_blocks %}
+{% if dart_status == 'ok' %}
+이번 구간에는 학습 대상 공시가 없습니다. 아래 뉴스와 개념카드로 공부하세요.
+{% else %}
+DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO 공시 중 중요한 것을 골라 여기서 풀어 줍니다.
+{% endif %}
+
+{% endif %}
+{% for b in case_blocks %}
+{% set ev = b.ev %}
+### 1-{{ loop.index }}. {{ ev.corp_name }} {{ ev.rule.label }}{% if ev.is_correction %}(정정){% endif +%}
+
+{{ ev.market }} · 접수 {{ ev.rcept_dt[:4] }}.{{ ev.rcept_dt[4:6] }}.{{ ev.rcept_dt[6:8] }} · [{{ ev.report_nm|linktext }}]({{ ev.url }}){% if ev.same_day_count > 1 %} · 같은 유형 공시 {{ ev.same_day_count }}건 중 최신{% endif +%}
+
+{% if ev.facts %}
+| 항목 | 내용 |
+|---|---|
+{% for label, value in ev.facts %}
+| {{ label }} | {{ value|cell }} |
+{% endfor %}
+
+{% endif %}
+{% set numbers = b.numbers + ev.notes %}
+{% if numbers %}
+**숫자로 보기**
+
+{% for n in numbers %}
+- {{ n }}
+{% endfor %}
+
+{% endif %}
+{% if ev.long_facts %}
+**공시에서 짚을 대목**
+
+{% for label, text in ev.long_facts[:3] %}
+- {{ label }}: {{ text }}
+{% endfor %}
+
+{% endif %}
+{% if b.card %}
+**회계·세무로 보기**({{ b.card.title }} 카드)
+
+{% for a in b.accounting %}
+- 회계: {{ a }}
+{% endfor %}
+{% for t in b.tax %}
+- 세무: {{ t }}
+{% endfor %}
+
+{% endif %}
+{% set note = ai_notes.get(ev.rcept_no) %}
+{% if note %}
+**선배의 해설**
+
+- 한 줄로: {{ note.one_line }}
+{% for w in note.why %}
+- 왜 했을까: {{ w }}
+{% endfor %}
+{% for w in note.numbers %}
+- 숫자로: {{ w }}
+{% endfor %}
+{% for w in note.accounting %}
+- 회계: {{ w }}
+{% endfor %}
+{% for w in note.tax %}
+- 세무: {{ w }}
+{% endfor %}
+- 회의에서 말한다면: {{ note.say_it }}
+
+{% endif %}
+{% set qs = (note.questions if note else []) + b.questions %}
+{% if qs %}
+**생각해볼 질문**
+
+{% for q in qs[:3] %}
+- {{ q }}
+{% endfor %}
+
+{% endif %}
+{% if ev.related_news %}
+**관련 기사**
+
+{% for n in ev.related_news %}
+- [{{ n.title|linktext }}]({{ n.link }}) — {{ n.source }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+
+## 2. 공시 목록
+
+{% if groups %}
+접수일 기준으로 학습할 만한 공시만 추렸습니다. 같은 회사·같은 유형은 최신 1건만 남겼습니다.
+
+{% for g in groups %}
+### {{ g.label }} ({{ g.count }}건)
+
+| 회사 | 시장 | 유형 | 규모 | 원문 |
+|---|---|---|---|---|
+{% for e in g.events %}
+| {{ e.corp_name|cell }} | {{ e.market }} | {{ e.rule.label }}{% if e.is_correction %}(정정){% endif %} | {% if e.amount %}{{ e.amount_label }} {{ e.amount|krw }}{% else %}-{% endif %} | [보기]({{ e.url }}) |
+{% endfor %}
+{% if g.more %}
+| 외 {{ g.more }}건 | | | | |
+{% endif %}
+
+{% endfor %}
+{% elif dart_status == 'ok' %}
+학습 대상 공시가 없었습니다.
+
+{% else %}
+DART 키를 등록하면 채워집니다.
+
+{% endif %}
+
+## 3. 오늘의 기업{% if company %}: {{ company.name }}{% endif +%}
+
+
+{% if company %}
+업종 대표 기업을 하루 하나씩 돌아가며 봅니다. 숫자는 {{ company.year }}년 사업보고서 기준입니다.
+
+{% with c=company %}
+{% include "_company_body.md.j2" %}
+{% endwith %}
+{% else %}
+DART 키를 등록하면 업종 대표 기업을 하루 하나씩 골라 재무 숫자, 규모 진단, 유효세율, 돈 감각 환산을 보여줍니다.
+
+{% endif %}
+
+## 4. 뉴스 브리핑
+
+{% if news_sections %}
+{% for s in news_sections %}
+### {{ s.label }}
+
+{% for n in s.entries %}
+- [{{ n.title|linktext }}]({{ n.link }}) — {{ n.source }}{% if n.coverage > 1 %} 외 {{ n.coverage - 1 }}곳{% endif +%}
+{% endfor %}
+
+{% endfor %}
+{% else %}
+가져온 기사가 없습니다.
+
+{% endif %}
+
+## 5. 오늘의 개념카드
+
+{% for card in cards %}
+### {{ card.title }}
+
+{{ card.summary }}
+
+{% if card.why %}
+- 왜 하나: {{ card.why|join(' / ') }}
+{% endif %}
+{% for a in card.accounting %}
+- 회계: {{ a }}
+{% endfor %}
+{% for t in card.tax %}
+- 세무: {{ t }}
+{% endfor %}
+{% for l in card.law %}
+- 법·제도: {{ l }}
+{% endfor %}
+{% if card.numbers %}
+- 체크할 숫자: {{ card.numbers|join(' / ') }}
+{% endif %}
+
+{% endfor %}
+
+## 6. 오늘의 퀴즈
+
+{% for q in quiz %}
+**Q{{ loop.index }}.** {{ q.q }}{% if q.topic %} ({{ q.topic }}){% endif +%}
+
+{% for ch in q.choices %}
+- {{ "ABCD"[loop.index0] }}. {{ ch }}
+{% endfor %}
+
+<details markdown="1"><summary>정답 보기</summary>
+
+정답 {{ q.answer_label }}. {{ q.choices[q.answer] }}. {{ q.explain }}
+
+</details>
+
+{% endfor %}
+---
+
+자료: DART 전자공시(opendart.fss.or.kr), 언론사 RSS와 구글 뉴스. 공시 숫자는 원문 기준이고, 해설과 개념카드는 공부용 요약이니 실무에 쓸 때는 원문과 법령을 다시 확인하세요.

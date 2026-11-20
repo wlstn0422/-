@@ -1,0 +1,79 @@
+name: 매일 케이스 노트
+
+on:
+  schedule:
+    - cron: "30 21 * * 0-4"   # 한국시간 월~금 06:30 (전날 공시와 뉴스)
+    - cron: "0 23 * * 5"      # 한국시간 토 08:00 (주간 복습)
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "작업: daily / weekly / scale / company"
+        required: false
+        default: daily
+      company:
+        description: "company 작업일 때 회사 이름 또는 종목코드"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: casenote
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: DART 캐시 불러오기
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: casenote-cache-${{ github.run_id }}
+          restore-keys: casenote-cache-
+
+      - name: 노트 만들기
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_TASK: ${{ github.event.inputs.task }}
+          INPUT_COMPANY: ${{ github.event.inputs.company }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          TASK="${INPUT_TASK:-daily}"
+          if [ "$SCHEDULE" = "0 23 * * 5" ]; then TASK=weekly; fi
+          case "$TASK" in
+            daily)   python -m casenote daily ;;
+            weekly)  python -m casenote weekly ;;
+            scale)   python -m casenote scale ;;
+            company) python -m casenote company "$INPUT_COMPANY" ;;
+            *) echo "알 수 없는 작업: $TASK"; exit 1 ;;
+          esac
+
+      - name: 결과 저장
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for p in reports docs data/archive data/generated; do
+            if [ -e "$p" ]; then git add "$p"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "바뀐 내용 없음"
+            exit 0
+          fi
+          git commit -m "케이스 노트 업데이트 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase --autostash && git push && break
+            sleep 5
+          done

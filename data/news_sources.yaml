@@ -1,0 +1,67 @@
+# 뉴스 수집 설정
+# - categories: 기사 분류 규칙. 제목에 키워드가 나오면 2점, 요약에 나오면 1점. 가장 점수가 높은 분류로 들어간다.
+#   위에 있는 분류일수록 같은 점수일 때 우선한다(분할·합병처럼 겹치는 단어 때문에 순서가 중요).
+# - google_news: 분류별 검색어. 구글 뉴스 RSS로 여러 언론사 기사를 한 번에 모은다.
+# - feeds: 언론사 RSS. 접속이 안 되는 주소는 건너뛰고 로그에만 남긴다.
+
+categories:
+  - key: split
+    label: 분할·지배구조 개편
+    cards: [split]
+    keywords: [물적분할, 인적분할, 분할 상장, 분할상장, 회사 분할, 분할합병, 스핀오프, 분사, 지주사 전환, 지주회사 전환, 중복상장, 계열 분리]
+  - key: ma
+    label: M&A·지분거래
+    cards: [stock_acquisition, merger, tender_offer]
+    keywords: [인수합병, M&A, 인수, 합병, 매각, 경영권, 지분 인수, 지분 매각, 공개매수, 사모펀드, PEF, 인수전, 우선협상대상자, 바이아웃]
+  - key: ipo
+    label: IPO·상장
+    cards: [ipo]
+    keywords: [IPO, 기업공개, 상장예비심사, 예비심사, 수요예측, 공모가, 공모주, 일반청약, 증권신고서, 코스닥 상장, 유가증권시장 상장, 상장 첫날, 상장폐지, 스팩]
+  - key: capital
+    label: 자본정책·주주환원
+    cards: [treasury_stock, rights_offering, shareholder_return, mezzanine]
+    keywords: [유상증자, 무상증자, 자사주, 자기주식, 소각, 배당, 밸류업, 기업가치 제고, 주주환원, 전환사채, 교환사채, 신주인수권부사채, 감자]
+  - key: earnings
+    label: 실적
+    cards: [earnings]
+    keywords: [영업이익, 잠정실적, 실적 발표, 어닝, 흑자전환, 적자전환, 역대 최대 실적, 분기 매출, 순이익, 컨센서스]
+  - key: marketing
+    label: 마케팅·브랜드
+    cards: [marketing]
+    keywords: [마케팅, 캠페인, 광고, 브랜드, 리브랜딩, 팝업, 콜라보, 협업, 멤버십, 구독, 가격 인상, 프로모션, 앰배서더, 신제품]
+  - key: governance
+    label: 지배구조·규제·세제
+    cards: [governance]
+    keywords: [상법, 지배구조, 행동주의, 주주제안, 이사회, 공정위, 공정거래위원회, 과징금, 세법, 법인세, 금융위, 금감원, 감독원]
+  - key: macro
+    label: 거시경제
+    cards: [macro]
+    keywords: [기준금리, 금리, 환율, 물가, 성장률, GDP, 수출, 무역수지, 고용, 한국은행, 연준, 국고채]
+
+google_news:
+  url: "https://news.google.com/rss/search?q={query}&hl=ko&gl=KR&ceid=KR:ko"
+  queries:
+    split: "물적분할 OR 인적분할 OR 분할상장 OR 지주사 전환 when:1d"
+    ma: "인수합병 OR 경영권 인수 OR 지분 매각 OR 공개매수 when:1d"
+    ipo: "상장예비심사 OR 수요예측 OR 공모가 OR 공모주 청약 when:1d"
+    capital: "유상증자 OR 자사주 소각 OR 밸류업 OR 전환사채 when:1d"
+    earnings: "잠정실적 OR 영업이익 OR 어닝서프라이즈 when:1d"
+    marketing: "마케팅 전략 OR 브랜드 캠페인 OR 리브랜딩 OR 콜라보 when:1d"
+    governance: "상법 개정 OR 지배구조 OR 행동주의 OR 공정위 과징금 when:1d"
+    macro: "기준금리 OR 원달러 환율 OR 소비자물가 OR 수출 when:1d"
+
+feeds:
+  - name: 연합뉴스 경제
+    url: "https://www.yna.co.kr/rss/economy.xml"
+  - name: 연합뉴스 산업
+    url: "https://www.yna.co.kr/rss/industry.xml"
+  - name: 연합뉴스 마켓+
+    url: "https://www.yna.co.kr/rss/market.xml"
+  - name: 한국경제 경제
+    url: "https://www.hankyung.com/feed/economy"
+  - name: 한국경제 증권
+    url: "https://www.hankyung.com/feed/finance"
+  - name: 매일경제 경제
+    url: "https://www.mk.co.kr/rss/30100041/"
+  - name: 매일경제 증권
+    url: "https://www.mk.co.kr/rss/50200011/"
