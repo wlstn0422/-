@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -43,10 +43,12 @@ jobs:
             echo "### 뉴스 브리핑 일부"
             sed -n '/## 4. 뉴스 브리핑/,/## 5. /p' "$f" | head -40
           } >> "$GITHUB_STEP_SUMMARY"
-          grep -c "^- \[" "$f" || true
+          echo "분류된 기사 링크 수: $(grep -c '^- \[' "$f" || true)"
+          echo "----- 시험 노트 4~6장 -----"
+          sed -n '/## 4. 뉴스 브리핑/,$p' "$f" | head -120
 
       - name: 시험 결과 보관
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: smoke-report
           path: smoke/
