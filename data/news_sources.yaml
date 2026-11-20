@@ -1,41 +1,139 @@
 # 뉴스 수집 설정
 # - categories: 기사 분류 규칙. 제목에 키워드가 나오면 2점, 요약에 나오면 1점. 가장 점수가 높은 분류로 들어간다.
-#   위에 있는 분류일수록 같은 점수일 때 우선한다(분할·합병처럼 겹치는 단어 때문에 순서가 중요).
+#   위에 있는 분류일수록 같은 점수일 때 우선한다(분할·합병처럼 겹치는 단어가 있어 순서가 중요).
+#   group: 재무(finance) / 경영(business) / 경제(economics). '뉴스로 보는 사례'를 고를 때 분야가 고르게 섞이도록 쓴다.
+#   theories: 이 분류의 기사를 읽을 때 쓸 경영·경제 이론 카드(data/knowledge/theories)
+#   cards: 연결되는 회계·세무 카드(data/knowledge/cards.yaml)
+#   numbers: 기사에서 찾아볼 숫자
 # - google_news: 분류별 검색어. 구글 뉴스 RSS로 여러 언론사 기사를 한 번에 모은다.
 # - feeds: 언론사 RSS. 접속이 안 되는 주소는 건너뛰고 로그에만 남긴다.
 
 categories:
   - key: split
     label: 분할·지배구조 개편
+    group: finance
+    theories: [conglomerate_discount, agency_theory, org_structure]
     cards: [split]
+    numbers: ["떼어내는 사업의 매출·자산 비중", "신설회사 상장 계획", "지분 구조 변화"]
     keywords: [물적분할, 인적분할, 분할 상장, 분할상장, 회사 분할, 분할합병, 스핀오프, 분사, 지주사 전환, 지주회사 전환, 중복상장, 계열 분리]
   - key: ma
     label: M&A·지분거래
+    group: finance
+    theories: [ma_synergy, ansoff_diversification, valuation]
     cards: [stock_acquisition, merger, tender_offer]
+    numbers: ["인수 금액과 대상 회사의 이익(몇 배에 샀나)", "인수 후 지분율", "자금 조달 방법"]
     keywords: [인수합병, M&A, 인수, 합병, 매각, 경영권, 지분 인수, 지분 매각, 공개매수, 사모펀드, PEF, 인수전, 우선협상대상자, 바이아웃]
   - key: ipo
     label: IPO·상장
+    group: finance
+    theories: [ipo_underpricing, valuation, signaling]
     cards: [ipo]
+    numbers: ["공모가와 희망밴드", "공모 후 시가총액", "수요예측 경쟁률과 의무보유확약 비율"]
     keywords: [IPO, 기업공개, 상장예비심사, 예비심사, 수요예측, 공모가, 공모주, 일반청약, 증권신고서, 코스닥 상장, 유가증권시장 상장, 상장 첫날, 상장폐지, 스팩]
   - key: capital
     label: 자본정책·주주환원
+    group: finance
+    theories: [payout_policy, signaling, capital_structure]
     cards: [treasury_stock, rights_offering, shareholder_return, mezzanine]
+    numbers: ["금액 ÷ 시가총액", "자사주 소각 여부", "배당성향·총주주환원율"]
     keywords: [유상증자, 무상증자, 자사주, 자기주식, 소각, 배당, 밸류업, 기업가치 제고, 주주환원, 전환사채, 교환사채, 신주인수권부사채, 감자]
   - key: earnings
     label: 실적
+    group: finance
+    theories: [operating_leverage, generic_strategy]
     cards: [earnings]
+    numbers: ["매출·영업이익 증가율", "영업이익률 변화", "시장 예상치(컨센서스) 대비 차이"]
     keywords: [영업이익, 잠정실적, 실적 발표, 어닝, 흑자전환, 적자전환, 역대 최대 실적, 분기 매출, 순이익, 컨센서스]
+  - key: governance
+    label: 지배구조·주주권
+    group: finance
+    theories: [agency_theory]
+    cards: [governance]
+    numbers: ["최대주주·소액주주 지분율", "주총 표결 결과", "이사회 구성"]
+    keywords: [상법, 지배구조, 행동주의, 주주제안, 소액주주, 독립이사, 사외이사, 집중투표, 주주총회, 의무공개매수, 스튜어드십]
+  - key: competition
+    label: 경쟁·공정거래
+    group: economics
+    theories: [market_structure, game_theory, network_platform]
+    cards: []
+    numbers: ["시장 점유율", "과징금 규모와 매출 대비 비율", "경쟁사 수"]
+    keywords: [공정위, 공정거래위원회, 과징금, 담합, 독과점, 독점, 시장지배적, 플랫폼법, 출혈 경쟁, 치킨게임, 점유율 경쟁]
+  - key: hr
+    label: 인사·조직·노동
+    group: business
+    theories: [incentives, restructuring_labor, org_structure]
+    cards: []
+    numbers: ["인건비 ÷ 매출", "구조조정 인원과 비용", "직원 1인당 매출"]
+    keywords: [희망퇴직, 구조조정, 성과급, 임금 협상, 임단협, 노조, 파업, 조직개편, 인사 개편, 사장단 인사, 대표이사 선임, 신규 채용, 주4일, 근로시간, 스톡옵션]
+  - key: supply
+    label: 공급망·생산
+    group: business
+    theories: [supply_chain, lean_inventory, vertical_integration]
+    cards: []
+    numbers: ["재고 보유일수", "공장 가동률", "원자재 가격 변화"]
+    keywords: [공급망, 공급난, 감산, 증산, 가동률, 재고, 리쇼어링, 원자재, 물류, 운임, 수급, 생산 차질, 생산기지]
+  - key: trade
+    label: 무역·통상
+    group: economics
+    theories: [trade_tariff, exchange_rate]
+    cards: []
+    numbers: ["해당 국가 매출 비중", "관세율", "현지 생산 비중"]
+    keywords: [관세, 통상, 무역협상, 수출 규제, 수출통제, 반덤핑, 보호무역, FTA, 상호관세]
+  - key: pricing
+    label: 가격·소비
+    group: business
+    theories: [pricing_strategy, elasticity, behavioral_econ]
+    cards: [marketing]
+    numbers: ["가격 변화율", "판매량 변화율", "원가 상승률"]
+    keywords: [가격 인상, 가격 인하, 값 인상, 값 올려, 요금 인상, 구독료, 할인, 슈링크플레이션, 소비 심리, 소비 트렌드, 객단가, 최저가, 가성비]
   - key: marketing
     label: 마케팅·브랜드
+    group: business
+    theories: [stp, marketing_mix, brand_equity]
     cards: [marketing]
-    keywords: [마케팅, 캠페인, 광고, 브랜드, 리브랜딩, 팝업, 콜라보, 협업, 멤버십, 구독, 가격 인상, 프로모션, 앰배서더, 신제품]
-  - key: governance
-    label: 지배구조·규제·세제
-    cards: [governance]
-    keywords: [상법, 지배구조, 행동주의, 주주제안, 소액주주, 독립이사, 집중투표, 공정위, 공정거래위원회, 과징금, 담합, 세법, 법인세, 상속세, 배당소득, 세제 개편, 의무공개매수]
+    numbers: ["광고선전비 ÷ 매출", "매출 성장률", "고객 수·재구매율"]
+    keywords: [마케팅, 캠페인, 광고, 브랜드, 리브랜딩, 팝업, 콜라보, 협업, 멤버십, 프로모션, 앰배서더, 신제품, 모델 발탁]
+  - key: startup
+    label: 스타트업·벤처투자
+    group: business
+    theories: [valuation, diffusion_chasm, network_platform]
+    cards: []
+    numbers: ["투자 금액과 기업가치", "매출·적자 규모", "투자자 구성"]
+    keywords: [스타트업, 투자 유치, 시리즈A, 시리즈B, 시리즈C, 프리IPO, 벤처캐피털, VC, 유니콘, 엑시트, 액셀러레이터, 창업]
+  - key: global
+    label: 글로벌 기업
+    group: business
+    theories: [generic_strategy, disruptive_innovation, network_platform]
+    cards: []
+    numbers: ["매출·이익 성장률", "시가총액", "국내 기업과의 거래 관계"]
+    keywords: [애플, 엔비디아, 테슬라, 마이크로소프트, 구글, 알파벳, 아마존, 메타, 오픈AI, 앤트로픽, TSMC, 빅테크, 월가, 뉴욕증시, 나스닥]
+  - key: esg
+    label: ESG·에너지
+    group: economics
+    theories: [externality_esg]
+    cards: []
+    numbers: ["배출량과 감축 목표", "관련 투자 금액", "규제로 늘어날 비용"]
+    keywords: [ESG, 탄소, 배출권, 탄소중립, 기후, 재생에너지, 친환경, 지속가능, 넷제로, 원전]
+  - key: policy
+    label: 세제·정책
+    group: economics
+    theories: [business_cycle, elasticity]
+    cards: [shareholder_return]
+    numbers: ["세율·예산 변화", "영향받는 기업·가계 범위", "시행 시점"]
+    keywords: [세법, 세제 개편, 법인세, 상속세, 배당소득, 세수, 예산안, 추경, 재정, 보조금, 규제 완화, 산업 정책]
+  - key: strategy
+    label: 전략·신사업
+    group: business
+    theories: [generic_strategy, ansoff_diversification, bcg_portfolio, five_forces, value_chain]
+    cards: []
+    numbers: ["투자 금액 ÷ 자기자본", "새 사업의 시장 규모", "본업과의 연관성"]
+    keywords: [신사업, 사업 재편, 사업재편, 신시장, 해외 진출, 시장 진출, 사업 철수, 철수, 증설, 합작법인, 합작사, 전략적 제휴, 포트폴리오 재편, 성장 전략, 미래 먹거리, 사업 확장, 선택과 집중]
   - key: macro
     label: 거시경제
+    group: economics
+    theories: [monetary_policy, exchange_rate, business_cycle]
     cards: [macro]
+    numbers: ["금리·환율·물가 수준", "전월·전년 대비 변화", "업종별 영향"]
     keywords: [기준금리, 금리, 환율, 물가, 성장률, GDP, 수출, 무역수지, 고용, 한국은행, 연준, 국고채]
 
 google_news:
@@ -46,8 +144,18 @@ google_news:
     ipo: "상장예비심사 OR 수요예측 OR 공모가 OR 공모주 청약 when:1d"
     capital: "유상증자 OR 자사주 소각 OR 밸류업 OR 전환사채 when:1d"
     earnings: "잠정실적 OR 영업이익 OR 어닝서프라이즈 when:1d"
+    governance: "상법 개정 OR 지배구조 OR 행동주의 OR 주주제안 when:1d"
+    competition: "공정위 과징금 OR 담합 OR 독과점 OR 플랫폼 규제 when:1d"
+    hr: "희망퇴직 OR 성과급 OR 임단협 OR 조직개편 when:1d"
+    supply: "공급망 OR 감산 OR 리쇼어링 OR 원자재 가격 when:1d"
+    trade: "관세 OR 통상 협상 OR 수출 규제 OR 반덤핑 when:1d"
+    pricing: "가격 인상 OR 요금 인상 OR 가격 인하 OR 소비 트렌드 when:1d"
     marketing: "마케팅 전략 OR 브랜드 캠페인 OR 리브랜딩 OR 콜라보 when:1d"
-    governance: "상법 개정 OR 지배구조 OR 행동주의 OR 공정위 과징금 when:1d"
+    startup: "스타트업 투자 유치 OR 시리즈A OR 유니콘 OR 벤처캐피털 when:1d"
+    global: "빅테크 OR 엔비디아 OR 애플 OR 테슬라 OR 오픈AI when:1d"
+    esg: "탄소중립 OR 배출권 OR ESG OR 재생에너지 when:1d"
+    policy: "세법 개정 OR 세제 개편 OR 산업 정책 OR 정부 예산 when:1d"
+    strategy: "신사업 진출 OR 사업 재편 OR 전략적 제휴 OR 해외 진출 when:1d"
     macro: "기준금리 OR 원달러 환율 OR 소비자물가 OR 수출 when:1d"
 
 feeds:

@@ -220,6 +220,17 @@ def md_cell(s) -> str:
     return t or "-"
 
 
+def md_paragraphs(text) -> str:
+    """줄마다 한 문단으로 보고 사이에 빈 줄을 넣는다(YAML 블록 문자열 → 마크다운 문단)."""
+    lines = [ln.strip() for ln in str(text or "").splitlines() if ln.strip()]
+    return "\n\n".join(lines)
+
+
+def first_paragraph(text) -> str:
+    lines = [ln.strip() for ln in str(text or "").splitlines() if ln.strip()]
+    return lines[0] if lines else ""
+
+
 def md_link_text(s) -> str:
     """마크다운 링크 글자 안의 대괄호가 링크를 깨지 않게 바꾼다."""
     return md_cell(s).replace("[", "(").replace("]", ")")

@@ -370,6 +370,7 @@ class CompanyFinancials:
     corp_name: str
     year: int
     fs_div: str = ""
+    stock_code: str = ""
     years: dict[int, dict] = field(default_factory=dict)  # 주요계정 여러 해
     full: dict[int, dict] = field(default_factory=dict)  # 전체 재무제표(연결 우선)
     separate: dict[int, dict] = field(default_factory=dict)  # 별도 주요계정(직원 1인당 지표용)

@@ -1,29 +1,39 @@
 # 업종별 대표 기업 목록
 # - 규모 지도(scale), 오늘의 기업(daily), 업계 1위 비교에 쓰인다.
 # - code는 6자리 종목코드. 이름은 표시용이고 실제 조회는 종목코드로 DART 고유번호를 찾아서 한다.
+# - profile: 그 업종이 돈을 버는 구조(오늘의 기업에서 같이 보여준다)
+# - theories: 그 업종을 이해할 때 쓰는 이론 카드(data/knowledge/theories)
 # - financial: true 인 업종은 DART 재무 API가 금융업을 다루지 않는 경우가 있어 숫자가 비어 나올 수 있다.
 # - 관심 업종·기업을 자유롭게 더하거나 빼도 된다.
 
 industries:
   - name: 반도체
+    profile: "공장 하나에 수십조원이 드는 장치산업이다. 메모리는 소수 기업이 나눠 가진 과점이라 수요·공급 사이클에 따라 가격이 크게 출렁이고, 고정비가 커서 업황에 따라 이익이 극단적으로 움직인다. 정상 제품 비율(수율)과 공정 미세화가 경쟁력을 가른다."
+    theories: [scale_scope_learning, operating_leverage, market_structure, game_theory]
     companies:
       - {name: 삼성전자, code: "005930"}
       - {name: SK하이닉스, code: "000660"}
       - {name: 한미반도체, code: "042700"}
       - {name: DB하이텍, code: "000990"}
   - name: 전자·부품·디스플레이
+    profile: "완제품은 브랜드와 유통망이, 부품은 고객사(완제품 회사)의 주문이 실적을 좌우한다. 고객 집중도가 높고 제품 수명이 짧아 재고 관리와 원가 경쟁이 중요하다."
+    theories: [value_chain, supply_chain, generic_strategy]
     companies:
       - {name: LG전자, code: "066570"}
       - {name: 삼성전기, code: "009150"}
       - {name: LG이노텍, code: "011070"}
       - {name: LG디스플레이, code: "034220"}
   - name: 자동차·부품
+    profile: "대규모 설비와 수천 개 부품 공급망이 핵심인 조립산업이다. 판매 대수 × 차 한 대당 가격(고급차 비중) × 환율이 실적을 좌우하고, 전동화·자율주행 전환과 관세가 큰 전략 변수다."
+    theories: [supply_chain, exchange_rate, trade_tariff, scale_scope_learning]
     companies:
       - {name: 현대차, code: "005380"}
       - {name: 기아, code: "000270"}
       - {name: 현대모비스, code: "012330"}
       - {name: HL만도, code: "204320"}
   - name: 2차전지·소재
+    profile: "전기차 수요에 따라 성장 속도가 갈리는 산업이다. 대규모 증설 투자, 리튬 같은 원재료 가격, 완성차와의 장기공급계약, 각국 보조금 정책이 실적을 흔든다."
+    theories: [diffusion_chasm, vertical_integration, operating_leverage]
     companies:
       - {name: LG에너지솔루션, code: "373220"}
       - {name: 삼성SDI, code: "006400"}
@@ -31,6 +41,8 @@ industries:
       - {name: 포스코퓨처엠, code: "003670"}
       - {name: 엘앤에프, code: "066970"}
   - name: 정유·화학
+    profile: "원유나 나프타를 사서 정제·가공해 파는 마진(스프레드) 사업이다. 원료와 제품의 가격 차이, 경기, 중국의 공급량에 따라 이익이 크게 변하는 경기민감 업종이고 탄소 규제의 영향을 크게 받는다."
+    theories: [business_cycle, elasticity, externality_esg]
     companies:
       - {name: SK이노베이션, code: "096770"}
       - {name: S-Oil, code: "010950"}
@@ -38,29 +50,39 @@ industries:
       - {name: 롯데케미칼, code: "011170"}
       - {name: 한화솔루션, code: "009830"}
   - name: 철강·비철금속
+    profile: "고로·제련 설비를 돌리는 장치산업이다. 중국 공급과 건설·자동차 수요, 철광석 같은 원료 가격이 마진을 정하고, 탄소 배출이 많아 친환경 설비 전환 비용이 큰 숙제다."
+    theories: [market_structure, externality_esg, business_cycle]
     companies:
       - {name: POSCO홀딩스, code: "005490"}
       - {name: 현대제철, code: "004020"}
       - {name: 고려아연, code: "010130"}
   - name: 조선
+    profile: "몇 년 전에 받은 주문이 몇 년에 걸쳐 매출이 되는 수주산업이다. 배 가격(선가), 환율, 강판 가격, 숙련 인력이 이익을 좌우하고, 공사 진행률에 따라 매출을 인식한다."
+    theories: [business_cycle, operating_leverage, exchange_rate]
     companies:
       - {name: HD한국조선해양, code: "009540"}
       - {name: HD현대중공업, code: "329180"}
       - {name: 한화오션, code: "042660"}
       - {name: 삼성중공업, code: "010140"}
   - name: 방산·항공우주
+    profile: "정부가 주 고객인 수주산업이다. 국내 국방 예산과 정부 간 수출 계약에 좌우되고, 지정학적 긴장이 커지면 수요가 늘어난다."
+    theories: [market_structure, game_theory, business_cycle]
     companies:
       - {name: 한화에어로스페이스, code: "012450"}
       - {name: 한국항공우주, code: "047810"}
       - {name: LIG넥스원, code: "079550"}
       - {name: 현대로템, code: "064350"}
   - name: 전력기기·플랜트
+    profile: "전력망 투자, 데이터센터와 재생에너지 확대에 따라 주문이 늘고 주는 산업이다. 변압기 같은 장비는 공급이 부족할 때 공급자의 가격 협상력이 커진다."
+    theories: [elasticity, supply_chain, five_forces]
     companies:
       - {name: 두산에너빌리티, code: "034020"}
       - {name: HD현대일렉트릭, code: "267260"}
       - {name: LS ELECTRIC, code: "010120"}
       - {name: 효성중공업, code: "298040"}
   - name: 건설
+    profile: "수주 후 공사 진행률로 매출을 인식하는 산업이다. 부동산 경기와 금리, 자재비·인건비에 민감하고, 프로젝트 자금(PF)에 선 보증 같은 우발채무가 위험 요인이다."
+    theories: [monetary_policy, business_cycle, capital_structure]
     companies:
       - {name: 삼성물산, code: "028260"}
       - {name: 현대건설, code: "000720"}
@@ -68,26 +90,36 @@ industries:
       - {name: GS건설, code: "006360"}
       - {name: DL이앤씨, code: "375500"}
   - name: 전력·가스(공기업)
+    profile: "요금을 정부가 사실상 정하는 규제산업이다. 연료비가 올라도 요금에 늦게 반영되면 적자가 쌓이고, 공공성과 수익성 사이의 균형이 늘 쟁점이다."
+    theories: [market_structure, elasticity, business_cycle]
     companies:
       - {name: 한국전력, code: "015760"}
       - {name: 한국가스공사, code: "036460"}
   - name: 통신
+    profile: "3사 과점의 규제산업이다. 대규모 망 투자(고정비)와 가입자당 매출(ARPU)이 핵심이고, 요금 경쟁보다 결합상품·서비스 경쟁을 한다. 현금흐름이 안정적이라 배당을 많이 하는 편이다."
+    theories: [market_structure, clv_cac, payout_policy]
     companies:
       - {name: SK텔레콤, code: "017670"}
       - {name: KT, code: "030200"}
       - {name: LG유플러스, code: "032640"}
   - name: 인터넷·IT서비스
+    profile: "사용자가 많을수록 가치가 커지는 플랫폼 사업과 기업 고객 대상 IT 서비스가 섞여 있다. 광고·커머스·콘텐츠·클라우드가 주 수익원이고 AI 투자가 새 승부처다."
+    theories: [network_platform, disruptive_innovation, clv_cac]
     companies:
       - {name: NAVER, code: "035420"}
       - {name: 카카오, code: "035720"}
       - {name: 삼성에스디에스, code: "018260"}
   - name: 게임
+    profile: "흥행 산업이다. 신작 하나의 성공 여부에 실적이 크게 갈리고 개발비가 고정비라 흥행하면 이익이 크게 늘어난다. 이용자 과금 설계와 장기 운영이 수익성의 핵심이다."
+    theories: [operating_leverage, pricing_strategy, behavioral_econ]
     companies:
       - {name: 크래프톤, code: "259960"}
       - {name: 넷마블, code: "251270"}
       - {name: 엔씨소프트, code: "036570"}
       - {name: 펄어비스, code: "263750"}
   - name: 엔터·미디어
+    profile: "아티스트와 콘텐츠(지식재산, IP)가 핵심 자산이다. 음반·공연·굿즈·플랫폼으로 수익을 넓히지만 소수 아티스트에 대한 의존도가 높다."
+    theories: [brand_equity, rbv_vrio, network_platform]
     companies:
       - {name: 하이브, code: "352820"}
       - {name: CJ ENM, code: "035760"}
@@ -95,6 +127,8 @@ industries:
       - {name: JYP Ent., code: "035900"}
       - {name: 와이지엔터테인먼트, code: "122870"}
   - name: 유통
+    profile: "적게 남기고 많이 파는 박리다매 사업이다. 매출총이익률은 낮지만 재고를 빨리 돌려 돈을 벌고, 온라인 전환과 물류 투자, 플랫폼과의 경쟁이 핵심 변수다."
+    theories: [generic_strategy, lean_inventory, network_platform]
     companies:
       - {name: 이마트, code: "139480"}
       - {name: 롯데쇼핑, code: "023530"}
@@ -103,6 +137,8 @@ industries:
       - {name: BGF리테일, code: "282330"}
       - {name: GS리테일, code: "007070"}
   - name: 식품
+    profile: "필수소비재라 경기 영향은 작지만 곡물·유지 같은 원재료 가격과 환율이 원가를 좌우한다. 가격을 올릴 수 있는 브랜드 힘과 해외 진출이 성장의 열쇠다."
+    theories: [elasticity, brand_equity, ansoff_diversification]
     companies:
       - {name: CJ제일제당, code: "097950"}
       - {name: 오리온, code: "271560"}
@@ -111,6 +147,8 @@ industries:
       - {name: 롯데웰푸드, code: "280360"}
       - {name: 오뚜기, code: "007310"}
   - name: 화장품
+    profile: "브랜드와 유통 채널의 싸움이다. 해외 수요와 온라인·인플루언서 마케팅이 성패를 가르고, 제품 개발·생산은 연구·생산 대행(ODM) 회사가 맡는 분업 구조가 발달했다."
+    theories: [brand_equity, stp, value_chain]
     companies:
       - {name: 아모레퍼시픽, code: "090430"}
       - {name: LG생활건강, code: "051900"}
@@ -118,6 +156,8 @@ industries:
       - {name: 코스맥스, code: "192820"}
       - {name: 한국콜마, code: "161890"}
   - name: 제약·바이오
+    profile: "신약 개발은 10년 넘게 걸리고 성공 확률이 낮은 고위험 사업이다. 기술수출 계약금과 단계별 수수료(마일스톤), 위탁개발생산(CDMO)이 주요 수익원이다."
+    theories: [rbv_vrio, valuation, scale_scope_learning]
     companies:
       - {name: 삼성바이오로직스, code: "207940"}
       - {name: 셀트리온, code: "068270"}
@@ -126,6 +166,8 @@ industries:
       - {name: SK바이오팜, code: "326030"}
       - {name: 알테오젠, code: "196170"}
   - name: 항공·해운·물류
+    profile: "여객·화물 수요와 운임이 경기와 함께 크게 움직이고, 연료비·환율·항공기와 선박 같은 고정비 비중이 커서 이익 변동이 크다."
+    theories: [five_forces, operating_leverage, exchange_rate]
     companies:
       - {name: 대한항공, code: "003490"}
       - {name: HMM, code: "011200"}
@@ -133,6 +175,8 @@ industries:
       - {name: 현대글로비스, code: "086280"}
       - {name: CJ대한통운, code: "000120"}
   - name: 지주회사
+    profile: "자회사 지분을 들고 배당·브랜드 사용료·임대료로 돈을 번다. 보유 지분 가치보다 낮게 평가받는 지주사 할인이 흔하다."
+    theories: [conglomerate_discount, agency_theory, org_structure]
     companies:
       - {name: SK, code: "034730"}
       - {name: LG, code: "003550"}
@@ -144,6 +188,8 @@ industries:
       - {name: GS, code: "078930"}
   - name: 은행·금융지주
     financial: true
+    profile: "대출이자와 예금이자의 차이(예대마진)가 기본 수익이다. 금리 수준, 대출 증가, 부실 대출 비용이 이익을 좌우하는 규제산업이다."
+    theories: [monetary_policy, signaling, capital_structure]
     companies:
       - {name: KB금융, code: "105560"}
       - {name: 신한지주, code: "055550"}
@@ -152,6 +198,8 @@ industries:
       - {name: 카카오뱅크, code: "323410"}
   - name: 증권
     financial: true
+    profile: "주식 거래 수수료, 기업공개·인수합병 주선 같은 투자은행 업무, 자기 돈으로 하는 투자로 돈을 번다. 증시가 활황인지에 따라 실적 변동이 크다."
+    theories: [business_cycle, ipo_underpricing, valuation]
     companies:
       - {name: 미래에셋증권, code: "006800"}
       - {name: 한국금융지주, code: "071050"}
@@ -160,6 +208,8 @@ industries:
       - {name: NH투자증권, code: "005940"}
   - name: 보험
     financial: true
+    profile: "보험료를 먼저 받고 보험금은 나중에 주는 구조라, 받은 돈의 운용수익과 손해율이 핵심이다. 역선택과 도덕적 해이를 관리하는 것이 사업의 본질이다."
+    theories: [signaling, monetary_policy]
     companies:
       - {name: 삼성생명, code: "032830"}
       - {name: 삼성화재, code: "000810"}

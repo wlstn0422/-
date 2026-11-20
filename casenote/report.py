@@ -4,14 +4,26 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 from datetime import date, timedelta
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from . import ai as ai_mod
+from . import theory as th_mod
 from .dart import CorpIndex, DartClient, DartError, DartFatalError, viewer_url
-from .events import GROUP_LABELS, Event, attach_details, build_events, context_notes, pick_key_cases, related_for, score_event
+from .events import (
+    GROUP_LABELS,
+    RULE_THEORIES,
+    Event,
+    attach_details,
+    build_events,
+    context_notes,
+    pick_key_cases,
+    related_for,
+    score_event,
+)
 from .financials import (
     CompanyFinancials,
     cf_lifecycle,
@@ -35,8 +47,10 @@ from .util import (
     fmt_times,
     josa,
     latest_annual_year,
+    first_paragraph,
     md_cell,
     md_link_text,
+    md_paragraphs,
     now_kst,
     parse_ymd,
     pct,
@@ -63,7 +77,8 @@ def jinja_env() -> Environment:
         lstrip_blocks=True,
         keep_trailing_newline=True,
     )
-    env.filters.update(krw=fmt_krw, pct=fmt_pct, cell=md_cell, times=fmt_times, intf=fmt_int, linktext=md_link_text)
+    env.filters.update(krw=fmt_krw, pct=fmt_pct, cell=md_cell, times=fmt_times, intf=fmt_int, linktext=md_link_text,
+                       paras=md_paragraphs, first_para=first_paragraph)
     env.globals.update(josa=josa)
     return env
 
@@ -140,7 +155,10 @@ def company_context(cf: CompanyFinancials, settings: Settings, scale: dict, list
         })
     below_a, above_a = ladder_position(cur.get("assets"), settings.benchmarks.get("asset_ladder", []))
     below_r, above_r = ladder_position(cur.get("revenue"), settings.benchmarks.get("revenue_ladder", []))
-    industry = industry_of(scale, cf.corp_code)
+    industry = industry_of(scale, cf.corp_code) or industry_of_code(settings, cf.stock_code)
+    ind_cfg = next((i for i in settings.industries if i.get("name") == industry), {}) if industry else {}
+    by_tid = th_mod.theory_by_id(settings.theories)
+    industry_theories = th_mod.theories_for(list(ind_cfg.get("theories", [])), by_tid, limit=3)
     comp_row = {"corp_code": cf.corp_code, "revenue": cur.get("revenue"), "operating_income": cur.get("operating_income")}
     leader = leader_compare(comp_row, industry_rows(scale, industry)) if industry else []
     tv = tax_view(cur, cf.year, settings.benchmarks)
@@ -161,6 +179,8 @@ def company_context(cf: CompanyFinancials, settings: Settings, scale: dict, list
         "fs_label": "연결" if cf.fs_div == "CFS" else "별도",
         "company": cf.company,
         "industry": industry,
+        "industry_profile": ind_cfg.get("profile"),
+        "industry_theories": industry_theories,
         "cur": cur,
         "ratios": ratios,
         "trend": trend,
@@ -179,7 +199,18 @@ def company_context(cf: CompanyFinancials, settings: Settings, scale: dict, list
     }
 
 
-def pick_company_of_day(settings: Settings, index: CorpIndex, day: date) -> tuple[str, str] | None:
+def industry_of_code(settings: Settings, stock_code: str | None) -> str | None:
+    """규모 지도가 아직 없을 때 업종 목록(industries.yaml)에서 업종을 찾는다."""
+    if not stock_code:
+        return None
+    for c in company_list(settings):
+        if c["code"] == stock_code:
+            return c["industry"]
+    return None
+
+
+def pick_company_of_day(settings: Settings, index: CorpIndex, day: date) -> tuple[str, str, str] | None:
+    """(고유번호, 이름, 종목코드). 금융업을 뺀 업종 대표 기업을 날짜 순서로 돌린다."""
     pool = [c for c in company_list(settings) if not c["financial"]]
     if not pool:
         return None
@@ -187,7 +218,7 @@ def pick_company_of_day(settings: Settings, index: CorpIndex, day: date) -> tupl
         c = pool[(day.toordinal() + i) % len(pool)]
         corp = index.by_stock.get(c["code"])
         if corp:
-            return corp.corp_code, c["name"]
+            return corp.corp_code, c["name"], c["code"]
     return None
 
 
@@ -255,6 +286,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             if pick:
                 cf = load_company_financials(client, pick[0], pick[1], year)
                 if cf:
+                    cf.stock_code = pick[2]
                     cf.company = client.company(pick[0])
                     company_ctx = company_context(cf, settings, scale)
         except DartFatalError as exc:
@@ -272,7 +304,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         related = match_company_news([e.corp_name for e in key_cases], news_items, limit=10)
         for ev in key_cases:
             ev.related_news = related_for(ev, related.get(ev.corp_name, []))[:3]
-    th = settings.benchmarks["thresholds"]
+    by_tid = th_mod.theory_by_id(settings.theories)
     case_blocks = []
     cards_map = card_by_id(settings.cards)
     for ev in key_cases:
@@ -281,15 +313,63 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             "ev": ev,
             "numbers": context_notes(ev),
             "card": card,
-            "accounting": (card.get("accounting") or [])[:2],
-            "tax": (card.get("tax") or [])[:2],
+            "accounting": (card.get("accounting") or [])[:1],
+            "tax": (card.get("tax") or [])[:1],
             "questions": (card.get("questions") or [])[:2],
+            "theories": th_mod.theories_for(RULE_THEORIES.get(ev.rule.key, []), by_tid, limit=2),
         })
 
+    # 뉴스로 보는 사례와 오늘의 이론 수업
+    recent = th_mod.recent_lessons(settings.archive_dir, day, int(rc.get("theory_repeat_days", 21)))
+    news_cases = th_mod.pick_news_cases(buckets, categories, by_tid, recent, int(rc.get("news_cases", 3))) if buckets else []
+    candidates: list[str] = []
+    for b in case_blocks:
+        candidates += [t["id"] for t in b["theories"]] * 2
+    for nc in news_cases:
+        candidates += [nc["theory"]["id"]] * 2 + [t["id"] for t in nc["others"]]
+    if company_ctx:
+        candidates += [t["id"] for t in company_ctx.get("industry_theories", [])]
+    # 오늘 사례 이론이 이번 바퀴에서 다 나왔을 때 쓸 2순위: 오늘 기사가 있는 분야의 이론, 사례 이론과 이어진 이론
+    pool: list[str] = []
+    for cat in sorted((c for c in categories if buckets.get(c["key"])),
+                      key=lambda c: buckets[c["key"]][0].score, reverse=True):
+        pool += cat.get("theories") or []
+    for tid in candidates:
+        pool += by_tid.get(tid, {}).get("related") or []
+    all_ids = set(by_tid)
+    done = th_mod.taught_this_round(th_mod.lesson_history(settings.archive_dir, day), all_ids)
+    lessons = th_mod.pick_lessons(settings.theories, candidates, recent, day, int(rc.get("theory_lessons", 1)),
+                                  done=done, pool=pool)
+    lesson_blocks = []
+    round_done = set(done)
+    for t in lessons:
+        applied = []
+        for b in case_blocks:
+            if t["id"] in [x["id"] for x in b["theories"]]:
+                applied.append({"kind": "공시", "title": f"{b['ev'].corp_name} {b['ev'].rule.label}", "link": b["ev"].url})
+        for nc in news_cases:
+            if t["id"] == nc["theory"]["id"] or t["id"] in [x["id"] for x in nc["others"]]:
+                applied.append({"kind": "뉴스", "title": nc["item"].title, "link": nc["item"].link})
+        if company_ctx and t["id"] in [x["id"] for x in company_ctx.get("industry_theories", [])]:
+            applied.append({"kind": "오늘의 기업", "title": f"{company_ctx['name']}({company_ctx['industry']})", "link": None})
+        links = {a["link"] for a in applied if a["link"]}
+        for it in th_mod.briefing_articles(t["id"], buckets, categories):
+            if len(applied) >= 3:
+                break
+            if it.link not in links:
+                applied.append({"kind": "기사", "title": it.title, "link": it.link})
+                links.add(it.link)
+        round_done.add(t["id"])
+        progress = len(round_done)
+        if round_done >= all_ids:
+            round_done = set()
+        lesson_blocks.append({"theory": t, "applied": applied, "progress": progress,
+                              "related": th_mod.theories_for(list(t.get("related", [])), by_tid, limit=4)})
+
     # AI 해설
-    ai_notes = {}
-    if use_ai and key_cases:
-        ai_notes = ai_mod.commentary(key_cases, settings)
+    ai_notes = {"cases": {}, "news": {}}
+    if use_ai and (key_cases or news_cases):
+        ai_notes = ai_mod.commentary(key_cases, news_cases, settings)
 
     # 공시 목록(유형 묶음별)
     groups = []
@@ -307,9 +387,15 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         if buckets.get(cat["key"]):
             news_cards.extend(cat.get("cards", [])[:1])
     case_cards = [e.rule.card for e in key_cases if e.rule.card]
-    cards = select_cards(settings.cards, case_cards, news_cards, day, limit=3)
+    cards = select_cards(settings.cards, case_cards, news_cards, day, limit=int(rc.get("accounting_cards", 2)))
     company_for_quiz = (company_ctx["name"], company_ctx["cur"], company_ctx["year"]) if company_ctx else None
-    quiz = build_quiz(day, cards, settings.benchmarks, company_for_quiz, scale.get("rows", []))
+    rng = random.Random(int(day.strftime("%Y%m%d")) + 7)
+    quiz_theories = lessons + [nc["theory"] for nc in news_cases if nc["theory"] not in lessons]
+    quiz = th_mod.theory_quiz(quiz_theories, rng, n=2)
+    quiz += build_quiz(day, cards, settings.benchmarks, company_for_quiz, scale.get("rows", []))
+    quiz = quiz[:6]
+    for q in quiz:
+        q["answer_label"] = "ABCD"[q["answer"]] if q["answer"] < 4 else str(q["answer"] + 1)
 
     news_sections = []
     for cat in categories:
@@ -318,7 +404,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             news_sections.append({"label": cat["label"], "entries": items})
 
     ctx = {
-        "title": rc.get("title", "매일 기업 케이스 노트"),
+        "title": rc.get("title", "매일 경영·경제 케이스 노트"),
         "day": day,
         "date_ko": date_ko(day),
         "window": (start, end),
@@ -327,6 +413,10 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         "dart_status": dart_status,
         "events_total": len(events),
         "case_blocks": case_blocks,
+        "news_cases": news_cases,
+        "lessons": lesson_blocks,
+        "lesson_ids": [b["theory"]["id"] for b in lesson_blocks],
+        "theory_total": len(settings.theories),
         "ai_notes": ai_notes,
         "groups": groups,
         "company": company_ctx,
@@ -335,6 +425,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         "cards": cards,
         "quiz": quiz,
         "viewer_url": viewer_url,
+        "theory_book": "../../theories.md",
     }
     md = render("daily.md.j2", **ctx)
     out = Path(out_dir) / f"{day.isoformat()}.md" if out_dir else daily_report_path(settings, day)
@@ -351,6 +442,9 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             "event_counts": {g["label"]: g["count"] for g in groups},
             "news": {s["label"]: [n.to_dict() for n in s["entries"]] for s in news_sections},
             "cards": [c["id"] for c in cards],
+            "lessons": [b["theory"]["id"] for b in lesson_blocks],
+            "news_cases": [{"title": nc["item"].title, "link": nc["item"].link, "category": nc["category"]["label"],
+                            "theory": nc["theory"]["id"]} for nc in news_cases],
             "quiz": quiz,
             "company": company_ctx["name"] if company_ctx else None,
         }
@@ -374,6 +468,7 @@ def run_company(settings: Settings, query: str, year: int | None = None, client:
     cf = load_company_financials(client, corp.corp_code, corp.corp_name, year, history_years=6)
     if not cf:
         raise SystemExit(f"{corp.corp_name}의 재무 자료를 DART에서 찾지 못했습니다(금융업은 재무 API 범위 밖일 수 있음).")
+    cf.stock_code = corp.stock_code
     cf.company = client.company(corp.corp_code)
     scale = load_scale(settings)
     ctx = company_context(cf, settings, scale)
@@ -392,6 +487,7 @@ def run_company(settings: Settings, query: str, year: int | None = None, client:
         extra=extra,
         generated_at=now_kst().strftime("%Y-%m-%d %H:%M"),
         cards=[card_by_id(settings.cards).get(k) for k in ("earnings", "shareholder_return") if card_by_id(settings.cards).get(k)],
+        theory_book="../theories.md",
     )
     safe = "".join(ch for ch in corp.corp_name if ch.isalnum() or ch in "-_")
     out = settings.reports_dir / "company" / f"{corp.stock_code}_{safe}.md"
@@ -454,14 +550,25 @@ def run_weekly(settings: Settings, day: date | None = None) -> Path | None:
     cases = []
     quiz = []
     companies = []
+    news_cases = []
+    lesson_ids: list[str] = []
     for d in days:
         for k, v in (d.get("event_counts") or {}).items():
             counts[k] = counts.get(k, 0) + int(v)
         for c in d.get("key_cases") or []:
             cases.append({**c, "day": d["date"]})
+        for n in d.get("news_cases") or []:
+            news_cases.append({**n, "day": d["date"]})
+        for tid in d.get("lessons") or []:
+            if tid not in lesson_ids:
+                lesson_ids.append(tid)
         quiz.extend(d.get("quiz") or [])
         if d.get("company"):
             companies.append({"day": d["date"], "name": d["company"]})
+    by_tid = th_mod.theory_by_id(settings.theories)
+    rng = random.Random(int(day.strftime("%Y%m%d")))
+    if len(quiz) > 8:
+        quiz = rng.sample(quiz, 8)
     iso = day.isocalendar()
     md = render(
         "weekly.md.j2",
@@ -470,10 +577,14 @@ def run_weekly(settings: Settings, day: date | None = None) -> Path | None:
         week=f"{iso[0]}년 {iso[1]}주차",
         counts=sorted(counts.items(), key=lambda kv: kv[1], reverse=True),
         cases=cases,
-        quiz=quiz[:8],
+        news_cases=news_cases,
+        lessons=th_mod.theories_for(lesson_ids, by_tid, limit=10),
+        theory_titles={t["id"]: t["title"] for t in settings.theories},
+        quiz=quiz,
         companies=companies,
         cards=[card_by_id(settings.cards).get(cid) for d in days for cid in (d.get("cards") or []) if card_by_id(settings.cards).get(cid)],
         generated_at=now_kst().strftime("%Y-%m-%d %H:%M"),
+        theory_book="../theories.md",
     )
     out = settings.reports_dir / "weekly" / f"{iso[0]}-W{iso[1]:02d}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -488,26 +599,51 @@ def write_reports_index(settings: Settings) -> Path:
     dailies = sorted(rd.glob("daily/*/*.md"), reverse=True)
     weeklies = sorted(rd.glob("weekly/*.md"), reverse=True)
     companies = sorted(rd.glob("company/*.md"))
+    titles = {t["id"]: t["title"] for t in settings.theories}
     entries = []
     for p in dailies:
         d = parse_ymd(p.stem)
         arch = archive_path(settings, d) if d else None
-        cases = []
+        cases: list[str] = []
+        lesson = ""
         if arch and arch.exists():
             try:
-                cases = [f"{c['corp_name']} {c['label']}" for c in json.loads(arch.read_text(encoding="utf-8")).get("key_cases", [])]
+                data = json.loads(arch.read_text(encoding="utf-8"))
+                cases = [f"{c['corp_name']} {c['label']}" for c in data.get("key_cases", [])]
+                lesson = ", ".join(titles.get(t, t) for t in data.get("lessons") or [])
             except (ValueError, KeyError):
                 cases = []
-        entries.append({"path": p.relative_to(rd).as_posix(), "date_ko": date_ko(d) if d else p.stem, "cases": cases})
+        entries.append({"path": p.relative_to(rd).as_posix(), "date_ko": date_ko(d) if d else p.stem,
+                        "cases": cases, "lesson": lesson})
+    has_theories = write_theory_book(settings) is not None
     md = render(
         "index.md.j2",
-        title=settings.report_cfg.get("title", "매일 기업 케이스 노트"),
+        title=settings.report_cfg.get("title", "매일 경영·경제 케이스 노트"),
         dailies=entries,
         weeklies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem} for p in weeklies],
         companies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem.split("_", 1)[-1]} for p in companies],
         has_scale=(rd / "scale.md").exists(),
+        has_theories=has_theories,
+        theory_count=len(settings.theories),
     )
     out = rd / "README.md"
     rd.mkdir(parents=True, exist_ok=True)
+    out.write_text(md, encoding="utf-8")
+    return out
+
+
+def write_theory_book(settings: Settings) -> Path | None:
+    """경영·경제 이론 사전(reports/theories.md). 이론 카드 전체를 분야별로 모은다."""
+    if not settings.theories:
+        return None
+    by_tid = th_mod.theory_by_id(settings.theories)
+    md = render(
+        "theories.md.j2",
+        fields=th_mod.library_by_field(settings.theories),
+        by_tid=by_tid,
+        count=len(settings.theories),
+    )
+    out = settings.reports_dir / "theories.md"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(md, encoding="utf-8")
     return out

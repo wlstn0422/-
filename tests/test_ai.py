@@ -37,12 +37,15 @@ def _install_fake_anthropic(monkeypatch, captured, stop="end_turn"):
     class _Messages:
         def create(self, **kwargs):
             captured.update(kwargs)
-            cases = json.loads(kwargs["messages"][0]["content"].split("\n\n", 1)[1])
+            data = json.loads(kwargs["messages"][0]["content"].split("\n\n", 1)[1])
             payload = {"cases": [{
                 "rcept_no": c["rcept_no"], "one_line": f"{c['company']} 사례 요약", "why": ["가설 하나"],
                 "numbers": ["숫자 하나"], "accounting": ["회계 하나"], "tax": ["세무 하나"],
                 "say_it": "한 문장 정리", "questions": ["질문 하나"],
-            } for c in cases]}
+            } for c in data["filings"]], "news": [{
+                "id": n["id"], "one_line": "뉴스 요약", "theory_view": [f"{n['theory']['name']}로 보면"],
+                "implications": ["시사점 하나"], "questions": ["확인 질문"],
+            } for n in data["news"]]}
             return _Resp(payload, stop)
 
     class Anthropic:
@@ -54,7 +57,9 @@ def _install_fake_anthropic(monkeypatch, captured, stop="end_turn"):
 
 
 def _news():
-    return [], []
+    from casenote.news import dedupe, parse_feed
+    from fake_data import GOOGLE_NEWS_RSS
+    return dedupe(parse_feed(GOOGLE_NEWS_RSS.encode("utf-8"), origin="구글뉴스")), []
 
 
 def test_ai_commentary_in_report(settings, monkeypatch):
@@ -66,6 +71,7 @@ def test_ai_commentary_in_report(settings, monkeypatch):
     md = out.read_text(encoding="utf-8")
     assert "**선배의 해설**" in md
     assert "회의에서 말한다면: 한 문장 정리" in md
+    assert "이론으로 보면:" in md and "시사점: 시사점 하나" in md
     assert captured["model"] == "claude-opus-5-5"
     assert captured["fallbacks"] == "default"
     assert captured["output_config"]["format"]["type"] == "json_schema"

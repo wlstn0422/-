@@ -5,6 +5,18 @@
 {{ c.company.get('corp_name', c.name) }}{% if c.company.get('ceo_nm') %} · 대표 {{ c.company.get('ceo_nm') }}{% endif %}{% if est|length == 8 %} · 설립 {{ est[:4] }}.{{ est[4:6] }}.{{ est[6:] }}{% endif %}{% if c.company.get('acc_mt') %} · {{ c.company.get('acc_mt') }}월 결산{% endif %}{% if c.company.get('hm_url') %} · 홈페이지 {{ c.company.get('hm_url') }}{% endif +%}
 
 {% endif %}
+{% if c.industry_profile %}
+**이 업종이 돈 버는 구조**({{ c.industry }})
+
+{{ c.industry_profile }}
+
+{% if c.industry_theories %}
+{% for t in c.industry_theories %}
+- [{{ t.title }}]({{ theory_book }}#{{ t.id }}): {{ t.one_line }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
 **{{ c.year }}년 {{ c.fs_label }} 기준 핵심 숫자**
 
 | 매출 | 영업이익(이익률) | 순이익 | 총자산 | 자기자본 | 부채비율 |

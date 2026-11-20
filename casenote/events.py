@@ -69,6 +69,39 @@ _PREFIX = re.compile(r"^\[([^\]]+)\]")
 _COMPILED = [(r, re.compile(r.pattern)) for r in RULES]
 RULES_BY_KEY = {r.key: r for r in RULES}
 
+# 공시 유형별로 같이 읽을 경영·경제 이론(data/knowledge/theories의 id). 앞에 있을수록 먼저 쓴다.
+RULE_THEORIES: dict[str, list[str]] = {
+    "merger": ["ma_synergy", "scale_scope_learning", "agency_theory"],
+    "split_merger": ["conglomerate_discount", "org_structure", "agency_theory"],
+    "split": ["conglomerate_discount", "agency_theory", "org_structure"],
+    "share_exchange": ["agency_theory", "org_structure", "valuation"],
+    "tender_offer": ["agency_theory", "game_theory", "ma_synergy"],
+    "control_change": ["agency_theory", "ma_synergy"],
+    "stock_acq": ["ma_synergy", "ansoff_diversification", "vertical_integration"],
+    "stock_trf": ["bcg_portfolio", "conglomerate_discount"],
+    "business_acq": ["ma_synergy", "value_chain", "rbv_vrio"],
+    "business_trf": ["bcg_portfolio", "rbv_vrio"],
+    "asset_acq": ["scale_scope_learning", "value_chain"],
+    "asset_trf": ["capital_structure", "bcg_portfolio"],
+    "ipo": ["ipo_underpricing", "valuation", "signaling"],
+    "rights_bonus": ["signaling", "capital_structure"],
+    "rights_offering": ["signaling", "capital_structure"],
+    "bonus_issue": ["behavioral_econ", "signaling"],
+    "capital_reduction": ["capital_structure", "signaling"],
+    "treasury_trust": ["payout_policy", "signaling"],
+    "treasury_buy": ["payout_policy", "signaling"],
+    "treasury_sell": ["signaling", "payout_policy"],
+    "treasury_cancel": ["payout_policy", "valuation"],
+    "cb": ["capital_structure", "signaling"],
+    "bw": ["capital_structure", "signaling"],
+    "eb": ["capital_structure", "signaling"],
+    "valueup": ["payout_policy", "valuation", "agency_theory"],
+    "dividend": ["payout_policy", "signaling"],
+    "earnings": ["operating_leverage", "generic_strategy"],
+    "contract": ["operating_leverage", "business_cycle"],
+    "insolvency": ["capital_structure", "operating_leverage"],
+}
+
 
 def classify_report(report_nm: str) -> tuple[Rule | None, bool]:
     """보고서명 → (규칙, 정정 여부). 공백과 [기재정정] 같은 머리말을 떼고 판단한다."""

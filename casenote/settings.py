@@ -13,9 +13,13 @@ ROOT = Path(__file__).resolve().parent.parent
 
 DEFAULT_CONFIG = {
     "report": {
-        "title": "매일 기업 케이스 노트",
+        "title": "매일 경영·경제 케이스 노트",
         "key_cases": 3,
-        "news_per_category": 5,
+        "news_cases": 3,
+        "theory_lessons": 1,
+        "theory_repeat_days": 21,
+        "accounting_cards": 2,
+        "news_per_category": 3,
         "filings_per_type": 12,
         "markets": ["Y", "K"],
         "max_window_days": 7,
@@ -78,6 +82,18 @@ class Settings:
     @cached_property
     def cards(self) -> list[dict]:
         return load_yaml(self.data_dir / "knowledge" / "cards.yaml")
+
+    @cached_property
+    def theories(self) -> list[dict]:
+        """경영·경제 이론 카드. data/knowledge/theories/*.yaml 을 파일 이름 순서대로 합친다."""
+        out: list[dict] = []
+        folder = self.data_dir / "knowledge" / "theories"
+        if folder.exists():
+            for path in sorted(folder.glob("*.yaml")):
+                data = load_yaml(path)
+                if isinstance(data, list):
+                    out.extend(data)
+        return out
 
     @cached_property
     def benchmarks(self) -> dict:

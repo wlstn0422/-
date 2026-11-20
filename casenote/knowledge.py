@@ -124,7 +124,7 @@ def scale_quiz(scale_rows: list[dict], rng: random.Random) -> dict | None:
 def build_quiz(day: date, cards: list[dict], benchmarks: dict, company: tuple[str, dict, int] | None,
                scale_rows: list[dict]) -> list[dict]:
     rng = random.Random(int(day.strftime("%Y%m%d")))
-    quiz = concept_quiz(cards, benchmarks.get("quiz", []), rng, n=2)
+    quiz = concept_quiz(cards, benchmarks.get("quiz", []), rng, n=1)
     if company:
         name, cur, year = company
         quiz.extend(numbers_quiz(name, cur, year, rng)[:1])
