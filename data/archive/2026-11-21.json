@@ -1,0 +1,797 @@
+{
+ "date": "2026-11-21",
+ "window": [
+  "2026-11-20",
+  "2026-11-20"
+ ],
+ "dart_status": "ok",
+ "key_cases": [
+  {
+   "type": "stock_acq",
+   "label": "타법인 주식 취득",
+   "corp_name": "SK하이닉스",
+   "stock_code": "000660",
+   "market": "유가증권",
+   "rcept_no": "20261120800721",
+   "rcept_dt": "20261120",
+   "report_nm": "[기재정정]타법인주식및출자증권취득결정              ",
+   "amount": null,
+   "amount_label": null,
+   "notes": [],
+   "score": 10.5,
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120800721"
+  },
+  {
+   "type": "valueup",
+   "label": "밸류업(기업가치 제고)",
+   "corp_name": "LG화학",
+   "stock_code": "051910",
+   "market": "유가증권",
+   "rcept_no": "20261120800332",
+   "rcept_dt": "20261120",
+   "report_nm": "기업가치제고계획(자율공시)              (2026년 이행현황)",
+   "amount": null,
+   "amount_label": null,
+   "notes": [],
+   "score": 10.0,
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120800332"
+  },
+  {
+   "type": "ipo",
+   "label": "IPO(공모)",
+   "corp_name": "피지티",
+   "stock_code": "",
+   "market": "비상장",
+   "rcept_no": "20261120000538",
+   "rcept_dt": "20261120",
+   "report_nm": "증권신고서(지분증권)",
+   "amount": null,
+   "amount_label": null,
+   "notes": [],
+   "score": 10.0,
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120000538"
+  }
+ ],
+ "event_counts": {
+  "M&A·지분·사업 양수도": 13,
+  "IPO": 1,
+  "자본 거래(증자·감자·자사주·메자닌)": 14,
+  "실적·수주·주주환원": 30
+ },
+ "news": {
+  "분할·지배구조 개편": [
+   {
+    "title": "사법 리스크 털어낸 카카오, 인적분할 후 지배구조는 [IT클로즈업]",
+    "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5hbHpULTJaWGpvVWNEYzlMa0Uwb0dTYmZQWlUta0x6U0xfRTdxc1hhaTd5cjBPNmF3ZzgzeHE5WmpXMFRYZjJSRWVBaDd0Unh1MVVhTDZFQ29Fbi0tbGZmZmIzRGY?oc=5",
+    "source": "디지털데일리",
+    "published": "2026-11-20T17:41:38+09:00",
+    "category": "split",
+    "coverage": 2
+   },
+   {
+    "title": "김범수, SM 시세조종 2심도 무죄…카카오노조 \"인적분할 직접 답하라\"",
+    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBiWXQxTTQ1bU5kb0NnVGpxY2hGUlBQdTlGajFiTDh2bW9WNENmT3R3Q0hwTGMwWkRic3Z6VDlmZFNQc01HMllmb1NzZDBKaXZtSEtDcWcxaTIzSTFpRVhSQjMySXhzaHZw?oc=5",
+    "source": "www.ebn.co.kr",
+    "published": "2026-11-20T14:53:09+09:00",
+    "category": "split",
+    "coverage": 2
+   },
+   {
+    "title": "카카오 김범수, SM 시세조종 항소심도 무죄…인적분할·AI 수익화 '총력'",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAzcS1DU200SWpLNlVYbGR0My05SFEzTk9HRkQ1dWVrd0o4V1Jzek53RkpmeUVqWEJIYi1fU194c1Zqek13eDdzcXZrRk85WkxXNFktRl8tZG5PTEtfa1JDMzRYTm00NjgzSV9NSw?oc=5",
+    "source": "뉴시안",
+    "published": "2026-11-20T16:25:43+09:00",
+    "category": "split",
+    "coverage": 1
+   }
+  ],
+  "M&A·지분거래": [
+   {
+    "title": "성원에너텍, 회생회사 인수합병 추진·12월 28일 인수의향서 마감",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE52TkJRaG8tc2xua3cxVENud25kR3JZajB5SlAxNElldGNJeWpUUDNHRnA4RG1uZlJhUzVxcFcxdnJaaGpIM0dPYm4wb3Iydm5ydUJ5VlBKeUZSQUw1b0JKLVJGc2JnRG9XWUZfQjdIZHQ3eDA?oc=5",
+    "source": "데이터투자",
+    "published": "2026-11-20T15:28:43+09:00",
+    "category": "ma",
+    "coverage": 1
+   },
+   {
+    "title": "“상장사 오너들, 의무공개매수제 도입 전 회사 팔고 싶어해”... 사모펀드는 신중",
+    "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSkZ3WmJSaWpQQW5Bc1lBYkY4aEJ2OE9HSHlFZkVXdGZKell3MHpqMUtDWTBfSWdmMHU2SHd5eXVRSjlEelQ1TFh6X1BZNlFhRWI4VVlZYjJndnFPdTRFcnllU2xuQ0pwLURNX3J5Z21SLW1FS1F0UjRtYzdTUlVjRDIza19lSjltNk5YeUMyNmtxVGY2b3BHYWJzZ9IBmwFBVV95cUxNSkZ3WmJSaWpQQW5Bc1lBYkY4aEJ2OE9HSHlFZkVXdGZKell3MHpqMUtDWTBfSWdmMHU2SHd5eXVRSjlEelQ1TFh6X1BZNlFhRWI4VVlZYjJndnFPdTRFcnllU2xuQ0pwLURNX3J5Z21SLW1FS1F0UjRtYzdTUlVjRDIza19lSjltNk5YeUMyNmtxVGY2b3BHYWJzZw?oc=5",
+    "source": "Chosunbiz",
+    "published": "2026-11-21T06:00:00+09:00",
+    "category": "ma",
+    "coverage": 1
+   },
+   {
+    "title": "李대통령 “욕먹더라도 M&A 활성화”…의무공개매수 놓고 격론",
+    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GQXhxOXczS3gxYmhYc0I2NFRhbEExRDhXRWtSdXNVUEhpelozajNOQXlnbjNtZGNjYXhGMTNLdjZyOUZEUGhpNFZtdkxoYkYwaVI2dHVVaXhqRWItcjAwVHVUTQ?oc=5",
+    "source": "쿠키뉴스",
+    "published": "2026-11-20T21:39:24+09:00",
+    "category": "ma",
+    "coverage": 1
+   }
+  ],
+  "IPO·상장": [
+   {
+    "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261120037551008",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-20T15:37:29+09:00",
+    "category": "ipo",
+    "coverage": 6
+   },
+   {
+    "title": "[IPO챗] 내주 엠비디 코스닥 입성…4개사 수요예측",
+    "link": "https://www.yna.co.kr/view/AKR20261120071600008",
+    "source": "연합뉴스 마켓+",
+    "published": "2026-11-21T09:00:04+09:00",
+    "category": "ipo",
+    "coverage": 3
+   },
+   {
+    "title": "급락장에 IPO시장 '꽁꽁'…잇단 상장철회에 공모청약 미달도",
+    "link": "https://www.yna.co.kr/view/AKR20261120114800008",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T15:01:49+09:00",
+    "category": "ipo",
+    "coverage": 3
+   }
+  ],
+  "자본정책·주주환원": [
+   {
+    "title": "나노, 자사주 17만2469주 전량 소각 결정…주주가치 제고 나서",
+    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5CR0FPdnZuLW0xYlhZaWdMWUs5MzZ0cEI3bGUyS0RzUTQzb05wcnU5eklBWkh0a2l3cmlTWFdIQWdKd3JTMjd2M3RUV2NGUHJKR0HSAVNBVV95cUxQQThKWXZlYTZObG1tV3A5Vm10Q0FySFQ1dWZCU3RQN2Q2N2lOUGlyY2pNUTRmZXdBMnEzS0FQWHM4RWp3SGRETnlLNWlYeTlCaHhsYw?oc=5",
+    "source": "서울경제",
+    "published": "2026-11-20T17:00:02+09:00",
+    "category": "capital",
+    "coverage": 7
+   },
+   {
+    "title": "CJ, 자사주 소각 등 주주환원 확대 필요...목표가 '하향'",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9uc2VTUExDbTFsbWFzbC04bUp6ZTlqbWk1V3FNajdaUllITWZSUzExQ3dPOXIyTWhFLXFJb1lTX0dJYTVIeHZ4U0p1ZkFNM2MzYmFOQ25GMkZSQll2dHFYNWxDMmROVS1ld1NGYQ?oc=5",
+    "source": "메디컬투데이",
+    "published": "2026-11-20T11:19:27+09:00",
+    "category": "capital",
+    "coverage": 1
+   },
+   {
+    "title": "[공시]에스켐, 자사주 12만2560주 소각···5억원 규모",
+    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTTG8xT3BhaDcwT0tYalRkT2N0cTZacEo5S3FpeFFaQTdpY1BkcHZaUWZ2b1VjRTNMa1RJeEZyYVNuemJZVnZqRFFHbDJzbWwtVl9pcXNkZnpMcnlzVG1xRkRzUTJHbU1oVGZj0gFrQVVfeXFMUFNMbzFPcGFoNzBPS1hqVGRPY3RxNlpwSjlLcWl4UVpBN2ljUGRwdlpRZnZvVWNFM0xrVEl4RnJhU256YllWdmpEUUdsMnNtbC1WX2lxc2RmekxyeXNUbXFGRHNRMkdtTWhUZmM?oc=5",
+    "source": "현대경제신문",
+    "published": "2026-11-20T16:11:49+09:00",
+    "category": "capital",
+    "coverage": 2
+   }
+  ],
+  "실적": [
+   {
+    "title": "대성산업, 3분기 누적 당기순이익 112억···흑자전환",
+    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1vYXhZNU1EOTRldE1EVTcyN3ZuYVBjSGZoYUFrcmYzTkgzMGhIRTNqRHhCSU1ybEM4RHlRYXlqSHhsVGxZaU5iak1ZeXFNVmJkUlZFNmF6ejhRdmpnbjNjcmxEWEp4QU82a2c0?oc=5",
+    "source": "ebiznews",
+    "published": "2026-11-20T19:23:27+09:00",
+    "category": "earnings",
+    "coverage": 6
+   },
+   {
+    "title": "강신욱 시의원, 영업이익 5% 과징금 도입…산재 사고 감소 효과는 의문",
+    "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFByV003ZUUxbWdXdFpNMmw5NVJLd1dMMG9fRG40MGFYY0VPOWlBUHJyb0g0Y1RQT0thX0RCbjI5MXVrT2hBU0pVeHNrelNUQjQwQm1rZFFsTF9FdFE5?oc=5",
+    "source": "뉴스핌",
+    "published": "2026-11-20T22:18:00+09:00",
+    "category": "earnings",
+    "coverage": 4
+   },
+   {
+    "title": "엔비디아, 3분기도 깜짝 실적…매출·영업이익 ‘더블’",
+    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1aY19aYWUtN0Njc1V4TVN1UEc1OGtEb3dXUEYwNFpyaUMwQ2dZQzNyNmNhWVkwaldyb2FjbXoyeWZvRnJRTWU4eXJ2VXhoeU81WHc?oc=5",
+    "source": "JTBC",
+    "published": "2026-11-21T09:54:57+09:00",
+    "category": "earnings",
+    "coverage": 2
+   }
+  ],
+  "회계·감사": [
+   {
+    "title": "매그네라, 2026 회계연도 4분기 영업손실 9000만 달러…손상차손 1억 600만 달러 반영",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBBRW93REdjRDhNYWFLS1hvcm1SOHBDNnJsU3ZxZWFEcU5VbWpLaDhSSXNnUm1TY2VEemtObXJfQTZpMVFXVm9meXRSZGQycF9LeHdKTVplODZTUVRGMTFjaklTUXVBbW9HVjk3ckNQX2hHWEE?oc=5",
+    "source": "데이터투자",
+    "published": "2026-11-20T20:13:48+09:00",
+    "category": "accounting",
+    "coverage": 1
+   }
+  ],
+  "지배구조·상법": [
+   {
+    "title": "김의겸 “상법 개정해 재난보험 사각지대 없애야”",
+    "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFAtV252TUtGenBRNUx0NmZmYUNBb0luS3BTZmxqY1JOenhkZzBaM1YtUGloQ3VGOTRBVmhjd2M0NGFxeGJvaWNVcF9PeWRrREx3aEZHNkc4alpNcXAxWjBOWDZ3?oc=5",
+    "source": "전북타임즈",
+    "published": "2026-11-20T16:38:28+09:00",
+    "category": "governance",
+    "coverage": 3
+   },
+   {
+    "title": "재난으로 숨져도 보험금 못 받는 아이들... 김의겸, 상법 개정 추진",
+    "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBDdmRoSFlJNm1UVnlrSVJIREpuNHg4bzdOeGFkRFplQzFrZnBnUG40bnVsYXhTci1VSUlKaGdxN2tPQVQ5MzA1OVdndGNNUDFud3QyZy1tdmxEMW4zNF8yTk9NNkdHaU9fd1Vhb2ZOWlE0akdJNUdMbTVhXzJxQQ?oc=5",
+    "source": "더파워",
+    "published": "2026-11-20T16:22:05+09:00",
+    "category": "governance",
+    "coverage": 1
+   },
+   {
+    "title": "김의겸 '15세 미만 재난 사망보험금 지급' 상법 개정 추진",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBhU0pERlNseFlkcEN4d0pBT0NJMUp3TWRjSnNNQWxINVBiazcwLWJtV2ktYWdzSy1ia3BGX1VRUnF6c1ZXRjlieUtSOW52M0V4Q1B6UXo4c0wyR0VlbHdzZVhtTVhMV29JNnRiN0tPMNIBc0FVX3lxTE5pbmlvamJIakhJYXU4ck9jYzlWLVRsenhDUVBoZUpFbHNDZzlHX0s5U0xubG1EcDFHOVZiQ0lPNlRrZ1l2X0tWZGhPWC15X2ZKV0w3MnJxdVpZUDEyOXZic2JMWEZRUXpvNGhOODRyVHpXWjA?oc=5",
+    "source": "세이프타임즈",
+    "published": "2026-11-20T14:14:54+09:00",
+    "category": "governance",
+    "coverage": 1
+   }
+  ],
+  "세금·세법": [
+   {
+    "title": "퇴직 임직원 할인판매 과세 소득세법개정안, 재경위 조세소위 잠정 의결",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBBaGlPcHQ4RFVrdlpXX1QwMWRoMkx3aFhUbkVkd0pkWWFlT2diSzM4NkxVTG5TZXdMdUdJWERHcGdid0RURzd0dHNJSVNVQWpUZVFBWXZxRWxrT3BsaEtMQjA3YnhOMXdXT1E?oc=5",
+    "source": "Daily NTN",
+    "published": "2026-11-20T11:01:00+09:00",
+    "category": "tax",
+    "coverage": 1
+   },
+   {
+    "title": "국회는 2027년부터 시행되는 3개 세법 개정안을 통과시켰습니다.",
+    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQTTYwemJGU2FaVl82ekJuZ3ZEa1ZSRXY5Vmx0VS1nbXVkZGJ1M0psbjdaNTdUZnpKQ1o5dUxycV9sTjdJRHA2bzQybVBKQXlMT1RGbmMyYXFLbHc3cGRLQ2Jja3lnUnpneFVGUUNSZ19zMEZuRXBUemJISkdJejRoQzhIUTI5YzFsUDRBdUJLeTlyRFJQNVE?oc=5",
+    "source": "Vietnam.vn",
+    "published": "2026-11-20T22:21:28+09:00",
+    "category": "tax",
+    "coverage": 1
+   },
+   {
+    "title": "국회는 세법에 관한 3개 법률의 일부 조항을 개정 및 보완하는 법안을 통과시켰다.",
+    "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNV3c3UnVzaU5GYnpJNHJxRUdvUElycGpnNkdwUEg1M3dESzZmd21MZ3BVRUVtN1pWeTZTUGU0aTlrS2oxNDNiWVp2MVVIWWVLUXJVNGVjT0piVEkzU3l2b2pVWnVPYXhoQkFMOVoyaDd2RDJaVTluMGtUYkR1NkNtanRMU0VUVGZXelVyVWYzN1pkWnhrVHc5ZnM4dU4?oc=5",
+    "source": "Vietnam.vn",
+    "published": "2026-11-21T06:25:27+09:00",
+    "category": "tax",
+    "coverage": 1
+   }
+  ],
+  "경쟁·공정거래": [
+   {
+    "title": "공정위, 한화솔루션 등 현장조사…태양광 패널 담합 의혹(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261120086251002",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T14:50:25+09:00",
+    "category": "competition",
+    "coverage": 5
+   },
+   {
+    "title": "한국 식품·배달업계, 공정위 과징금 급증에 소송전 확대",
+    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQdVRwUDBYME1NUExWWFAxQ0N2Z2NVdXFlTUtXU2dwTlZ5UHRUbnluSmhHTVN3M3F3NlBkWm9wa1h4aXZiVnMwRm9lSmxUZGRKUlRqdzdqM2RuSHkzUEFTWFdwY0VSdV8tLVk2eXFpbjN2TFNLbUpCc29uVy1JRkxtcG1TUkFhYXYtVjdjY2MwVHBfVGdHUXc?oc=5",
+    "source": "Traders Union",
+    "published": "2026-11-20T19:49:24+09:00",
+    "category": "competition",
+    "coverage": 1
+   },
+   {
+    "title": "삼성증권, 3분기 실적 호조 속 공정위 과징금 1189억 미반영 '눈길'",
+    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1FbzVCV1d4LThFeG1HTjVKZS04RlRaX1Rfci1yZVNOdHlFdXhBVHNQbEVwRmY2U2drVnhndUpmcEhuY3M5WXJSWkJaWVF1cno0?oc=5",
+    "source": "톱데일리",
+    "published": "2026-11-20T15:22:00+09:00",
+    "category": "competition",
+    "coverage": 1
+   }
+  ],
+  "인사·조직·노동": [
+   {
+    "title": "효성중 사무직노조, 임단협 제시안 거부…사측 \"합리적 안\"(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261120133151052",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-20T21:18:24+09:00",
+    "category": "hr",
+    "coverage": 6
+   },
+   {
+    "title": "HD현대삼호 노사, 임단협 타결…기본급 12만 원 인상",
+    "link": "https://www.yna.co.kr/view/AKR20261120130000054",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-20T15:45:38+09:00",
+    "category": "hr",
+    "coverage": 9
+   },
+   {
+    "title": "이재근 KB금융 회장 체제 출범…연말 인사·조직개편 첫 시험대",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1kcTRES21tYWJSU2xHWVB4emhMOFBJanQ5N2QtYk51N1A4WWJIVDVuOWxTMHA0dEJHMEpUWDNDRzk1Z0Q4MmZqdk1xODZOUlYyblYwaTNaS3lhYV9jbGpuUHp6Y09scC10bGJDNmp3?oc=5",
+    "source": "이지경제",
+    "published": "2026-11-20T14:47:47+09:00",
+    "category": "hr",
+    "coverage": 5
+   }
+  ],
+  "공급망·생산": [
+   {
+    "title": "2035년 저혈청 배지 시장 전망: 바이오의약품 수요와 공급망 리스크 완화가 성장 견인 - 뉴스 및 통계",
+    "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOc0JwVnZFa1ZXbk81VFRMU3ZaeGItN0NDclZZS09uZU4wWE8yNjlaRE1YWHljQTNwTkgwaHVNcExKTk5Ca2dTczZPNF9wQVlFU0NKR1R5MzdZM1lLc0VpaTdHeXU3UVBzRzlBZy1ONjhpeFdPNHFJM0VHd2pla3BUOHZfRWRGeWtMTGZqN1JqTE43S0FxOEQ3ckpCNW1faW03UjEzRXZUbDhhMXJKMEtiLXVZbWlMaU41dTBFNXV0cDJMeTJCdUltMzhZS05NVjZUY1hkZQ?oc=5",
+    "source": "IndexBox",
+    "published": "2026-11-21T06:11:05+09:00",
+    "category": "supply",
+    "coverage": 1
+   },
+   {
+    "title": "[차이나 EV 웨이브/③끝]中 전기차, 점유율 43.5%…배터리 공급망·국내 생산기반도 '흔들'",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1EaUZRWXY3Y1RJeFZNdDZuU0FQQWxZTk5tcF9nakdSd0FrN1hCQmJUeGh1Ym9jN0NhMlE3THc0U1Y2TUdPSzNWMGlLVHpwdkdpUlVLSGlZM2JLYTZ6eWpfbmlyU3VUUlVmSWM1TzB0cw?oc=5",
+    "source": "비즈니스플러스",
+    "published": "2026-11-20T15:03:51+09:00",
+    "category": "supply",
+    "coverage": 2
+   },
+   {
+    "title": "중국이 다시 쓰는 글로벌 원자재 지형도",
+    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9oVDZ2ejJjWXJPWDdzeVNrU0I5VWx5d2FKV0lMcFUwTU5ENnVvNm1fUE9HSnh0SVlNMGZtT2ZCRlB0TzFjSU5ZX3FXX3V2TkdSaXc?oc=5",
+    "source": "네이버페이 머니스토리",
+    "published": "2026-11-21T02:25:58+09:00",
+    "category": "supply",
+    "coverage": 1
+   }
+  ],
+  "무역·통상": [
+   {
+    "title": "[해설] 중국, 한중 FTA 2단계 타결로 본 통상전략의 변화…미국 견제 속 한국과 연결고리 강화 - www.cn-insight.kr",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1yQkpycnllNkI0YVlId2Z1b0xxdmRkZ01LbmZKNkdva0FlNXZzUmQtVXNCVzJOam15bzVQVHFpWGpFbmFQM1k5dzZhdWt1aG9udlpsU0swZktkVzdHLVBaWFhpbnhBX1NSblE?oc=5",
+    "source": "www.cn-insight.kr",
+    "published": "2026-11-21T07:23:03+09:00",
+    "category": "trade",
+    "coverage": 1
+   },
+   {
+    "title": "USTR “과잉생산 조사 연내 마무리”…한중 FTA 영향은?",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5XSFZKdHgxMW5pcmVnT01UTXQ0ZjQtT3lEQTd1UjF6LVZEM29wSUVUZUhxbk1EVm02T1lGUWJha1V4WGhpOVB0NjBoTThoelVpc1lfbGt3MTFtNzc5aWllMzM1bGxzYVJQaUM3U2tyOVRReE0?oc=5",
+    "source": "뉴스앤포스트",
+    "published": "2026-11-20T15:40:51+09:00",
+    "category": "trade",
+    "coverage": 2
+   },
+   {
+    "title": "산업장관, 경제6단체와 간담회…수출 질적성장 위한 협력 강조",
+    "link": "https://www.yna.co.kr/view/AKR20261120077100003",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T12:00:01+09:00",
+    "category": "trade",
+    "coverage": 2
+   }
+  ],
+  "가격·소비": [
+   {
+    "title": "[이번주뭘살까] 백화점 K-팝·다마고치 팝업…제철 수산물 할인",
+    "link": "https://www.yna.co.kr/view/AKR20261120083200030",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-21T07:00:12+09:00",
+    "category": "pricing",
+    "coverage": 1
+   },
+   {
+    "title": "\"조정장 버틸 가치주 골라야 … 가성비 소비에 뷰티주 호재\"",
+    "link": "https://www.mk.co.kr/news/stock/12214845",
+    "source": "매일경제 증권",
+    "published": "2026-11-20T17:32:10+09:00",
+    "category": "pricing",
+    "coverage": 1
+   },
+   {
+    "title": "울산 5개 구·군, 29년째 동결된 공영주차장 요금 인상 건의키로",
+    "link": "https://www.yna.co.kr/view/AKR20261120130300057",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T15:54:16+09:00",
+    "category": "pricing",
+    "coverage": 1
+   }
+  ],
+  "마케팅·브랜드": [
+   {
+    "title": "삼양식품, 헬스케어 브랜드 '스핀들' 모델에 소지섭 발탁…근력 관리 시장 공략",
+    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE10aVo2QXd1aFE2Mzhhdzg0RzBuOHY0S3BBSVhOdGFXWHRYMF95dERUem5SdERYQTJFNDhhaDd2N3RCeTUtOE5SZ1hXSGRSZDBEUTI1dWxDVHd0TGtlcThiU1I3WE1jN3dUeHhPT3RpSGFpUQ?oc=5",
+    "source": "인더스트리뉴스",
+    "published": "2026-11-20T17:00:08+09:00",
+    "category": "marketing",
+    "coverage": 10
+   },
+   {
+    "title": "[해외 크리에이티브] 파멜라 앤더슨의 정원이 크리스마스 광고로… 스킨케어 브랜드 손시, 첫 연말 캠페인 공개",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE45TmVmeDdjR3JEbGE3VGVkLVpXUi1SaWJGenlZV1Jla3V2bVZ2ak9kQjZrSE5xd2RPOFpUSmxURlUzT25JMDlRZkRZWWlSMXNhZGtUOUg4NnY2TEFHbTRQQk5hM3ZLdDN5aG9JNg?oc=5",
+    "source": "매드타임스",
+    "published": "2026-11-21T00:00:00+09:00",
+    "category": "marketing",
+    "coverage": 1
+   },
+   {
+    "title": "하이트진로음료 “‘테라 제로’ 출시 첫해 광고·홍보 3관왕 달성”",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5LN0VNNFRqV2JZY0p6bTctY2M5WHdUNXZaME1MZVlIdGh0WUc2LXN1MHlMMjlRaWpXY2lkT1l1ZE1GaXFIRGNTc0VEald5SUJ4X2VicDNCd2JHM2NGRVl5WDY2WUtYRFXSAWdBVV95cUxOSzdFTTRUaldiWWNKem03LWNjOVh3VDV2WjBNTGVZSHRodFlHNi1zdTB5TDI5UWlqV2NpZE9ZdWRNRmlxSERjU3NFRGpXeUlCeF9lYnAzQndiRzNjRkVZeVg2NllLWERV?oc=5",
+    "source": "리버티코리아포스트",
+    "published": "2026-11-20T20:03:29+09:00",
+    "category": "marketing",
+    "coverage": 3
+   }
+  ],
+  "스타트업·벤처투자": [
+   {
+    "title": "경과원 지원 엔바이오셀, 티비지파트너스 투자 유치",
+    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBlcVB2cWpKWmhrQ0tVNG9YeEw1bGJNU3JRU01IcGNwMC1qUkhQRVVfaU1yaGptSURjempLc1gyUVJlUW00MGN4WW9ZOXpDd0p2VWs3Q3JZMEV3Vl9NXzRpeEJmTkFybGNYazVQZDFNM2fSAXRBVV95cUxNb2tkeHpZenVGd0pHUC1kUUY3cUxPWjUxamsxbldiRHpYdEFqOUthTDNNcmNRdlpPaWpZQ2lsQVJ6Uy1qUGhZRkRTdVE2QmVNaDZLMVNHZm8zX0YtU1FmZFRnbmcyTXltYWRaYWZvQXJEMUpCaQ?oc=5",
+    "source": "이뉴스투데이",
+    "published": "2026-11-20T18:08:15+09:00",
+    "category": "startup",
+    "coverage": 10
+   },
+   {
+    "title": "[글로벌 도약]재외동포청, K-스타트업 미국 시장 진출 교두보 마련",
+    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBVLXFLemxhdEdaLWJqUUJMbmxIM2ljRjEyay1sRlIyN1YwY3haYUlxMjJISVV5dFZZSUdKOW5uX2pqT2RTQ0tHYjBYSGM4UzlucUx0RUNyVFU2dFZQTTBsUUthVTlqQzRRdXRiRUtBUGQ?oc=5",
+    "source": "전국뉴스",
+    "published": "2026-11-20T17:42:59+09:00",
+    "category": "startup",
+    "coverage": 6
+   },
+   {
+    "title": "인천시의회 이강구 의원, 스타트업 해외진출 성과 검증 촉구",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5ldmpseEpxbm13SXBTNzgxRFBBZFZ3LXFkV0RTZURlM3RJZjhpUUdZSUxIN3Y1bWpRSkdOWmJFSFZmQk9YNmFGcTlLQkk4UmRlUWZEeURsZFYzMXJkSlZJR2Q0MXdWQUNqU0VwVHRn?oc=5",
+    "source": "국제뉴스",
+    "published": "2026-11-20T18:29:04+09:00",
+    "category": "startup",
+    "coverage": 5
+   }
+  ],
+  "글로벌 기업": [
+   {
+    "title": "뉴욕증시 'AI 투자 공포'에 폭락...나스닥 5.28%↓·엔비디아 14% 급락",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9MUzFhVDF3MnVjLXVwdmpHdHo2c1VrZlk1UV9DT21LaVJQbGJ3RjR3a3VmYmFocmJpZG91Um1Fd2taUElIY2lfZVgxQUw0eTV4NEVuZ2VIZnFqRFZVOXh3bDYyNHFNbjg?oc=5",
+    "source": "M이코노미뉴스",
+    "published": "2026-11-21T09:46:47+09:00",
+    "category": "global",
+    "coverage": 4
+   },
+   {
+    "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
+    "link": "https://www.mk.co.kr/news/stock/12215112",
+    "source": "매일경제 증권",
+    "published": "2026-11-21T06:24:01+09:00",
+    "category": "global",
+    "coverage": 3
+   },
+   {
+    "title": "엔비디아, SEC 회계 조사에 주가 14% 폭락…시총 4위 추락",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5iT0s1dlpmU1VqMjhsQmlzd25GRW8yME45eElDQWFDS0dpVFhGMHhIQ003dkxETFFkZnBBSC0wZHBmSTZOU3dFZjR5bmczR2FfcVN0dGpsMUQzR292UHpLSmk1MkZ3bi1GYVE?oc=5",
+    "source": "AI타임스",
+    "published": "2026-11-21T10:32:11+09:00",
+    "category": "global",
+    "coverage": 5
+   }
+  ],
+  "ESG·에너지": [
+   {
+    "title": "고려아연, ESG 평가 최고등급 'AAA'…지배구조도 한 단계 상승",
+    "link": "https://www.hankyung.com/article/202611200489g",
+    "source": "한국경제 경제",
+    "published": "2026-11-20T16:32:34+09:00",
+    "category": "esg",
+    "coverage": 14
+   },
+   {
+    "title": "서부발전, 재생에너지 전문가 자문 확대…태양광·VPP까지",
+    "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOdHZfT1k2Y2VrekdCQUFvaFAzV1BuRzlpOFVod1QyS0kzQldRVmtveUt2UHpOTFlUR3B4YU8zcHYxd0pFa1U1OW03aDcxOHVxcld1SHRQR3JtVjQ2czJkUUl6MERLN0c2LXJPbFNSaHQwY1pubmY0QnV0SklyQjBzY0pMY25FSHZ5c1E?oc=5",
+    "source": "글로벌이코노믹",
+    "published": "2026-11-20T15:58:59+09:00",
+    "category": "esg",
+    "coverage": 6
+   },
+   {
+    "title": "IEA “韓, 재생에너지 확대로 수입의존·탄소배출 감축\"",
+    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE8xVllqY2V6LXM1SXpsNzllbmpDb3JyZ3JMMWZ0VHRxZlUyTXVTT0dqYkFRQ2xFczR5TGVpbFVqeTdaQUFIWWFEaGdaVHUyWmZYNWI2ZEFiSVB1X2tHU2JDOS1CaU1YcDNl?oc=5",
+    "source": "오늘의한국",
+    "published": "2026-11-21T09:50:10+09:00",
+    "category": "esg",
+    "coverage": 3
+   }
+  ],
+  "재정·예산·복지": [
+   {
+    "title": "평택시, 반도체 세수 증가에 2027년 본예산안 첫 4조원대 편성",
+    "link": "https://www.yna.co.kr/view/AKR20261120117100061",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T15:13:44+09:00",
+    "category": "fiscal",
+    "coverage": 6
+   },
+   {
+    "title": "당진시 2027년도 본예산안 1조 5,795억 원 편성…경제회복지원금 530억 원",
+    "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE95cDFtb29iWXNpNmVpVVlBWWptWWNreFNRZ2l2alBNV0Y4Y2ZZcTQxQnlranlVR0tjM0FqOVprQXh0RW9QUm9FODIyS0Q0YVJmYlotSms3NnQ?oc=5",
+    "source": "타파인",
+    "published": "2026-11-21T01:51:47+09:00",
+    "category": "fiscal",
+    "coverage": 2
+   },
+   {
+    "title": "의정부시, 내년 1조 6946억 원 예산안 제출…\"사회복지·교통 중점\"",
+    "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9mazB0Ykw4WHV2VGd5WjFNZHVoeHo1aDVmaXdqM0lCS0FfVjZWRUdZaDlDb3pBelR6VzhtWGd0eFl3Wko0V21ScHhYZ2RIalNsbkdlUTE4amttZGJN?oc=5",
+    "source": "뉴스핌",
+    "published": "2026-11-20T17:49:00+09:00",
+    "category": "fiscal",
+    "coverage": 4
+   }
+  ],
+  "산업·규제 정책": [
+   {
+    "title": "AI 데이터센터 건설 규제 확 푼다…인허가 간소화·비수도권 전력평가 면제",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBlTERZUGJyZ3dhc0h2NGs1Q2p5eEhvV2NhdEllODdMbEk4YU56dnJuZ1ZTQjEzR3JaM2FmY005VndQYUhGdGttRzFCVzhFckJrV09zYWJ3QnZNdzQwZUswXzZiOWo4UmNwUDVjVA?oc=5",
+    "source": "워크투데이",
+    "published": "2026-11-20T21:59:00+09:00",
+    "category": "policy",
+    "coverage": 4
+   },
+   {
+    "title": "중국산 자동차 발도 못 붙이게 한다…초당적 입법 처리 나선 美 의회",
+    "link": "https://www.mk.co.kr/news/business/12214980",
+    "source": "매일경제 경제",
+    "published": "2026-11-20T21:44:06+09:00",
+    "category": "policy",
+    "coverage": 2
+   },
+   {
+    "title": "정부 인정 AIDC 기준 나왔다...AIDC 특별법 하위법령서 구체화",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBGQjRzY2dWRzdRQ3lvWUM3WWZxUFB0Y05mODNwNWlnNnBaMXItbHRjV05sNFJkM1p2eGR5TTBwSXJjUkk2QWFnSGlIcVM5UTJGVy1LdUllZk9EalZGazJ1R1pFaktjRmVFTlE?oc=5",
+    "source": "AI타임스",
+    "published": "2026-11-20T13:00:55+09:00",
+    "category": "policy",
+    "coverage": 2
+   }
+  ],
+  "전략·신사업": [
+   {
+    "title": "김범수 2심 무죄, 카카오 AI·신사업 분할 추진",
+    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNM3FINDRld2dOVnFJMWprZFA1M1hDYmhYTlIyTWpaNVY1b1F6ZW1GblYwZmFxOTVZQW1fSlNYWXphb09BQnhEYVM0ODVvQWRCU21kdF9CMlZ4UmNnU3RvQTBIaWVUbkhIc2t6VTRLdTktSVRQaDRGNFJBUW0tejdnekVBWWtuNTd3NS1NTUFIdmktZS0wanc?oc=5",
+    "source": "데일리바이트(DAILY BYTE)",
+    "published": "2026-11-20T15:47:21+09:00",
+    "category": "strategy",
+    "coverage": 2
+   },
+   {
+    "title": "하나증권 \"스페이스X 수혜주로 RFHIC·LIG아큐버·KMW 등 주목\"",
+    "link": "https://www.yna.co.kr/view/AKR20261120028500008",
+    "source": "연합뉴스 마켓+",
+    "published": "2026-11-20T08:47:05+09:00",
+    "category": "strategy",
+    "coverage": 1
+   },
+   {
+    "title": "LG화학, 반도체·모빌리티·항암 신약 중심으로 성장사업 재편",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9NMGFiS2Y1bVlnOElmU1RMZHh1YUlyazY2amQ0bTBnYjZzbXhEM1daYUFzMzVjQkhhd19lOU82eXMwQ2NFUUxfbHNwZDdCbXRLUTNHSXR3RklZcXhfa1NpU3g4bXZnR3hBSGc?oc=5",
+    "source": "금융소비자뉴스",
+    "published": "2026-11-20T15:12:00+09:00",
+    "category": "strategy",
+    "coverage": 1
+   }
+  ],
+  "거시경제": [
+   {
+    "title": "수출 1조달러에 성장률 전망 '쑥'…한은 기준금리 추가 인상 확실시",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5NS1pjNXZucHdxWE1wMnlJcnVjbVBpWnlIeGFCMXhuSjhwRE9jeExBY2JndXMxOGtweFRjMmgzRUtoOWN3YjZRZVpva0dYLWJPUjhrZkxDa19pZ2tod2M3aWFHSExRbzNyUVl5cl9MUdIBc0FVX3lxTE5MNldnWVNNQVpVMjNTajN2QXVZSWJxT3otMUxwUlVLWUtFaEcxZjVWV3EySGJSMm9BbjBZNEJQRllXOFplZW5Xb3NDcWMwcDBNeTgxNHNJcHRCd3NFaGdUbm1La3RrcDF4cGhzbmFfNDZzb00?oc=5",
+    "source": "뉴스웍스",
+    "published": "2026-11-21T08:00:00+09:00",
+    "category": "macro",
+    "coverage": 1
+   },
+   {
+    "title": "[외환] 원/달러 환율 6.2원 오른 1,336.2원(15:30 기준가)",
+    "link": "https://www.yna.co.kr/view/AKR20261120125800002",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-20T15:34:29+09:00",
+    "category": "macro",
+    "coverage": 12
+   },
+   {
+    "title": "[다음주 경제] 숨 고르기 한 기준금리, 인상할까…한은 성장률 전망은",
+    "link": "https://www.yna.co.kr/view/AKR20261121014700002",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-21T08:36:08+09:00",
+    "category": "macro",
+    "coverage": 1
+   }
+  ]
+ },
+ "news_counts": {
+  "split": {
+   "stories": 3,
+   "articles": 5
+  },
+  "ma": {
+   "stories": 18,
+   "articles": 21
+  },
+  "ipo": {
+   "stories": 21,
+   "articles": 35
+  },
+  "capital": {
+   "stories": 19,
+   "articles": 32
+  },
+  "earnings": {
+   "stories": 22,
+   "articles": 34
+  },
+  "accounting": {
+   "stories": 1,
+   "articles": 1
+  },
+  "governance": {
+   "stories": 3,
+   "articles": 5
+  },
+  "tax": {
+   "stories": 8,
+   "articles": 8
+  },
+  "competition": {
+   "stories": 6,
+   "articles": 10
+  },
+  "hr": {
+   "stories": 33,
+   "articles": 56
+  },
+  "supply": {
+   "stories": 12,
+   "articles": 13
+  },
+  "trade": {
+   "stories": 6,
+   "articles": 8
+  },
+  "pricing": {
+   "stories": 4,
+   "articles": 4
+  },
+  "marketing": {
+   "stories": 18,
+   "articles": 30
+  },
+  "startup": {
+   "stories": 35,
+   "articles": 63
+  },
+  "global": {
+   "stories": 113,
+   "articles": 153
+  },
+  "esg": {
+   "stories": 61,
+   "articles": 100
+  },
+  "fiscal": {
+   "stories": 77,
+   "articles": 106
+  },
+  "policy": {
+   "stories": 14,
+   "articles": 19
+  },
+  "strategy": {
+   "stories": 5,
+   "articles": 6
+  },
+  "macro": {
+   "stories": 46,
+   "articles": 70
+  }
+ },
+ "cards": [
+  "stock_acquisition",
+  "shareholder_return"
+ ],
+ "lessons": [
+  "valuation"
+ ],
+ "subject": "원가관리회계",
+ "subject_lessons": [
+  "ca_budgeting"
+ ],
+ "news_cases": [
+  {
+   "title": "평택시, 반도체 세수 증가에 2027년 본예산안 첫 4조원대 편성",
+   "link": "https://www.yna.co.kr/view/AKR20261120117100061",
+   "category": "재정·예산·복지",
+   "theory": "pf_budget"
+  },
+  {
+   "title": "효성중 사무직노조, 임단협 제시안 거부…사측 \"합리적 안\"(종합)",
+   "link": "https://www.yna.co.kr/view/AKR20261120133151052",
+   "category": "인사·조직·노동",
+   "theory": "restructuring_labor"
+  },
+  {
+   "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
+   "link": "https://www.yna.co.kr/view/AKR20261120037551008",
+   "category": "IPO·상장",
+   "theory": "ipo_underpricing"
+  },
+  {
+   "title": "공정위, 한화솔루션 등 현장조사…태양광 패널 담합 의혹(종합)",
+   "link": "https://www.yna.co.kr/view/AKR20261120086251002",
+   "category": "경쟁·공정거래",
+   "theory": "market_structure"
+  }
+ ],
+ "quiz": [
+  {
+   "q": "판매예산 1만 개, 기초재고 2천 개, 목표 기말재고 3천 개일 때 생산예산은?",
+   "choices": [
+    "1만 개",
+    "1만5천 개",
+    "1만1천 개",
+    "9천 개"
+   ],
+   "answer": 2,
+   "explain": "생산량 = 판매량 + 기말재고 − 기초재고 = 1만 + 3천 − 2천 = 1만1천 개.",
+   "topic": "종합예산과 변동예산(예산 편성의 순서)",
+   "answer_label": "C"
+  },
+  {
+   "q": "매년 50억원을 영원히 버는 회사(성장 없음)의 가치는 할인율 10%일 때 얼마일까?",
+   "choices": [
+    "500억원",
+    "50억원",
+    "250억원",
+    "5,000억원"
+   ],
+   "answer": 0,
+   "explain": "영구현금흐름의 가치 = 50억 ÷ 10% = 500억원.",
+   "topic": "기업가치 평가(DCF·상대가치)",
+   "answer_label": "A"
+  },
+  {
+   "q": "근로기준법상 경영상 해고(정리해고)의 요건이 아닌 것은?",
+   "choices": [
+    "긴박한 경영상의 필요",
+    "주주총회 특별결의",
+    "합리적이고 공정한 해고 기준",
+    "해고를 피하려는 노력"
+   ],
+   "answer": 1,
+   "explain": "근로기준법 제24조의 요건은 앞의 세 가지와 근로자대표와의 성실한 협의다.",
+   "topic": "구조조정·변화관리·노사관계",
+   "answer_label": "B"
+  },
+  {
+   "q": "2026년 배당분부터 고배당 상장사 배당소득 분리과세의 최고세율은?",
+   "choices": [
+    "45%",
+    "25%",
+    "30%",
+    "35%"
+   ],
+   "answer": 2,
+   "explain": "정부안 35%가 국회 논의에서 30%(50억원 초과 구간)로 낮아졌다.",
+   "topic": "배당·밸류업(주주환원)",
+   "answer_label": "C"
+  },
+  {
+   "q": "다른 조건과 관계없이 이것 하나만 넘어도 외부감사 대상이 되는 자산(또는 매출) 기준은?",
+   "choices": [
+    "120억원",
+    "1,000억원",
+    "100억원",
+    "500억원"
+   ],
+   "answer": 3,
+   "explain": "외부감사법 시행령 제5조. 이보다 작으면 4개 요건(자산 120억, 부채 70억, 매출 100억, 종업원 100명) 중 2개 이상이면 대상.",
+   "topic": "규모·세율 감각",
+   "answer_label": "D"
+  },
+  {
+   "q": "알테오젠의 2025년 영업이익률(영업이익 ÷ 매출)은 대략 얼마일까?",
+   "choices": [
+    "118.9%",
+    "79.2%",
+    "49.5%",
+    "24.8%"
+   ],
+   "answer": 2,
+   "explain": "매출 2,159억원, 영업이익 1,069억원 → 49.5%.",
+   "topic": "오늘의 기업",
+   "answer_label": "C"
+  }
+ ],
+ "company": "알테오젠"
+}
