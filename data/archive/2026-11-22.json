@@ -44,23 +44,31 @@
     "coverage": 2
    },
    {
-    "title": "앤트로픽 상장 열풍, 코인 시장으로…공모주도 토큰으로 산다",
-    "link": "https://www.hankyung.com/article/202611209908i",
-    "source": "한국경제 경제",
-    "published": "2026-11-21T09:00:16+09:00",
-    "category": "ipo",
-    "coverage": 2
-   },
-   {
     "title": "이번주 공모주 청약, KMF·ANH스트럭쳐 등 2개사",
     "link": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOXy1IczcwMXdRWWZ3VEQxQmZfeWc1REdBYzc0RnpId0ZIZ1ZLb0xMcmpkcFR1ZjNZcjkxX2E0QzBsUFNZZXZfaE5XY0lVbUVlRlU5Y05rZ3ZPRFdnc3QyNlJTdjZCY1NzQi1FSFI0Rk1FWFFwUzR5Qkc1QTdBclpLM0M4TnVleVh6V2VadV82TmNwdk9wc1pKU2FvMUY0ZkI3amp0VG9QdDF3QVFGR2g5bzJkZzZaTnNtWFh1RlR1VVA4SnhDZl9pNjhQb2RTaHBjaE5nUFNiRHFJdEFLeExMZjYzT1ZJSk15ZU5CUVBn?oc=5",
     "source": "데일리안",
     "published": "2026-11-22T00:10:00+09:00",
     "category": "ipo",
     "coverage": 1
+   },
+   {
+    "title": "챗GPT 경쟁자 앤트로픽, 공모가 83달러 확정…스페이스X 기록 깰까 > 시애틀 뉴스/핫이슈",
+    "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE1VUmxhbEozS3pEMzJNY01fVzVHTUx5ME1fZzhIakptZUN4em5ka2habUs0a25EOVRtUUEyUmRnV2phYnVSM1g4OHlB?oc=5",
+    "source": "SeattleN",
+    "published": "2026-11-21T20:05:11+09:00",
+    "category": "ipo",
+    "coverage": 1
    }
   ],
   "자본정책·주주환원": [
+   {
+    "title": "피에이치에이, 자사주 최대 10% 소각 가능성…주주환원 카드 꺼냈다",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBPenYwRnpYWVM3d29CclFZajhyNTY5VUVKWEFNdkF6Qkx4dXJLTHIyNGZpbzdKMDEzbkFCZVEweWQ4WmhFel83M2QyQXE3Mmp5OGxXUmZwNWY4NkUwaW9qd1E5Qkc1SFVfbW5yVDhuNzhYcE3SAXdBVV95cUxPTjVVV2E0V1pDZkhuT2c5TmRkcXBhZFVwUWpDOFJCVkFJWWU2RGVHSjU0Zkg3RGJZVV9nTndRZkZfUjNDMUw3bGZMTVFKcUR6OUM2TUp4akFWMHZiYXFlT0NzSWh1eVc5dFpyOFA4aHV5SjBWZXBQNA?oc=5",
+    "source": "핀포인트뉴스",
+    "published": "2026-11-21T09:49:52+09:00",
+    "category": "capital",
+    "coverage": 1
+   },
    {
     "title": "삼전닉스, 3분기 배당성향 껑충…상반기 대비 21배로 늘기도",
     "link": "https://www.yna.co.kr/view/AKR20261120152600003",
@@ -76,14 +84,6 @@
     "published": "2026-11-21T19:15:13+09:00",
     "category": "capital",
     "coverage": 2
-   },
-   {
-    "title": "반도체부터 금융·소비재까지 매물 출회…기업가치 제고주 '흔들'",
-    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1IdWZ2cE5MRDE5QkpKb2tCWm02STNmOFZ3cFdyYkhpZ3lQS1dydzFqNGdnVTZZUzFvMk4yWjdyWEdtQ1kycTR5eEVBRXI2d0p4NllhTnJWRWhFMVJjY2tHV0pTR3MyUmxueHRUQmV4MHdfeVB6cW9F0gF3QVVfeXFMTUh1ZnZwTkxEMTlCSkpva0JabTZJM2Y4VndwV3JiSGlneVBLV3J3MWo0Z2dVNllTMW8yTjJaN3JYR21DWTJxNHl4RUFFcjZ3Sng2WWFOclZFaEUxUmNja0dXSlNHczJSbG54dFRCZXgwd195UHpxb0U?oc=5",
-    "source": "핀포인트뉴스",
-    "published": "2026-11-21T15:40:45+09:00",
-    "category": "capital",
-    "coverage": 1
    }
   ],
   "실적": [
@@ -104,10 +104,10 @@
     "coverage": 1
    },
    {
-    "title": "파마리서치, 3분기 매출 1715억원…화장품·의료기기 수출 호조",
-    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE4tUDdNR1QzaE1SRjlaUWpGc2hmQ2Qwbjc5Q0FVZGZWZE9HZXBvQWRyZ05HUkI1alhaWlAtTmpwSnBPOWUzZ2dJc21yUXc5UGxQOG1PajIzVVlUUU5VeDBSRWZzOA?oc=5",
-    "source": "쿠키뉴스",
-    "published": "2026-11-21T22:07:59+09:00",
+    "title": "에스엘, 영업이익 32.5% 감소에도…한화투자증권이 낙폭 과대 판단한 이유",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBVTnJVX054cDBKZnV2YWxGT2UyYTBoZ3JjNE5TeVUxUWFIS0ZJcDRXRDltcWMwandGeDVjdjlhRVNDYkRjcTVmV1JaczBYbl9VcWN1dHNmMWd6cUNfam5kZWw4WS15YkJPMWdPSjk2blAtQ03SAXdBVV95cUxPdHZ2Zk1VV3FQV3c5WGdzRzZtYkNxUHNZS2d3Zk03R2IwbGtyejNVSmNZQTUzclJ3YUQxcnRKV3FuZXNrYXE0VTZTQzR2Smo1ZVhudzNoWUx4NmR2RU0tMFRIRFpTZDR2UVFJX3dmNEdQM3NhbzVmcw?oc=5",
+    "source": "핀포인트뉴스",
+    "published": "2026-11-21T18:46:25+09:00",
     "category": "earnings",
     "coverage": 1
    }
@@ -151,9 +151,9 @@
    },
    {
     "title": "주지홍 사조그룹 부회장, 밀가루·전분당 '이중 담합' 과징금 3,832억…영업이익의 4~5.5배",
-    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5uSG56QVMxQjRCUlQ2MnJQTXd2UWZOWEl0UmthLUhEU3ZfTjNCRFF1SFNGQ0k2WkdKeXdTaGxSeUdiUHJHbmdqUzhQUS1XM05JNlFNcHVrWkhuS2M0VktuN1V2dXhudVdEbThJ0gFrQVVfeXFMTm5IbnpBUzFCNEJSVDYyclBNd3ZRZk5YSXRSa2EtSERTdl9OM0JEUXVIU0ZDSTZaR0p5d1NobFJ5R2JQckduZ2pTOFBRLVczTkk2UU1wdWtaSG5LYzRWS243VXZ1eG51V0RtOEk?oc=5",
+    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE03WUhXaFl2ZTJUODZnZUYwZFlQUjl2dUx1ZXFmclRpbVEzd2IxcV80cmlnTmsxYTBLZ2pwOWd1b3FzTHpJY2JUMFdEdDlEaW9BV0JBLXlIZ3FTR016UU1XT3RCekNNdjjSAWtBVV95cUxObkhuekFTMUI0QlJUNjJyUE13dlFmTlhJdFJrYS1IRFN2X04zQkRRdUhTRkNJNlpHSnl3U2hsUnlHYlByR25nalM4UFEtVzNOSTZRTXB1a1pIbktjNFZLbjdVdnV4bnVXRG04SQ?oc=5",
     "source": "CEO저널",
-    "published": "2026-11-21T09:04:46+09:00",
+    "published": "2026-11-21T08:55:52+09:00",
     "category": "competition",
     "coverage": 1
    },
@@ -199,7 +199,7 @@
     "source": "핀포인트뉴스",
     "published": "2026-11-21T19:21:09+09:00",
     "category": "supply",
-    "coverage": 3
+    "coverage": 2
    },
    {
     "title": "공급망 통제와 제재",
@@ -210,10 +210,10 @@
     "coverage": 1
    },
    {
-    "title": "식품 업체들이 2027년 설날을 대비해 시장 안정화를 위해 선제적으로 공급망을 확보하고 있다.",
-    "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPaDVLak5nWEJnY29lNHBpVXUyRHdNRzlHNzJxNHljYS1XUG45WkRXMS0zcDhtaUFzaDVaM3pVZlFsQk5tclF5d0pOTWtOcGNnOEctUnN4bmhJZWVwZ2RYM29SOUludUZnYm0zUXdMOTJOUFBpa0V3eW5CZnBrYU9VcTdKQzRJQlFkSlN0ZGt0UGJrTGs5eFpTbTQ3dGg?oc=5",
-    "source": "Vietnam.vn",
-    "published": "2026-11-21T17:23:43+09:00",
+    "title": "환율·원자재·건조 지연 삼중고… 한국카본 실적 회복은 4분기",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1DdGVlbldQMmVXMm9XM0lTc0RUVDUzNUhudFc4el9RZlRsUnJQaml5YjBxZGdlNVI4RWNlUEtkLURHQTVKbzAxOHdwYUhWdWJJcjFVb2w2eTZMczB5OGVPYnNZY2dTU25hczJZcGVYcF9DUVB3Vkdr0gF3QVVfeXFMTUN0ZWVuV1AyZVcyb1czSVNzRFRUNTM1SG50Vzh6X1FmVGxSclBqaXliMHFkZ2U1UjhFY2VQS2QtREdBNUpvMDE4d3BhSFZ1YklyMVVvbDZ5NkxzMHk4ZU9ic1ljZ1NTbmFzMllwZVhwX0NRUHdWR2s?oc=5",
+    "source": "핀포인트뉴스",
+    "published": "2026-11-21T19:21:09+09:00",
     "category": "supply",
     "coverage": 1
    }
@@ -324,14 +324,6 @@
   ],
   "글로벌 기업": [
    {
-    "title": "엔비디아 일주일 만에 23% 폭락…SEC 조사·8대 법적 리스크에 위기 더 커지나?",
-    "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBDY2h3VTJ3TTd6c0pJdWFIT0Q5U1pkS19SdndTX0t4R1ZKQU5Way1mNjhJU21JcEc3TUpGVXlBbTZMcGhDcV9pQ2Nn?oc=5",
-    "source": "코인리더스",
-    "published": "2026-11-21T19:58:00+09:00",
-    "category": "global",
-    "coverage": 6
-   },
-   {
     "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
     "link": "https://www.mk.co.kr/news/stock/12215112",
     "source": "매일경제 증권",
@@ -346,6 +338,14 @@
     "published": "2026-11-22T04:50:00+09:00",
     "category": "global",
     "coverage": 5
+   },
+   {
+    "title": "테슬라 돌풍에 對중국 자동차 무역적자 6조원 역대 최대",
+    "link": "https://www.yna.co.kr/view/AKR20261121043900003",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-22T06:13:00+09:00",
+    "category": "global",
+    "coverage": 4
    }
   ],
   "ESG·에너지": [
@@ -433,7 +433,7 @@
     "source": "연합뉴스 산업",
     "published": "2026-11-22T06:33:00+09:00",
     "category": "strategy",
-    "coverage": 1
+    "coverage": 2
    }
   ],
   "거시경제": [
@@ -469,20 +469,20 @@
    "articles": 0
   },
   "ma": {
-   "stories": 16,
-   "articles": 20
+   "stories": 14,
+   "articles": 17
   },
   "ipo": {
    "stories": 9,
-   "articles": 11
+   "articles": 10
   },
   "capital": {
-   "stories": 4,
-   "articles": 6
+   "stories": 5,
+   "articles": 7
   },
   "earnings": {
-   "stories": 13,
-   "articles": 15
+   "stories": 10,
+   "articles": 12
   },
   "accounting": {
    "stories": 2,
@@ -506,7 +506,7 @@
   },
   "supply": {
    "stories": 7,
-   "articles": 10
+   "articles": 8
   },
   "trade": {
    "stories": 6,
@@ -525,16 +525,16 @@
    "articles": 16
   },
   "global": {
-   "stories": 83,
-   "articles": 115
+   "stories": 82,
+   "articles": 113
   },
   "esg": {
-   "stories": 61,
-   "articles": 66
+   "stories": 56,
+   "articles": 59
   },
   "fiscal": {
    "stories": 66,
-   "articles": 82
+   "articles": 83
   },
   "policy": {
    "stories": 10,
@@ -542,11 +542,11 @@
   },
   "strategy": {
    "stories": 1,
-   "articles": 1
+   "articles": 2
   },
   "macro": {
-   "stories": 28,
-   "articles": 36
+   "stories": 26,
+   "articles": 34
   }
  },
  "cards": [
@@ -574,8 +574,8 @@
    "theory": "monetary_policy"
   },
   {
-   "title": "엔비디아 일주일 만에 23% 폭락…SEC 조사·8대 법적 리스크에 위기 더 커지나?",
-   "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBDY2h3VTJ3TTd6c0pJdWFIT0Q5U1pkS19SdndTX0t4R1ZKQU5Way1mNjhJU21JcEc3TUpGVXlBbTZMcGhDcV9pQ2Nn?oc=5",
+   "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
+   "link": "https://www.mk.co.kr/news/stock/12215112",
    "category": "글로벌 기업",
    "theory": "generic_strategy"
   },
