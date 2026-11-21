@@ -16,7 +16,10 @@ def test_parse_amount_variants():
 
 def test_fmt_krw_units():
     assert fmt_krw(None) == "-"
-    assert fmt_krw(300_870_900_000_000) == "301조원"
+    assert fmt_krw(300_870_900_000_000) == "300.9조원"
+    assert fmt_krw(727_900_000_000_000) == "727.9조원"
+    assert fmt_krw(10_320) == "10,320원"
+    assert fmt_krw(2_156_880) == "216만원"
     assert fmt_krw(12_345_000_000_000) == "12.3조원"
     assert fmt_krw(12_000_000_000_000) == "12조원"
     assert fmt_krw(1_234_500_000_000) == "1조 2,345억원"

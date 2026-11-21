@@ -76,9 +76,7 @@ def fmt_krw(amount: float | None, *, precise: bool = False) -> str:
     a = abs(amount)
     if a >= 1e12:
         jo = a / 1e12
-        if jo >= 100:
-            return f"{sign}{jo:,.0f}조원"
-        if jo >= 10 and not precise:
+        if jo >= 10 and not precise:  # 100조 이상도 소수 한 자리(예산 727.9조원처럼 반올림이 크게 틀리지 않게)
             text = f"{jo:,.1f}"
             if text.endswith(".0"):
                 text = text[:-2]
@@ -97,6 +95,8 @@ def fmt_krw(amount: float | None, *, precise: bool = False) -> str:
             return f"{sign}{eok:,.0f}억원"
         return f"{sign}{eok:,.1f}억원"
     if a >= 1e4:
+        if a < 1e6 and a % 1e4:  # 100만원 미만에서 만원 단위로 안 떨어지면 원 단위 그대로(최저임금 10,320원)
+            return f"{sign}{a:,.0f}원"
         return f"{sign}{a / 1e4:,.0f}만원"
     return f"{sign}{a:,.0f}원"
 
@@ -106,6 +106,8 @@ def fmt_pct(value: float | None, digits: int = 1, signed: bool = False) -> str:
         return "-"
     if signed:
         return f"{value:+.{digits}f}%"
+    if digits == 0 and 0 < abs(value) < 1:  # 1% 미만이 0%로 보이지 않게(업계 1위 대비 0.4% 등)
+        return f"{value:.1f}%"
     return f"{value:.{digits}f}%"
 
 

@@ -74,3 +74,22 @@ def test_parse_employees_avoids_double_count():
     assert emp["count"] == 8000
     assert emp["avg_salary"] == pytest.approx(924e9 / 8000)
     assert emp["avg_tenure"] == pytest.approx((12.5 * 6200 + 9.5 * 1800) / 8000)
+
+
+def test_parse_employees_hidden_subtotals():
+    def row(div, sex, sm, pay):
+        return {"fo_bbm": div, "sexdstn": sex, "sm": f"{sm:,}", "fyer_salary_totamt": f"{pay:,}"}
+
+    # 부문별 소계와 전사 합계가 이름 없이(또는 낯선 이름으로) 섞여 있어도 한 번만 센다
+    rows = [
+        row("DX", "남", 40_000, 4_800_000_000_000), row("DX", "여", 20_000, 2_000_000_000_000),
+        row("DX", "소 계", 60_000, 6_800_000_000_000),
+        row("DS", "남", 50_000, 7_500_000_000_000), row("DS", "여", 15_000, 1_800_000_000_000),
+        row("DS", "부문계", 65_000, 9_300_000_000_000),
+        row("전사", "총원", 125_000, 16_100_000_000_000),
+    ]
+    emp = parse_employees(rows)
+    assert emp["count"] == 125_000
+    assert round(emp["avg_salary"] / 1e4) == round(16_100_000_000_000 / 125_000 / 1e4)
+    # 남·여 두 줄뿐이면 그대로 더한다
+    assert parse_employees([row("전사", "남", 100, 1), row("전사", "여", 50, 1)])["count"] == 150

@@ -91,6 +91,9 @@ def build_scale(client: DartClient, settings: Settings, corp_index: CorpIndex, y
             if emp:
                 row["employees"] = emp["count"]
                 row["avg_salary"] = emp["avg_salary"]
+                log.info("직원 현황 %s: %d행 중 합계·소계 %d행 제외 → %s명 %s",
+                         c["name"], emp["rows"], len(emp["excluded"]), f"{emp['count']:,.0f}",
+                         ", ".join(emp["excluded"][:6]))
         rows_out.append(row)
     data = {"year": year, "built_at": time.time(), "rows": rows_out}
     settings.generated_dir.mkdir(parents=True, exist_ok=True)

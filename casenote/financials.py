@@ -337,7 +337,7 @@ def parse_employees(rows: list[dict]) -> dict | None:
     """직원 현황 → 총원, 1인 평균 급여, 평균 근속. 합계 행과 세부 행이 섞여 있어 이중 집계를 피한다."""
     if not rows:
         return None
-    totals_kw = {"합계", "총계", "계", "전체", "총합계"}
+    totals_kw = {"합계", "총계", "계", "전체", "총합계", "소계", "남녀계", "남여계", "남녀합계", "남여합계"}
 
     def is_total(r: dict) -> bool:
         a = re.sub(r"\s+", "", str(r.get("fo_bbm") or ""))
@@ -345,6 +345,28 @@ def parse_employees(rows: list[dict]) -> dict | None:
         return a in totals_kw or b in totals_kw
 
     detail = [r for r in rows if not is_total(r)]
+    # 이름으로 못 거른 소계·합계 행도 뺀다: 같은 부문(또는 같은 성별)의 다른 행을 더한 값과 정확히 같거나,
+    # 나머지 행 전체를 더한 값과 정확히 같은 행. 소계를 빼면 합계가 드러나므로 더 없을 때까지 되풀이한다.
+    for _ in range(4):
+        sms = [parse_amount(r.get("sm")) or 0 for r in detail]
+        total = sum(sms)
+        hidden: set[int] = set()
+        for i, r in enumerate(detail):
+            v = sms[i]
+            if v <= 0:
+                continue
+            if len(detail) >= 3 and abs((total - v) - v) < 0.5:
+                hidden.add(i)
+                continue
+            for key in ("fo_bbm", "sexdstn"):
+                same = [sms[j] for j, q in enumerate(detail)
+                        if j != i and str(q.get(key) or "") == str(r.get(key) or "")]
+                if len(same) >= 2 and abs(sum(same) - v) < 0.5:
+                    hidden.add(i)
+                    break
+        if not hidden:
+            break
+        detail = [r for i, r in enumerate(detail) if i not in hidden]
     use = detail or rows
     count = sum(parse_amount(r.get("sm")) or 0 for r in use)
     salary_total = sum(parse_amount(r.get("fyer_salary_totamt")) or 0 for r in use)
@@ -359,7 +381,9 @@ def parse_employees(rows: list[dict]) -> dict | None:
     tenure = [(parse_amount(r.get("avrg_cnwk_sdytrn")), parse_amount(r.get("sm"))) for r in use]
     tenure = [(t, c) for t, c in tenure if t and c]
     avg_tenure = sum(t * c for t, c in tenure) / sum(c for _, c in tenure) if tenure else None
-    return {"count": count, "avg_salary": avg_salary, "salary_total": salary_total or None, "avg_tenure": avg_tenure}
+    excluded = [f"{r.get('fo_bbm') or ''}/{r.get('sexdstn') or ''}" for r in rows if r not in use]
+    return {"count": count, "avg_salary": avg_salary, "salary_total": salary_total or None, "avg_tenure": avg_tenure,
+            "rows": len(rows), "excluded": excluded}
 
 
 @dataclass
