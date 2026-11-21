@@ -34,6 +34,13 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
+      # 앱 서명 키 캐시는 7일 넘게 안 쓰면 지워진다. 매일 한 번 읽어 두어 앱 업데이트(같은 키로 서명)가 계속 되게 한다.
+      - name: 앱 서명 키 보존
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.casenote-signing
+          key: casenote-signing-v1
+
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"

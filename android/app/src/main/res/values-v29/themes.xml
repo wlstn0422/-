@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 웹뷰가 노트 페이지의 밝은/어두운 화면을 휴대폰 설정에 맞추도록 알려 준다(Android 10 이상). -->
+    <style name="Theme.CaseNote" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryDark">@color/accent_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:isLightTheme">true</item>
+    </style>
+</resources>
