@@ -102,6 +102,7 @@ def test_company_scale_weekly(settings):
     scale = report.run_scale(settings, 2025, client=client)
     smd = scale.read_text(encoding="utf-8")
     assert "업종별 규모 지도" in smd and "테스트전자" in smd
+    assert "평균 급여 상위" in smd and "500명 이상 회사만" in smd
     weekly = report.run_weekly(settings, date(2026, 11, 21))
     wmd = weekly.read_text(encoding="utf-8")
     assert "복습 노트" in wmd and "테스트전자" in wmd

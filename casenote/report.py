@@ -68,6 +68,7 @@ ALIASES = {
     "엘지전자": "066570", "에스케이하이닉스": "000660", "삼바": "207940", "엔솔": "373220", "LG엔솔": "373220",
     "에쓰오일": "010950", "에스오일": "010950", "포스코홀딩스": "005490", "SKT": "017670", "카뱅": "323410",
 }
+SALARY_MIN_STAFF = 500  # 업종 규모 지도의 평균 급여 순위에 넣을 최소 직원 수
 
 
 def jinja_env() -> Environment:
@@ -581,13 +582,18 @@ def run_scale(settings: Settings, year: int | None = None, client: DartClient | 
             x["vs_leader"] = pct(x.get("revenue"), leader_rev) if leader_rev else None
         industries.append({"name": ind["name"], "rows": r, "financial": bool(ind.get("financial"))})
     top = sorted([x for x in rows if x.get("revenue") and not x.get("financial")], key=lambda x: x["revenue"], reverse=True)[:20]
-    salary = sorted([x for x in rows if x.get("avg_salary")], key=lambda x: x["avg_salary"], reverse=True)[:15]
+    # 직원 수십 명인 지주회사는 임원급 소수라 평균이 튄다. 순위는 직원 SALARY_MIN_STAFF명 이상만 매기고 따로 보여 준다.
+    paid = sorted([x for x in rows if x.get("avg_salary")], key=lambda x: x["avg_salary"], reverse=True)
+    salary = [x for x in paid if (x.get("employees") or 0) >= SALARY_MIN_STAFF][:15]
+    small_staff = [x for x in paid if (x.get("employees") or 0) < SALARY_MIN_STAFF]
     md = render(
         "scale.md.j2",
         year=scale.get("year", year),
         industries=industries,
         top=top,
         salary=salary,
+        small_staff=small_staff,
+        salary_min_staff=SALARY_MIN_STAFF,
         bm=settings.benchmarks,
         generated_at=now_kst().strftime("%Y-%m-%d %H:%M"),
     )

@@ -92,9 +92,8 @@
 {% if c.tax %}
 {% set tv = c.tax %}
 - 유효세율: {% if tv.get('etr') is not none %}{{ tv.etr|pct }}(법인세비용 {{ tv.tax|krw }} ÷ 세전이익 {{ tv.pretax|krw }}). 같은 금액을 과세표준으로 본 단순 법정세율은 {{ tv.expected|pct }}, 최고세율은 지방세 포함 {{ tv.statutory_top|pct }}.{% else %}세전손실이라 계산하지 않음.{% endif %}{% if tv.get('paid') %} 현금흐름표상 법인세 납부액 {{ tv.paid|krw }}.{% endif +%}
-
 {% for n in tv.notes %}
-  - {{ n }}
+    - {{ n }}
 {% endfor %}
 {% endif %}
 

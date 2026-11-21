@@ -61,12 +61,18 @@
 {% if salary %}
 ## 6. 평균 급여 상위 15개사(별도 기준)
 
+직원 {{ salary_min_staff }}명 이상 회사만 줄 세웠습니다. 평균 급여는 사업보고서의 '직원 등의 현황' 숫자(임원 제외, 본사 기준)입니다.
+
 | 회사 | 업종 | 평균 급여 | 직원 수 |
 |---|---|---|---|
 {% for x in salary %}
 | {{ x.name }} | {{ x.industry }} | {{ x.avg_salary|krw }} | {{ x.get('employees')|intf('명') }} |
 {% endfor %}
 
+{% if small_staff %}
+직원이 {{ salary_min_staff }}명 미만인 곳(주로 지주회사)은 소수 본사 인력만 있어 평균이 크게 튀므로 따로 적습니다: {% for x in small_staff %}{{ x.name }} {{ x.avg_salary|krw }}({{ x.get('employees')|intf('명') }}){% if not loop.last %}, {% endif %}{% endfor %}.
+
+{% endif %}
 {% endif %}
 ## 7. 세율 메모
 
