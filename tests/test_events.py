@@ -70,3 +70,41 @@ def test_pick_key_cases_diversity():
     picked = pick_key_cases(events, 3)
     assert len(picked) == 3
     assert len({e.rule.key for e in picked}) == 3
+
+
+def test_context_notes_prefer_official_ratios():
+    from casenote.events import context_notes
+    ev = Event(rule=RULES_BY_KEY["stock_acq"], rcept_no="1", rcept_dt="20261120", corp_code="9", corp_name="모의바이오",
+               stock_code="999999", corp_cls="K", report_nm="주요사항보고서(타법인주식및출자증권양수결정)")
+    ev.amount = 8e9
+    ev.amount_label = "취득금액"
+    ev.fin = {"year": 2025, "assets": 48.4e9, "equity": 13.5e9, "revenue": 12.9e9}
+    ev.facts = [("취득금액", "80억원"), ("총자산 대비", "16.53%"), ("자기자본 대비", "20.03%")]
+    notes = context_notes(ev)
+    assert not any("자기자본의" in n or "총자산의" in n for n in notes)  # 공시 원문 비율과 다른 숫자를 만들지 않는다
+    assert any(n.startswith("회사 규모") for n in notes)
+    ev.facts = [("취득금액", "80억원")]
+    notes = context_notes(ev)
+    assert any("자기자본의 59.3%" in n for n in notes)  # 원문에 비율이 없으면 직접 계산
+
+
+def test_correction_details_found_with_wider_window():
+    from casenote.events import attach_details
+
+    class _Client:
+        def __init__(self):
+            self.windows = []
+
+        def event_detail(self, endpoint, corp_code, bgn_de, end_de):
+            self.windows.append((bgn_de, end_de))
+            if bgn_de == end_de:  # 정정일 하루로는 안 나오고, 원래 공시일까지 넓히면 나온다
+                return []
+            return [{"rcept_no": "20261105000111", "nstk_ostk_cnt": "1000000", "fdpp_op": "3000000000"}]
+
+    ev = Event(rule=RULES_BY_KEY["rights_offering"], rcept_no="20261120000617", rcept_dt="20261120", corp_code="9",
+               corp_name="모의산업", stock_code="999999", corp_cls="K",
+               report_nm="[기재정정]주요사항보고서(유상증자결정)", is_correction=True)
+    client = _Client()
+    attach_details(client, [ev], "20261120", "20261120")
+    assert client.windows == [("20261120", "20261120"), ("20260822", "20261120")]
+    assert ev.detail.get("rcept_no") == "20261105000111"

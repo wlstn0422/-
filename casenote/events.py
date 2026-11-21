@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
 
 from .dart import DartClient, DartError, DartFatalError, viewer_url
 from .util import fmt_krw, fmt_pct, md_cell, parse_amount, parse_percent, pct, safe_div
@@ -524,6 +525,20 @@ def attach_details(client: DartClient, events: list[Event], bgn_de: str, end_de:
                 log.warning("상세 조회 실패 %s %s: %s", ev.corp_name, ep, exc)
                 cache[key] = []
         rows = cache[key]
+        if not rows and ev.is_correction:
+            # 정정 공시는 상세 API에 원래 공시의 접수번호·접수일로 남아 있는 경우가 많아 90일 앞까지 넓혀 찾는다
+            wide = (ep, ev.corp_code, "wide")
+            if wide not in cache:
+                wide_bgn = (datetime.strptime(bgn_de, "%Y%m%d") - timedelta(days=90)).strftime("%Y%m%d")
+                try:
+                    cache[wide] = client.event_detail(ep, ev.corp_code, wide_bgn, end_de)
+                except DartFatalError:
+                    raise
+                except DartError as exc:
+                    failures += 1
+                    log.warning("정정 공시 상세 조회 실패 %s %s: %s", ev.corp_name, ep, exc)
+                    cache[wide] = []
+            rows = cache[wide]
         match = next((r for r in rows if str(r.get("rcept_no")) == ev.rcept_no), None)
         if match is None and rows:
             match = sorted(rows, key=lambda r: str(r.get("rcept_no", "")))[-1]
@@ -615,12 +630,15 @@ def context_notes(ev: Event) -> list[str]:
             who = "신설 사업부문" if ev.rule.key == "split" else "상대회사"
             out.append(f"{who} 매출 {fmt_krw(other_rev)} = 우리 회사 매출의 {pct(other_rev, revenue):.1f}%")
     elif ev.amount and (assets or equity):
+        # 공시 원문에 비율이 있으면 그 숫자를 그대로 쓴다(공시는 직전 재무 기준이라 사업보고서로 다시 계산하면 다를 수 있다)
+        labels = {label for label, _ in ev.facts}
         parts = []
-        if assets:
+        if assets and not labels & {"총자산 대비", "자산총액 대비"}:
             parts.append(f"총자산의 {pct(ev.amount, assets):.1f}%")
-        if equity and equity > 0:
+        if equity and equity > 0 and "자기자본 대비" not in labels:
             parts.append(f"자기자본의 {pct(ev.amount, equity):.1f}%")
-        out.append(f"{ev.amount_label} {fmt_krw(ev.amount)} = " + ", ".join(parts) + tail)
+        if parts:
+            out.append(f"{ev.amount_label} {fmt_krw(ev.amount)} = " + ", ".join(parts) + tail)
     elif ev.amount:
         out.append(f"{ev.amount_label} {fmt_krw(ev.amount)}")
     if revenue:
