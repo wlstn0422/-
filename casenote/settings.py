@@ -15,8 +15,10 @@ DEFAULT_CONFIG = {
     "report": {
         "title": "매일 경영·경제 케이스 노트",
         "key_cases": 3,
-        "news_cases": 3,
+        "news_cases": 4,
         "theory_lessons": 1,
+        "subject_lessons": 1,
+        "subject_rotation": ["재무회계", "원가관리회계", "세법", "상법", "재정학"],
         "theory_repeat_days": 21,
         "accounting_cards": 2,
         "news_per_category": 3,

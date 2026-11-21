@@ -234,3 +234,11 @@ def first_paragraph(text) -> str:
 def md_link_text(s) -> str:
     """마크다운 링크 글자 안의 대괄호가 링크를 깨지 않게 바꾼다."""
     return md_cell(s).replace("[", "(").replace("]", ")")
+
+
+def html_text(s, limit: int = 0) -> str:
+    """HTML 태그(details 요약 줄 등) 안에 넣을 글자. 특수문자를 바꾸고, limit이 있으면 그 길이에서 자른다."""
+    text = " ".join(str(s or "").split())
+    if limit and len(text) > limit:
+        text = text[:limit].rstrip() + "…"
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")

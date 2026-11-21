@@ -198,7 +198,10 @@ def same_story(a: NewsItem, b: NewsItem) -> bool:
     return len((ta & tb) - {sa, sb}) >= 2
 
 
-def categorize(items: list[NewsItem], categories: list[dict], per_category: int) -> dict[str, list[NewsItem]]:
+def categorize(items: list[NewsItem], categories: list[dict], per_category: int,
+               counts: dict[str, dict] | None = None) -> dict[str, list[NewsItem]]:
+    """기사를 분류하고 분류마다 점수 높은 순으로 per_category건만 남긴다.
+    counts를 넘기면 자르기 전 분류별 기사 묶음 수(stories)와 보도 건수(articles)를 채운다(주간 이슈 지도용)."""
     buckets: dict[str, list[NewsItem]] = {c["key"]: [] for c in categories}
     for it in items:
         key, score = classify(it, categories)
@@ -222,6 +225,8 @@ def categorize(items: list[NewsItem], categories: list[dict], per_category: int)
         for it in buckets[key]:
             it.score += min(it.coverage, 6) * 1.2
     for key in buckets:
+        if counts is not None:
+            counts[key] = {"stories": len(buckets[key]), "articles": sum(it.coverage for it in buckets[key])}
         buckets[key].sort(key=lambda it: it.score, reverse=True)
         buckets[key] = buckets[key][:per_category]
     return buckets

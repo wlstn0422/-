@@ -1,8 +1,10 @@
 # 뉴스 수집 설정
 # - categories: 기사 분류 규칙. 제목에 키워드가 나오면 2점, 요약에 나오면 1점. 가장 점수가 높은 분류로 들어간다.
 #   위에 있는 분류일수록 같은 점수일 때 우선한다(분할·합병처럼 겹치는 단어가 있어 순서가 중요).
-#   group: 재무(finance) / 경영(business) / 경제(economics). '뉴스로 보는 사례'를 고를 때 분야가 고르게 섞이도록 쓴다.
-#   theories: 이 분류의 기사를 읽을 때 쓸 경영·경제 이론 카드(data/knowledge/theories)
+#   group: 재무(finance) / 경영(business) / 경제(economics) / 제도(institution: 회계·세법·상법·재정).
+#          '뉴스로 보는 사례'를 고를 때 네 분야가 고르게 섞이도록 쓴다.
+#   theories: 이 분류의 기사를 읽을 때 쓸 이론·제도 카드(data/knowledge/theories). 앞에 둔 카드가 기본이고,
+#             기사 제목에 카드의 '더 찾아볼 말'이 들어 있으면 그 카드를 먼저 쓴다.
 #   cards: 연결되는 회계·세무 카드(data/knowledge/cards.yaml)
 #   numbers: 기사에서 찾아볼 숫자
 # - google_news: 분류별 검색어. 구글 뉴스 RSS로 여러 언론사 기사를 한 번에 모은다.
@@ -44,13 +46,27 @@ categories:
     cards: [earnings]
     numbers: ["매출·영업이익 증가율", "영업이익률 변화", "시장 예상치(컨센서스) 대비 차이"]
     keywords: [영업이익, 잠정실적, 실적 발표, 어닝, 흑자전환, 적자전환, 역대 최대 실적, 분기 매출, 순이익, 컨센서스]
+  - key: accounting
+    label: 회계·감사
+    group: institution
+    theories: [fa_revenue, fa_business_combination, fa_financial_instruments, fa_provisions, fa_ifrs18, fa_income_tax, fa_consolidation, fa_lease, fa_equity_instruments]
+    cards: [earnings, insolvency]
+    numbers: ["수정 전후 이익 차이", "손상·충당금 규모 ÷ 자기자본", "감사의견 종류와 계속기업 불확실성 여부"]
+    keywords: [회계, 회계기준, 회계처리, 분식, 분식회계, 회계부정, 감사의견, 감사보고서, 의견거절, 한정의견, 감리, 회계감리, 내부회계, 외부감사, 감사인, 재무제표 정정, 영업권, 손상차손, 대손충당금, 충당금, IFRS, 지속가능성 공시, ESG 공시, 회계법인]
   - key: governance
-    label: 지배구조·주주권
-    group: finance
-    theories: [agency_theory]
+    label: 지배구조·상법
+    group: institution
+    theories: [cl_director_duty, cl_shareholder_meeting, cl_board_audit, cl_cumulative_voting, cl_treasury_stock, cl_mna_procedure, cl_new_shares_cb, cl_derivative_suit, agency_theory]
     cards: [governance]
-    numbers: ["최대주주·소액주주 지분율", "주총 표결 결과", "이사회 구성"]
-    keywords: [상법, 지배구조, 행동주의, 주주제안, 소액주주, 독립이사, 사외이사, 집중투표, 주주총회, 의무공개매수, 스튜어드십]
+    numbers: ["최대주주·소액주주 지분율", "주총 표결 결과", "이사회 구성(독립이사 비율)"]
+    keywords: [상법, 상법 개정, 지배구조, 행동주의, 주주제안, 소액주주, 독립이사, 사외이사, 감사위원, 집중투표, 주주총회, 전자주주총회, 충실의무, 주식매수청구, 대표소송, 의무공개매수, 경영권 분쟁, 스튜어드십]
+  - key: tax
+    label: 세금·세법
+    group: institution
+    theories: [tax_corporate_rate, tax_inheritance, tax_dividend, tax_capital_gains, tax_rnd_credit, tax_vat, tax_international, tax_related_party, tax_reorganization, tax_loss_carryforward, pf_tax_incidence]
+    cards: [shareholder_return]
+    numbers: ["세율·공제율 변화", "세수 효과(연간 몇 조원)", "영향받는 납세자 수와 계층"]
+    keywords: [세법, 세법 개정, 세법개정안, 세제 개편, 세제개편, 법인세, 소득세, 상속세, 증여세, 양도세, 양도소득세, 종부세, 종합부동산세, 부가세, 부가가치세, 세액공제, 세무조사, 국세청, 조세심판, 추징, 탈세, 절세, 배당소득, 분리과세, 금투세, 증권거래세, 최저한세, 가업상속, 연말정산]
   - key: competition
     label: 경쟁·공정거래
     group: economics
@@ -114,13 +130,20 @@ categories:
     cards: []
     numbers: ["배출량과 감축 목표", "관련 투자 금액", "규제로 늘어날 비용"]
     keywords: [ESG, 탄소, 배출권, 탄소중립, 기후, 재생에너지, 친환경, 지속가능, 넷제로, 원전]
+  - key: fiscal
+    label: 재정·예산·복지
+    group: institution
+    theories: [pf_budget, pf_debt_rules, pf_fiscal_policy, pf_social_insurance, pf_local_soe, pf_redistribution, pf_public_goods]
+    cards: [macro]
+    numbers: ["총지출·총수입 규모", "GDP 대비 비율(국가채무·재정적자)", "전년 대비 증감률"]
+    keywords: [예산안, 예산, 본예산, 추경, 추가경정예산, 국가채무, 나랏빚, 재정적자, 재정수지, 관리재정수지, 세수, 세수 결손, 세수결손, 재정준칙, 국민연금, 연금개혁, 건강보험, 기초연금, 지방재정, 교부세, 교부금, 기금, 국고채, 예비타당성, 예타, 복지, 공공요금, 전기요금, 한전, 소비쿠폰, 지원금]
   - key: policy
-    label: 세제·정책
+    label: 산업·규제 정책
     group: economics
-    theories: [business_cycle, elasticity]
-    cards: [shareholder_return]
-    numbers: ["세율·예산 변화", "영향받는 기업·가계 범위", "시행 시점"]
-    keywords: [세법, 세제 개편, 법인세, 상속세, 배당소득, 세수, 예산안, 추경, 재정, 보조금, 규제 완화, 산업 정책]
+    theories: [pf_public_goods, market_structure, elasticity]
+    cards: []
+    numbers: ["지원·규제 규모", "영향받는 기업·가계 범위", "시행 시점"]
+    keywords: [산업 정책, 산업정책, 보조금, 규제 완화, 규제 개혁, 규제, 정부 지원, 육성책, 특별법, 시행령, 국회 통과, 입법]
   - key: strategy
     label: 전략·신사업
     group: business
@@ -144,7 +167,9 @@ google_news:
     ipo: "상장예비심사 OR 수요예측 OR 공모가 OR 공모주 청약 when:1d"
     capital: "유상증자 OR 자사주 소각 OR 밸류업 OR 전환사채 when:1d"
     earnings: "잠정실적 OR 영업이익 OR 어닝서프라이즈 when:1d"
-    governance: "상법 개정 OR 지배구조 OR 행동주의 OR 주주제안 when:1d"
+    accounting: "분식회계 OR 감사의견 OR 회계기준 OR 회계감리 OR 영업권 손상 when:1d"
+    governance: "상법 개정 OR 지배구조 OR 행동주의 OR 주주제안 OR 감사위원 when:1d"
+    tax: "세법 개정 OR 세제개편 OR 법인세 OR 상속세 OR 세무조사 when:1d"
     competition: "공정위 과징금 OR 담합 OR 독과점 OR 플랫폼 규제 when:1d"
     hr: "희망퇴직 OR 성과급 OR 임단협 OR 조직개편 when:1d"
     supply: "공급망 OR 감산 OR 리쇼어링 OR 원자재 가격 when:1d"
@@ -154,7 +179,8 @@ google_news:
     startup: "스타트업 투자 유치 OR 시리즈A OR 유니콘 OR 벤처캐피털 when:1d"
     global: "빅테크 OR 엔비디아 OR 애플 OR 테슬라 OR 오픈AI when:1d"
     esg: "탄소중립 OR 배출권 OR ESG OR 재생에너지 when:1d"
-    policy: "세법 개정 OR 세제 개편 OR 산업 정책 OR 정부 예산 when:1d"
+    fiscal: "예산안 OR 국가채무 OR 세수 OR 국민연금 OR 추경 when:1d"
+    policy: "산업 정책 OR 규제 완화 OR 정부 보조금 OR 특별법 when:1d"
     strategy: "신사업 진출 OR 사업 재편 OR 전략적 제휴 OR 해외 진출 when:1d"
     macro: "기준금리 OR 원달러 환율 OR 소비자물가 OR 수출 when:1d"
 

@@ -38,14 +38,18 @@ jobs:
           {
             echo "## 시험 실행 결과(뉴스만)"
             echo
-            sed -n '1,12p' "$f"
+            sed -n '1,16p' "$f"
             echo
-            echo "### 뉴스 브리핑 일부"
-            sed -n '/## 4. 뉴스 브리핑/,/## 5. /p' "$f" | head -40
+            echo "### 분야별 헤드라인 일부"
+            sed -n '/## 7. 분야별 헤드라인/,/## 8. /p' "$f" | head -40
           } >> "$GITHUB_STEP_SUMMARY"
           echo "분류된 기사 링크 수: $(grep -c '^- \[' "$f" || true)"
-          echo "----- 시험 노트 4~6장 -----"
-          sed -n '/## 4. 뉴스 브리핑/,$p' "$f" | head -120
+          echo "----- 시험 노트: 오늘 한눈에 -----"
+          sed -n '/## 오늘 한눈에/,/## 1. /p' "$f"
+          echo "----- 시험 노트: 뉴스 사례 -----"
+          sed -n '/## 2. 뉴스로 보는/,/## 3. /p' "$f" | head -150
+          echo "----- 시험 노트: 전공 수업 앞부분 -----"
+          sed -n '/## 4. 오늘의 전공 수업/,/## 5. /p' "$f" | head -40
 
       - name: 시험 결과 보관
         uses: actions/upload-artifact@v7

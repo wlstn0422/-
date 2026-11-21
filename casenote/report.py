@@ -48,6 +48,7 @@ from .util import (
     josa,
     latest_annual_year,
     first_paragraph,
+    html_text,
     md_cell,
     md_link_text,
     md_paragraphs,
@@ -78,7 +79,7 @@ def jinja_env() -> Environment:
         keep_trailing_newline=True,
     )
     env.filters.update(krw=fmt_krw, pct=fmt_pct, cell=md_cell, times=fmt_times, intf=fmt_int, linktext=md_link_text,
-                       paras=md_paragraphs, first_para=first_paragraph)
+                       paras=md_paragraphs, first_para=first_paragraph, htmltext=html_text)
     env.globals.update(josa=josa)
     return env
 
@@ -234,6 +235,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
 
     # 뉴스
     news_items, buckets, news_errors = [], {}, []
+    news_counts: dict[str, dict] = {}
     categories = settings.news_sources.get("categories", [])
     if use_news:
         fetcher = news_fetcher or (lambda: collect_news(
@@ -242,7 +244,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             timeout=float(settings.config["news"].get("timeout_sec", 15)),
         ))
         news_items, news_errors = fetcher()
-        buckets = categorize(news_items, categories, int(rc.get("news_per_category", 5)))
+        buckets = categorize(news_items, categories, int(rc.get("news_per_category", 5)), counts=news_counts)
         if news_errors:
             log.info("뉴스 피드 실패 %d건: %s", len(news_errors), "; ".join(news_errors[:5]))
         if not news_items:
@@ -305,6 +307,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         for ev in key_cases:
             ev.related_news = related_for(ev, related.get(ev.corp_name, []))[:3]
     by_tid = th_mod.theory_by_id(settings.theories)
+    biz_theories, subject_cards = th_mod.split_library(settings.theories)
     case_blocks = []
     cards_map = card_by_id(settings.cards)
     for ev in key_cases:
@@ -313,15 +316,25 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             "ev": ev,
             "numbers": context_notes(ev),
             "card": card,
-            "accounting": (card.get("accounting") or [])[:1],
-            "tax": (card.get("tax") or [])[:1],
+            "accounting": (card.get("accounting") or [])[:2],
+            "tax": (card.get("tax") or [])[:2],
+            "law": (card.get("law") or [])[:1],
             "questions": (card.get("questions") or [])[:2],
             "theories": th_mod.theories_for(RULE_THEORIES.get(ev.rule.key, []), by_tid, limit=2),
+            "subjects": th_mod.subject_cards_for_rule(ev.rule.key, subject_cards, limit=3),
         })
 
-    # 뉴스로 보는 사례와 오늘의 이론 수업
-    recent = th_mod.recent_lessons(settings.archive_dir, day, int(rc.get("theory_repeat_days", 21)))
-    news_cases = th_mod.pick_news_cases(buckets, categories, by_tid, recent, int(rc.get("news_cases", 3))) if buckets else []
+    # 뉴스로 보는 사례(재무·경영·경제·제도 분야에서 하나씩)
+    repeat_days = int(rc.get("theory_repeat_days", 21))
+    recent = th_mod.recent_lessons(settings.archive_dir, day, repeat_days)
+    subject_recent = th_mod.recent_lessons(settings.archive_dir, day, repeat_days, key="subject_lessons")
+    news_cases = th_mod.pick_news_cases(buckets, categories, by_tid, recent + subject_recent,
+                                        int(rc.get("news_cases", 4))) if buckets else []
+    ranked_cats = sorted((c for c in categories if buckets.get(c["key"])),
+                         key=lambda c: buckets[c["key"]][0].score, reverse=True)
+    links_ctx = (case_blocks, news_cases, company_ctx, buckets, categories)
+
+    # 오늘의 이론 수업(경영·경제)
     candidates: list[str] = []
     for b in case_blocks:
         candidates += [t["id"] for t in b["theories"]] * 2
@@ -331,40 +344,25 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         candidates += [t["id"] for t in company_ctx.get("industry_theories", [])]
     # 오늘 사례 이론이 이번 바퀴에서 다 나왔을 때 쓸 2순위: 오늘 기사가 있는 분야의 이론, 사례 이론과 이어진 이론
     pool: list[str] = []
-    for cat in sorted((c for c in categories if buckets.get(c["key"])),
-                      key=lambda c: buckets[c["key"]][0].score, reverse=True):
+    for cat in ranked_cats:
         pool += cat.get("theories") or []
     for tid in candidates:
         pool += by_tid.get(tid, {}).get("related") or []
-    all_ids = set(by_tid)
-    done = th_mod.taught_this_round(th_mod.lesson_history(settings.archive_dir, day), all_ids)
-    lessons = th_mod.pick_lessons(settings.theories, candidates, recent, day, int(rc.get("theory_lessons", 1)),
-                                  done=done, pool=pool)
-    lesson_blocks = []
-    round_done = set(done)
-    for t in lessons:
-        applied = []
-        for b in case_blocks:
-            if t["id"] in [x["id"] for x in b["theories"]]:
-                applied.append({"kind": "공시", "title": f"{b['ev'].corp_name} {b['ev'].rule.label}", "link": b["ev"].url})
-        for nc in news_cases:
-            if t["id"] == nc["theory"]["id"] or t["id"] in [x["id"] for x in nc["others"]]:
-                applied.append({"kind": "뉴스", "title": nc["item"].title, "link": nc["item"].link})
-        if company_ctx and t["id"] in [x["id"] for x in company_ctx.get("industry_theories", [])]:
-            applied.append({"kind": "오늘의 기업", "title": f"{company_ctx['name']}({company_ctx['industry']})", "link": None})
-        links = {a["link"] for a in applied if a["link"]}
-        for it in th_mod.briefing_articles(t["id"], buckets, categories):
-            if len(applied) >= 3:
-                break
-            if it.link not in links:
-                applied.append({"kind": "기사", "title": it.title, "link": it.link})
-                links.add(it.link)
-        round_done.add(t["id"])
-        progress = len(round_done)
-        if round_done >= all_ids:
-            round_done = set()
-        lesson_blocks.append({"theory": t, "applied": applied, "progress": progress,
-                              "related": th_mod.theories_for(list(t.get("related", [])), by_tid, limit=4)})
+    lesson_blocks = _lesson_blocks(biz_theories, candidates, pool, recent, day, int(rc.get("theory_lessons", 1)),
+                                   th_mod.lesson_history(settings.archive_dir, day), by_tid, links_ctx)
+
+    # 오늘의 전공 수업(요일별 재무회계·원가관리회계·세법·상법·재정학)
+    subject = th_mod.subject_of_day(day, list(rc.get("subject_rotation") or th_mod.DEFAULT_SUBJECT_ROTATION))
+    today_cards = [t for t in subject_cards if t["field"] == subject]
+    s_candidates = th_mod.subject_candidates(
+        today_cards, [b["ev"].rule.key for b in case_blocks],
+        [nc["category"]["key"] for nc in news_cases] + [c["key"] for c in ranked_cats])
+    s_pool: list[str] = []
+    for tid in s_candidates:
+        s_pool += by_tid.get(tid, {}).get("related") or []
+    subject_blocks = _lesson_blocks(
+        today_cards, s_candidates, s_pool, subject_recent, day, int(rc.get("subject_lessons", 1)),
+        th_mod.lesson_history(settings.archive_dir, day, key="subject_lessons"), by_tid, links_ctx)
 
     # AI 해설
     ai_notes = {"cases": {}, "news": {}}
@@ -381,7 +379,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         evs.sort(key=lambda e: (e.score, e.rcept_no), reverse=True)
         groups.append({"label": glabel, "count": len(evs), "events": evs[:per_type], "more": max(0, len(evs) - per_type)})
 
-    # 카드와 퀴즈
+    # 퀴즈: 전공 수업 1문제, 이론 수업·뉴스 사례 2문제, 회계·세무 카드와 돈 감각 문제
     news_cards = []
     for cat in categories:
         if buckets.get(cat["key"]):
@@ -390,19 +388,27 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
     cards = select_cards(settings.cards, case_cards, news_cards, day, limit=int(rc.get("accounting_cards", 2)))
     company_for_quiz = (company_ctx["name"], company_ctx["cur"], company_ctx["year"]) if company_ctx else None
     rng = random.Random(int(day.strftime("%Y%m%d")) + 7)
-    quiz_theories = lessons + [nc["theory"] for nc in news_cases if nc["theory"] not in lessons]
-    quiz = th_mod.theory_quiz(quiz_theories, rng, n=2)
+    biz_lessons = [b["theory"] for b in lesson_blocks]
+    quiz = th_mod.theory_quiz([b["theory"] for b in subject_blocks], rng, n=1)
+    quiz += th_mod.theory_quiz(biz_lessons + [nc["theory"] for nc in news_cases if nc["theory"] not in biz_lessons],
+                               rng, n=2)
     quiz += build_quiz(day, cards, settings.benchmarks, company_for_quiz, scale.get("rows", []))
     quiz = quiz[:6]
     for q in quiz:
         q["answer_label"] = "ABCD"[q["answer"]] if q["answer"] < 4 else str(q["answer"] + 1)
 
+    # 뉴스 헤드라인(분야별 대표 기사와 보도량)
     news_sections = []
     for cat in categories:
         items = buckets.get(cat["key"]) or []
         if items:
-            news_sections.append({"label": cat["label"], "entries": items})
+            cnt = news_counts.get(cat["key"], {})
+            news_sections.append({"key": cat["key"], "label": cat["label"], "entries": items,
+                                  "stories": cnt.get("stories", len(items)), "articles": cnt.get("articles", len(items))})
+    busiest = sorted(news_sections, key=lambda x: x["articles"], reverse=True)[:3]
 
+    lesson_where = {b["theory"]["id"]: "3장 '오늘의 이론 수업'" for b in lesson_blocks}
+    lesson_where.update({b["theory"]["id"]: "4장 '오늘의 전공 수업'" for b in subject_blocks})
     ctx = {
         "title": rc.get("title", "매일 경영·경제 케이스 노트"),
         "day": day,
@@ -415,12 +421,17 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         "case_blocks": case_blocks,
         "news_cases": news_cases,
         "lessons": lesson_blocks,
-        "lesson_ids": [b["theory"]["id"] for b in lesson_blocks],
-        "theory_total": len(settings.theories),
+        "subject": subject,
+        "weekday_ko": "월화수목금토일"[day.weekday()],
+        "subject_lessons": subject_blocks,
+        "lesson_where": lesson_where,
+        "subject_fields": th_mod.SUBJECT_FIELDS,
+        "story_labels": th_mod.STORY_LABELS,
         "ai_notes": ai_notes,
         "groups": groups,
         "company": company_ctx,
         "news_sections": news_sections,
+        "busiest": busiest,
         "news_total": len(news_items),
         "cards": cards,
         "quiz": quiz,
@@ -441,8 +452,11 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             "key_cases": [e.to_dict() for e in key_cases],
             "event_counts": {g["label"]: g["count"] for g in groups},
             "news": {s["label"]: [n.to_dict() for n in s["entries"]] for s in news_sections},
+            "news_counts": news_counts,
             "cards": [c["id"] for c in cards],
             "lessons": [b["theory"]["id"] for b in lesson_blocks],
+            "subject": subject,
+            "subject_lessons": [b["theory"]["id"] for b in subject_blocks],
             "news_cases": [{"title": nc["item"].title, "link": nc["item"].link, "category": nc["category"]["label"],
                             "theory": nc["theory"]["id"]} for nc in news_cases],
             "quiz": quiz,
@@ -451,6 +465,57 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         archive_path(settings, day).write_text(json.dumps(archive, ensure_ascii=False, indent=1), encoding="utf-8")
         write_reports_index(settings)
     return out
+
+
+def _applied_for(t: dict, links_ctx) -> list[dict]:
+    """이 카드를 대입해 볼 오늘의 사례: 공시 사례, 뉴스 사례, 오늘의 기업, 그리고 브리핑 기사."""
+    case_blocks, news_cases, company_ctx, buckets, categories = links_ctx
+    filings = th_mod.applies(t, "filings")
+    news_keys = th_mod.applies(t, "news")
+    applied = []
+    for b in case_blocks:
+        if t["id"] in [x["id"] for x in b["theories"]] or b["ev"].rule.key in filings:
+            applied.append({"kind": "공시", "title": f"{b['ev'].corp_name} {b['ev'].rule.label}", "link": b["ev"].url})
+    for nc in news_cases:
+        if (t["id"] == nc["theory"]["id"] or t["id"] in [x["id"] for x in nc["others"]]
+                or nc["category"]["key"] in news_keys):
+            applied.append({"kind": "뉴스", "title": nc["item"].title, "link": nc["item"].link})
+    if company_ctx and t["id"] in [x["id"] for x in company_ctx.get("industry_theories", [])]:
+        applied.append({"kind": "오늘의 기업", "title": f"{company_ctx['name']}({company_ctx['industry']})", "link": None})
+    links = {a["link"] for a in applied if a["link"]}
+    for it in th_mod.briefing_articles(t, buckets, categories, limit=4, extra_keys=news_keys):
+        if len(applied) >= 3:
+            break
+        if it.link not in links:
+            applied.append({"kind": "기사", "title": it.title, "link": it.link})
+            links.add(it.link)
+    return applied[:4]
+
+
+def _lesson_blocks(library: list[dict], candidates: list[str], pool: list[str], recent: list[str], day: date,
+                   n: int, history: list[str], by_tid: dict[str, dict], links_ctx) -> list[dict]:
+    """수업 고르기(한 바퀴 다 돌기 전에는 반복 없음)와 노트에 넣을 정보 묶기."""
+    if not library or n <= 0:
+        return []
+    ids = {t["id"] for t in library}
+    done = th_mod.taught_this_round(history, ids)
+    picked = th_mod.pick_lessons(library, candidates, recent, day, n, done=done, pool=pool)
+    blocks = []
+    round_done = set(done)
+    for t in picked:
+        round_done.add(t["id"])
+        progress = len(round_done)
+        if round_done >= ids:
+            round_done = set()
+        blocks.append({
+            "theory": t,
+            "applied": _applied_for(t, links_ctx),
+            "progress": progress,
+            "total": len(ids),
+            "story": th_mod.story_labels(t["field"]) if t.get("law") else None,
+            "related": th_mod.theories_for(list(t.get("related", [])), by_tid, limit=4),
+        })
+    return blocks
 
 
 # --------------------------------------------------------------------- 기업 분석 리포트
@@ -552,7 +617,27 @@ def run_weekly(settings: Settings, day: date | None = None) -> Path | None:
     companies = []
     news_cases = []
     lesson_ids: list[str] = []
+    by_tid = th_mod.theory_by_id(settings.theories)
+    cat_label = {c["key"]: c["label"] for c in settings.news_sources.get("categories", [])}
+    subject_rows = []
+    issue: dict[str, dict] = {}
+    stories: dict[str, dict] = {}
     for d in days:
+        for tid in d.get("subject_lessons") or []:
+            if tid in by_tid:
+                subject_rows.append({"day": d["date"], "subject": d.get("subject") or by_tid[tid]["field"],
+                                     "theory": by_tid[tid]})
+        for key, c in (d.get("news_counts") or {}).items():
+            n = int((c or {}).get("articles", 0))
+            if n:
+                row = issue.setdefault(key, {"label": cat_label.get(key, key), "by_day": {}, "total": 0})
+                row["by_day"][d["date"]] = n
+                row["total"] += n
+        for label, entries in (d.get("news") or {}).items():
+            for n in entries:
+                prev = stories.get(n.get("title", ""))
+                if not prev or n.get("coverage", 1) > prev.get("coverage", 1):
+                    stories[n.get("title", "")] = {**n, "day": d["date"], "label": label}
         for k, v in (d.get("event_counts") or {}).items():
             counts[k] = counts.get(k, 0) + int(v)
         for c in d.get("key_cases") or []:
@@ -565,8 +650,10 @@ def run_weekly(settings: Settings, day: date | None = None) -> Path | None:
         quiz.extend(d.get("quiz") or [])
         if d.get("company"):
             companies.append({"day": d["date"], "name": d["company"]})
-    by_tid = th_mod.theory_by_id(settings.theories)
     rng = random.Random(int(day.strftime("%Y%m%d")))
+    issue_days = [d["date"] for d in days if d.get("news_counts")]
+    issue_rows = sorted(issue.values(), key=lambda r: r["total"], reverse=True)[:8]
+    top_stories = sorted(stories.values(), key=lambda n: n.get("coverage", 1), reverse=True)[:5]
     if len(quiz) > 8:
         quiz = rng.sample(quiz, 8)
     iso = day.isocalendar()
@@ -579,10 +666,13 @@ def run_weekly(settings: Settings, day: date | None = None) -> Path | None:
         cases=cases,
         news_cases=news_cases,
         lessons=th_mod.theories_for(lesson_ids, by_tid, limit=10),
+        subject_rows=subject_rows,
+        issue_days=issue_days,
+        issue_rows=issue_rows,
+        top_stories=top_stories,
         theory_titles={t["id"]: t["title"] for t in settings.theories},
         quiz=quiz,
         companies=companies,
-        cards=[card_by_id(settings.cards).get(cid) for d in days for cid in (d.get("cards") or []) if card_by_id(settings.cards).get(cid)],
         generated_at=now_kst().strftime("%Y-%m-%d %H:%M"),
         theory_book="../theories.md",
     )
@@ -605,16 +695,19 @@ def write_reports_index(settings: Settings) -> Path:
         d = parse_ymd(p.stem)
         arch = archive_path(settings, d) if d else None
         cases: list[str] = []
-        lesson = ""
+        lesson = subject_lesson = ""
         if arch and arch.exists():
             try:
                 data = json.loads(arch.read_text(encoding="utf-8"))
                 cases = [f"{c['corp_name']} {c['label']}" for c in data.get("key_cases", [])]
                 lesson = ", ".join(titles.get(t, t) for t in data.get("lessons") or [])
+                subject_lesson = ", ".join(titles.get(t, t) for t in data.get("subject_lessons") or [])
+                if subject_lesson and data.get("subject"):
+                    subject_lesson = f"{data['subject']} {subject_lesson}"
             except (ValueError, KeyError):
                 cases = []
         entries.append({"path": p.relative_to(rd).as_posix(), "date_ko": date_ko(d) if d else p.stem,
-                        "cases": cases, "lesson": lesson})
+                        "cases": cases, "lesson": lesson, "subject_lesson": subject_lesson})
     has_theories = write_theory_book(settings) is not None
     md = render(
         "index.md.j2",
@@ -624,7 +717,8 @@ def write_reports_index(settings: Settings) -> Path:
         companies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem.split("_", 1)[-1]} for p in companies],
         has_scale=(rd / "scale.md").exists(),
         has_theories=has_theories,
-        theory_count=len(settings.theories),
+        theory_count=len(th_mod.split_library(settings.theories)[0]),
+        subject_count=len(th_mod.split_library(settings.theories)[1]),
     )
     out = rd / "README.md"
     rd.mkdir(parents=True, exist_ok=True)
@@ -633,14 +727,17 @@ def write_reports_index(settings: Settings) -> Path:
 
 
 def write_theory_book(settings: Settings) -> Path | None:
-    """경영·경제 이론 사전(reports/theories.md). 이론 카드 전체를 분야별로 모은다."""
+    """이론·제도 사전(reports/theories.md). 1부 경영·경제 이론, 2부 회계·세법·상법·재정학 카드를 분야별로 모은다."""
     if not settings.theories:
         return None
     by_tid = th_mod.theory_by_id(settings.theories)
+    biz, subjects = th_mod.split_library(settings.theories)
     md = render(
         "theories.md.j2",
-        fields=th_mod.library_by_field(settings.theories),
+        parts=[{"title": "1부. 경영·경제 이론", "fields": th_mod.library_by_field(biz), "count": len(biz)},
+               {"title": "2부. 회계·세법·상법·재정학", "fields": th_mod.library_by_field(subjects), "count": len(subjects)}],
         by_tid=by_tid,
+        story_labels=th_mod.STORY_LABELS,
         count=len(settings.theories),
     )
     out = settings.reports_dir / "theories.md"

@@ -1,9 +1,9 @@
 # {{ title }}
 
-매일 아침 자동으로 쌓이는 경영·경제 사례 공부 노트입니다. 최신 노트부터 보세요.
+매일 아침 자동으로 쌓이는 경영·경제 사례 공부 노트입니다. 최신 노트부터 보세요. 평일마다 경영·경제 이론 수업 하나와 전공 수업(월 재무회계, 화 원가관리회계, 수 세법, 목 상법, 금 재정학) 하나가 들어 있습니다.
 
 {% if has_theories %}
-- [경영·경제 이론 사전](theories.md): 전략·마케팅·재무·조직·운영·경제학 이론 {{ theory_count }}가지를 쉽게 풀어 모은 곳
+- [이론·제도 사전](theories.md): 경영·경제 이론 {{ theory_count }}가지와 재무회계·원가관리회계·세법·상법·재정학 카드 {{ subject_count }}장을 쉽게 풀어 모은 곳
 {% endif %}
 {% if has_scale %}
 - [업종별 규모 지도](scale.md): 업계 1위와 대표 기업의 매출·이익·직원·연봉, 규모 기준선
@@ -12,7 +12,7 @@
 ## 일일 노트
 
 {% for d in dailies %}
-- [{{ d.date_ko }}]({{ d.path }}){% if d.cases %}: {{ d.cases|join(', ') }}{% endif %}{% if d.lesson %} · 이론 수업: {{ d.lesson }}{% endif +%}
+- [{{ d.date_ko }}]({{ d.path }}){% if d.cases %}: {{ d.cases|join(', ') }}{% endif %}{% if d.lesson %} · 이론 수업: {{ d.lesson }}{% endif %}{% if d.subject_lesson %} · 전공 수업: {{ d.subject_lesson }}{% endif +%}
 {% else %}
 아직 노트가 없습니다.
 {% endfor %}

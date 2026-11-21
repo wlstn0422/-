@@ -1,4 +1,4 @@
-"""경영·경제 이론 카드: 사례에 맞는 이론 고르기, 간격을 두고 이론 수업 돌리기, 뉴스 사례 고르기, 이론 퀴즈."""
+"""이론·제도 카드: 사례에 맞는 카드 고르기, 이론 수업과 전공 수업 돌리기, 뉴스 사례 고르기, 퀴즈."""
 
 from __future__ import annotations
 
@@ -8,8 +8,88 @@ from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
 
-FIELD_ORDER = ["경영전략", "마케팅", "재무관리", "조직·인사", "생산·운영", "미시경제", "거시경제", "국제경제", "행동경제"]
-GROUP_LABELS = {"finance": "재무·자본시장", "business": "경영", "economics": "경제"}
+BUSINESS_FIELDS = ["경영전략", "마케팅", "재무관리", "조직·인사", "생산·운영", "미시경제", "거시경제", "국제경제", "행동경제"]
+SUBJECT_FIELDS = ["재무회계", "원가관리회계", "세법", "상법", "재정학"]
+FIELD_ORDER = BUSINESS_FIELDS + SUBJECT_FIELDS
+GROUP_LABELS = {"finance": "재무·자본시장", "business": "경영", "economics": "경제", "institution": "회계·세무·법·재정"}
+
+# 카드의 law 블록을 보여줄 때 쓰는 이름. 세법·상법은 입법, 재정학은 정책, 재무회계는 기준, 원가관리회계는 기법 이야기다.
+_STORY_COMMON = {"theory": "바탕이 된 이론", "economic_effects": "경제적 효과", "cases": "실제 사례에 대입하면",
+                 "evidence": "실제로 어떤 효과가 있었나", "recent": "지금의 쟁점"}
+STORY_LABELS = {
+    "세법": {"title": "입법 이야기", "basis": "근거 조문", "purpose": "왜 만들었나(입법 취지)",
+             "background": "만들 당시 무슨 일이 있었나(입법 배경)", **_STORY_COMMON},
+    "상법": {"title": "입법 이야기", "basis": "근거 조문", "purpose": "왜 만들었나(입법 취지)",
+             "background": "만들 당시 무슨 일이 있었나(입법 배경)", **_STORY_COMMON},
+    "재정학": {"title": "정책 이야기", "basis": "근거 법령", "purpose": "왜 만들었나(정책 취지)",
+               "background": "그때 무슨 일이 있었나(정책 배경)", **_STORY_COMMON},
+    "재무회계": {"title": "기준 이야기", "basis": "근거 기준", "purpose": "왜 만들었나(제정 취지)",
+                 "background": "만들 당시 무슨 일이 있었나(제정 배경)", **_STORY_COMMON},
+    "원가관리회계": {"title": "기법 이야기", "basis": "출발점", "purpose": "왜 나왔나",
+                     "background": "나온 배경", **_STORY_COMMON},
+}
+DEFAULT_SUBJECT_ROTATION = ["재무회계", "원가관리회계", "세법", "상법", "재정학"]
+
+
+def is_subject(t: dict) -> bool:
+    return t.get("field") in SUBJECT_FIELDS
+
+
+def split_library(theories: list[dict]) -> tuple[list[dict], list[dict]]:
+    """경영·경제 이론과 전공(회계·세법·상법·재정학) 카드로 나눈다."""
+    return [t for t in theories if not is_subject(t)], [t for t in theories if is_subject(t)]
+
+
+def story_labels(field: str) -> dict[str, str]:
+    return STORY_LABELS.get(field, STORY_LABELS["재무회계"])
+
+
+def subject_of_day(day: date, rotation: list[str] | None = None) -> str:
+    """요일별 전공 과목. 월~금은 순서대로, 주말에 따로 돌리면 날짜에 따라 돌아간다."""
+    rotation = rotation or DEFAULT_SUBJECT_ROTATION
+    if day.weekday() < 5:
+        return rotation[day.weekday() % len(rotation)]
+    return rotation[day.toordinal() % len(rotation)]
+
+
+def applies(card: dict, kind: str) -> list[str]:
+    return list(((card.get("applies_to") or {}).get(kind)) or [])
+
+
+def subject_candidates(cards: list[dict], rule_keys: list[str], news_keys: list[str]) -> list[str]:
+    """오늘 공시 유형(가중치 2)과 기사가 있는 뉴스 분류(1)에 이어진 카드 id를 관련도만큼 반복해서 돌려준다."""
+    out: list[str] = []
+    for key in rule_keys:
+        out += [c["id"] for c in cards if key in applies(c, "filings")] * 2
+    for key in news_keys:
+        out += [c["id"] for c in cards if key in applies(c, "news")]
+    return out
+
+
+# 공시 사례에 이어 볼 전공 카드의 과목 우선순위(공시는 회계·세법·상법 쟁점이 먼저다)
+FILING_SUBJECT_PRIORITY = {"재무회계": 0, "세법": 1, "상법": 2, "재정학": 3, "원가관리회계": 4}
+
+
+def subject_cards_for_rule(rule_key: str, cards: list[dict], limit: int = 3) -> list[dict]:
+    """공시 유형에 이어진 전공 카드. 과목이 겹치지 않게 먼저 고르고 남는 자리를 채운다."""
+    hits = [c for c in cards if rule_key in applies(c, "filings")]
+    hits.sort(key=lambda c: FILING_SUBJECT_PRIORITY.get(c.get("field", ""), 9))
+    out: list[dict] = []
+    seen_fields: set[str] = set()
+    for c in hits:
+        if c["field"] not in seen_fields:
+            out.append(c)
+            seen_fields.add(c["field"])
+    for c in hits:
+        if c not in out:
+            out.append(c)
+    return out[:limit]
+
+
+def keyword_score(card: dict, text: str) -> int:
+    """카드의 '더 찾아볼 말'이 기사 제목·요약에 몇 개 나오는지(띄어쓰기 무시)."""
+    flat = text.replace(" ", "")
+    return sum(1 for kw in card.get("keywords") or [] if len(str(kw)) >= 2 and str(kw).replace(" ", "") in flat)
 
 
 def theory_by_id(theories: list[dict]) -> dict[str, dict]:
@@ -22,8 +102,8 @@ def ordered_library(theories: list[dict]) -> list[dict]:
     return sorted(theories, key=lambda t: (rank.get(t.get("field", ""), len(FIELD_ORDER)), theories.index(t)))
 
 
-def recent_lessons(archive_dir: Path, before: date, days: int) -> list[str]:
-    """지난 기록에서 최근 다룬 이론 수업 id(최근 것이 앞)."""
+def recent_lessons(archive_dir: Path, before: date, days: int, key: str = "lessons") -> list[str]:
+    """지난 기록에서 최근 다룬 수업 id(최근 것이 앞). key는 lessons(이론) 또는 subject_lessons(전공)."""
     out: list[str] = []
     if not archive_dir.exists():
         return out
@@ -35,14 +115,14 @@ def recent_lessons(archive_dir: Path, before: date, days: int) -> list[str]:
             data = json.loads(p.read_text(encoding="utf-8"))
         except ValueError:
             continue
-        for tid in data.get("lessons") or []:
+        for tid in data.get(key) or []:
             if tid not in out:
                 out.append(tid)
     return out
 
 
-def lesson_history(archive_dir: Path, before: date) -> list[str]:
-    """지난 기록의 이론 수업 id를 날짜 순서대로(오래된 것이 앞)."""
+def lesson_history(archive_dir: Path, before: date, key: str = "lessons") -> list[str]:
+    """지난 기록의 수업 id를 날짜 순서대로(오래된 것이 앞)."""
     out: list[str] = []
     if not archive_dir.exists():
         return out
@@ -57,7 +137,7 @@ def lesson_history(archive_dir: Path, before: date) -> list[str]:
             data = json.loads(p.read_text(encoding="utf-8"))
         except ValueError:
             continue
-        out.extend(data.get("lessons") or [])
+        out.extend(data.get(key) or [])
     return out
 
 
@@ -122,14 +202,24 @@ def pick_lessons(theories: list[dict], candidates: list[str], recent: list[str],
     return [by_id[t] for t in chosen[:n]]
 
 
-def briefing_articles(tid: str, buckets: dict[str, list], categories: list[dict], limit: int = 3) -> list:
-    """오늘 뉴스 브리핑에서 이 이론으로 읽을 만한 기사(분야별 대표 기사, 점수 순)."""
-    out = []
+def briefing_articles(card: dict, buckets: dict[str, list], categories: list[dict], limit: int = 3,
+                      extra_keys: list[str] | tuple = ()) -> list:
+    """오늘 뉴스에서 이 카드로 읽을 만한 기사. 카드를 쓰는 분류와 카드가 가리키는 분류(extra_keys)의 기사 중
+    카드의 '더 찾아볼 말'이 제목에 많이 나오는 것, 분류 안에서 순위가 높은 것, 점수가 높은 것 순."""
+    scored = []
     for cat in categories:
         items = buckets.get(cat["key"]) or []
-        if items and tid in (cat.get("theories") or []):
-            out.append(items[0])
-    out.sort(key=lambda it: it.score, reverse=True)
+        if not items or not (card["id"] in (cat.get("theories") or []) or cat["key"] in extra_keys):
+            continue
+        for rank, it in enumerate(items):
+            text = f"{it.title} {getattr(it, 'summary', '') or ''}"
+            scored.append((keyword_score(card, text), -rank, it.score, it))
+    scored.sort(key=lambda x: x[:3], reverse=True)
+    out, seen = [], set()
+    for *_, it in scored:
+        if it.link not in seen:
+            out.append(it)
+            seen.add(it.link)
     return out[:limit]
 
 
@@ -139,7 +229,8 @@ def theories_for(ids: list[str], by_id: dict[str, dict], limit: int = 2) -> list
 
 def pick_news_cases(buckets: dict[str, list], categories: list[dict], by_id: dict[str, dict],
                     recent: list[str], n: int = 3) -> list[dict]:
-    """분류별 최고 기사 중에서 재무·경영·경제 분야가 고르게 섞이도록 고르고, 각각 읽을 이론을 붙인다."""
+    """분류별 최고 기사 중에서 재무·경영·경제·제도 분야가 고르게 섞이도록 고르고, 각각 읽을 카드를 붙인다.
+    카드는 분류에 정한 순서가 기본이고, 기사 제목·요약에 카드의 '더 찾아볼 말'이 나오면 그 카드를 앞세운다."""
     cat_by_key = {c["key"]: c for c in categories}
     tops = []
     for key, items in buckets.items():
@@ -165,7 +256,10 @@ def pick_news_cases(buckets: dict[str, list], categories: list[dict], by_id: dic
     for idx, (key, item) in enumerate(picked, start=1):
         cat = cat_by_key[key]
         options = [t for t in cat.get("theories", []) if t in by_id]
-        # 같은 날 다른 사례와 겹치지 않고, 최근 수업에서 다루지 않은 이론을 먼저
+        text = f"{item.title} {getattr(item, 'summary', '') or ''}"
+        scores = {t: keyword_score(by_id[t], text) for t in options}
+        options.sort(key=lambda t: -scores[t])  # 같은 점수면 원래 순서 유지(정렬 안정성)
+        # 같은 날 다른 사례와 겹치지 않고, 최근 수업에서 다루지 않은 카드를 먼저
         main = next((t for t in options if t not in used_theories and t not in recent), None) \
             or next((t for t in options if t not in used_theories), None) \
             or (options[0] if options else None)

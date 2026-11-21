@@ -18,7 +18,8 @@ def real_settings():
 def test_theory_cards_well_formed():
     s = real_settings()
     theories = s.theories
-    assert len(theories) >= 35
+    biz, subjects = th.split_library(theories)
+    assert len(biz) >= 35 and len(subjects) >= 40
     ids = [t["id"] for t in theories]
     assert len(ids) == len(set(ids)), "이론 id 중복"
     for t in theories:
@@ -32,6 +33,26 @@ def test_theory_cards_well_formed():
         for q in t["quiz"]:
             assert 0 <= q["answer"] < len(q["choices"]), (t["id"], q["q"])
             assert len(set(q["choices"])) == len(q["choices"]), (t["id"], q["q"])
+        if t.get("law"):  # 입법·정책·기준·기법 이야기
+            law = t["law"]
+            for key in ("basis", "purpose", "background", "theory", "economic_effects", "cases", "evidence"):
+                assert law.get(key), (t["id"], "law", key)
+            for key in ("background", "theory", "economic_effects", "cases", "evidence", "recent"):
+                assert isinstance(law.get(key, []), list), (t["id"], key)
+        if t["field"] in ("세법", "상법"):
+            assert t.get("law"), (t["id"], "세법·상법 카드는 입법 이야기가 있어야 한다")
+            assert len(t["law"]["background"]) >= 2, t["id"]
+        if th.is_subject(t):
+            assert th.applies(t, "filings") or th.applies(t, "news"), (t["id"], "applies_to")
+
+
+def test_each_subject_has_enough_cards():
+    s = real_settings()
+    _, subjects = th.split_library(s.theories)
+    for field in th.SUBJECT_FIELDS:
+        n = sum(1 for t in subjects if t["field"] == field)
+        assert n >= 8, (field, n)
+        assert field in th.STORY_LABELS
 
 
 def test_every_theory_reference_exists():
@@ -51,6 +72,14 @@ def test_every_theory_reference_exists():
         assert ind.get("profile"), ind["name"]
         for r in ind.get("theories", []):
             assert r in ids, (ind["name"], r)
+    from casenote.events import RULES
+    rule_keys = {r.key for r in RULES}
+    news_keys = {c["key"] for c in s.news_sources["categories"]}
+    for t in s.theories:
+        for f in th.applies(t, "filings"):
+            assert f in rule_keys, (t["id"], "filings", f)
+        for n in th.applies(t, "news"):
+            assert n in news_keys, (t["id"], "news", n)
     card_ids = {c["id"] for c in s.cards}
     for cat in s.news_sources["categories"]:
         for c in cat.get("cards", []):
@@ -59,7 +88,8 @@ def test_every_theory_reference_exists():
 
 def test_lessons_cover_library_without_repeats(tmp_path):
     s = real_settings()
-    ids = {t["id"] for t in s.theories}
+    biz, _ = th.split_library(s.theories)
+    ids = {t["id"] for t in biz}
     archive = tmp_path / "archive"
     archive.mkdir()
     start = date(2026, 1, 1)
@@ -70,7 +100,7 @@ def test_lessons_cover_library_without_repeats(tmp_path):
         day = start + timedelta(days=i)
         recent = th.recent_lessons(archive, day, 21)
         done = th.taught_this_round(th.lesson_history(archive, day), ids)
-        picked = th.pick_lessons(s.theories, ["signaling", "signaling", "payout_policy"], recent, day, n=1,
+        picked = th.pick_lessons(biz, ["signaling", "signaling", "payout_policy"], recent, day, n=1,
                                  done=done, pool=["valuation"])
         assert len(picked) == 1
         tid = picked[0]["id"]
@@ -94,6 +124,48 @@ def test_round_resets_after_full_library():
     assert th.taught_this_round(["a", "b", "c", "b", "zzz"], ids) == {"b"}
 
 
+def test_subject_rotation_by_weekday():
+    monday = date(2026, 11, 16)
+    got = [th.subject_of_day(monday + timedelta(days=i)) for i in range(5)]
+    assert got == ["재무회계", "원가관리회계", "세법", "상법", "재정학"]
+    assert th.subject_of_day(date(2026, 11, 21)) in th.SUBJECT_FIELDS  # 토요일에 따로 돌려도 과목이 정해진다
+
+
+def test_subject_lessons_cover_each_subject(tmp_path):
+    s = real_settings()
+    _, subjects = th.split_library(s.theories)
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    start = date(2026, 1, 5)  # 월요일
+    seen: dict[str, set] = {}
+    for i in range(7 * 12):  # 12주
+        day = start + timedelta(days=i)
+        if day.weekday() >= 5:
+            continue
+        field = th.subject_of_day(day)
+        cards = [t for t in subjects if t["field"] == field]
+        ids = {t["id"] for t in cards}
+        recent = th.recent_lessons(archive, day, 21, key="subject_lessons")
+        done = th.taught_this_round(th.lesson_history(archive, day, key="subject_lessons"), ids)
+        cand = th.subject_candidates(cards, ["merger"], ["tax", "governance"])
+        tid = th.pick_lessons(cards, cand, recent, day, n=1, done=done)[0]["id"]
+        assert tid in ids
+        assert tid not in seen.get(field, set()) or len(seen[field]) >= len(ids), (field, tid)
+        seen.setdefault(field, set()).add(tid)
+        (archive / f"{day.isoformat()}.json").write_text(
+            json.dumps({"subject": field, "subject_lessons": [tid]}), encoding="utf-8")
+    for field in th.SUBJECT_FIELDS:  # 과목마다 카드 수 이하의 주 동안 한 바퀴를 다 돈다
+        n = sum(1 for t in subjects if t["field"] == field)
+        assert len(seen[field]) == min(n, 12), (field, len(seen[field]), n)
+
+
+def test_subject_cards_for_filing_prefer_accounting_tax_law():
+    s = real_settings()
+    _, subjects = th.split_library(s.theories)
+    picked = th.subject_cards_for_rule("split", subjects, limit=3)
+    assert [t["field"] for t in picked] == ["재무회계", "세법", "상법"]
+
+
 def test_news_cases_mix_fields():
     s = real_settings()
     cats = s.news_sources["categories"]
@@ -109,13 +181,18 @@ def test_news_cases_mix_fields():
         "capital": [item("모의기업 자사주 소각", 8)],
         "pricing": [item("모의식품 가격 인상", 6)],
         "macro": [item("기준금리 동결", 5)],
+        "tax": [item("상속세 개편안 국회 통과…최대주주 할증 손질", 4)],
     }
-    cases = th.pick_news_cases(buckets, cats, by_id, recent=[], n=3)
+    cases = th.pick_news_cases(buckets, cats, by_id, recent=[], n=4)
     groups = [c["category"]["group"] for c in cases]
-    assert len(cases) == 3
-    assert len(set(groups)) == 3, groups  # 재무·경영·경제가 하나씩
+    assert len(cases) == 4
+    assert len(set(groups)) == 4, groups  # 재무·경영·경제·제도가 하나씩
     assert all(c["theory"]["id"] in by_id for c in cases)
-    assert len({c["theory"]["id"] for c in cases}) == 3
+    assert len({c["theory"]["id"] for c in cases}) == 4
+    tax_case = next(c for c in cases if c["category"]["key"] == "tax")
+    assert tax_case["theory"]["id"] == "tax_inheritance"  # 제목의 '상속세'로 맞는 카드를 고른다
+    arts = th.briefing_articles(by_id["tax_inheritance"], buckets, cats)
+    assert arts and "상속세" in arts[0].title
 
 
 def test_theory_quiz_valid():
@@ -131,7 +208,8 @@ def test_theory_book_page(settings):
     from casenote.report import write_theory_book
     out = write_theory_book(settings)
     md = out.read_text(encoding="utf-8")
-    assert md.startswith("# 경영·경제 이론 사전")
+    assert md.startswith("# 이론·제도 사전")
+    assert "2부. 회계·세법·상법·재정학" in md and "**입법 이야기**" in md and "**숫자로 풀어 보기**" in md
     assert '<a name="five_forces"></a>' in md
     assert "### 포터의 5가지 경쟁요인" in md
     assert "(#generic_strategy)" in md

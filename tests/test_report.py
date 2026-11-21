@@ -29,20 +29,26 @@ def test_daily_end_to_end(settings):
     assert "## 2. 뉴스로 보는 경영·경제 사례" in md
     assert "## 3. 오늘의 이론 수업" in md
     assert "이론으로 읽기" in md and "../../theories.md#" in md
-    assert "이 기사를 읽는 이론" in md
+    assert "이 기사를 읽는 이론·제도" in md
+    assert "## 4. 오늘의 전공 수업(재정학)" in md  # 2026-11-20은 금요일
+    assert "전공 수업(금요일 재정학)" in md
+    assert "회계·세무·법으로 읽기" in md and "전공으로 더 깊게" in md
+    assert "## 7. 분야별 헤드라인" in md and "<details markdown=\"1\"><summary>" in md
     assert "테스트전자 합병" in md
     assert "샘플화학 분할" in md or "샘플화학 자사주 취득" in md
     assert "물적분할" in md
     assert "숫자로 보기" in md
     assert "dart.fss.or.kr/dsaf001/main.do?rcpNo=" in md
-    assert "## 4. 오늘의 기업" in md
+    assert "## 5. 오늘의 기업" in md
     assert "이 업종이 돈 버는 구조" in md
     assert "듀퐁 분해" in md
     assert "유효세율" in md
-    assert "## 8. 오늘의 퀴즈" in md and "<details" in md
-    assert "## 7. 회계·세무 카드" in md
+    assert "## 6. 오늘의 퀴즈" in md and "<details" in md
+    assert "## 8. 공시 목록" in md
     assert (settings.reports_dir / "theories.md").exists()
     assert arch_lessons(settings)
+    arch0 = json.loads((settings.archive_dir / "2026-11-20.json").read_text(encoding="utf-8"))
+    assert arch0["subject"] == "재정학" and arch0["subject_lessons"] and arch0["news_counts"]
     assert "개 중 1번째 수업" in md  # 기록이 없으면 첫 수업
     assert "IPO(공모)" in md and "예시물산" in md
     # 철회 공시는 없어야 한다
@@ -70,8 +76,19 @@ def test_daily_without_keys(settings):
     md = out.read_text(encoding="utf-8")
     assert "DART_API_KEY가 없어" in md
     assert "## 3. 오늘의 이론 수업" in md
-    assert "## 7. 회계·세무 카드" in md
-    assert "## 8. 오늘의 퀴즈" in md
+    assert "## 4. 오늘의 전공 수업(재정학)" in md
+    assert "## 6. 오늘의 퀴즈" in md
+
+
+def test_daily_tax_day_has_legislative_story(settings):
+    # 수요일은 세법. 합병·분할 공시가 있으면 과세이연 카드가 골라지고 입법 이야기가 나온다
+    out = report.run_daily(settings, date(2026, 11, 18), client=FakeDart(), news_fetcher=_news)
+    md = out.read_text(encoding="utf-8")
+    assert "## 4. 오늘의 전공 수업(세법): 합병·분할 과세이연" in md
+    assert "### 입법 이야기" in md
+    assert "왜 만들었나(입법 취지)" in md and "만들 당시 무슨 일이 있었나(입법 배경)" in md
+    assert "실제로 어떤 효과가 있었나" in md
+    assert "세법 10개 중 1번째 수업" in md
 
 
 def test_company_scale_weekly(settings):
@@ -88,7 +105,8 @@ def test_company_scale_weekly(settings):
     weekly = report.run_weekly(settings, date(2026, 11, 21))
     wmd = weekly.read_text(encoding="utf-8")
     assert "복습 노트" in wmd and "테스트전자" in wmd
-    assert "이번 주 이론 수업" in wmd
+    assert "이번 주 이론 수업" in wmd and "## 3. 이번 주 전공 수업" in wmd
+    assert "## 1. 이번 주 이슈 지도" in wmd
 
 
 def test_quiz_answers_valid(settings):

@@ -1,0 +1,12 @@
+{# 카드의 law 블록(입법·정책·기준·기법 이야기). labels와 t가 필요하다. #}
+{% set law = t.law %}
+- {{ labels.basis }}: {{ law.basis }}
+- {{ labels.purpose }}: {{ law.purpose }}
+{% for key in ["background", "theory", "economic_effects", "cases", "evidence", "recent"] %}
+{% if law.get(key) %}
+- {{ labels[key] }}
+{% for x in law.get(key) %}
+    - {{ x }}
+{% endfor %}
+{% endif %}
+{% endfor %}

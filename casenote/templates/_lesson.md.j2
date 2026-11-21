@@ -1,0 +1,73 @@
+{# 수업 한 개(이론 수업·전공 수업 공용). l, theory_book, lesson_heading이 필요하다. #}
+{% set t = l.theory %}
+{% if t.field in subject_fields %}
+{{ weekday_ko }}요일 전공 · {{ t.field }} {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 이어지지는 않지만 고루 익히도록 차례가 돌아온 주제입니다{% endif +%}
+{% else %}
+{{ t.field }} · 이론 {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 이어지지는 않지만 고루 익히도록 차례가 돌아온 이론입니다{% endif +%}
+{% endif %}
+
+{{ t.one_line }}
+
+{{ lesson_heading }} 쉽게 이해하기
+
+{{ t.easy|paras }}
+
+{{ lesson_heading }} 조금 더 깊게
+
+{% for d in t.deep %}
+- {{ d }}
+{% endfor %}
+
+{% if t.get("worked") %}
+{{ lesson_heading }} 숫자로 풀어 보기
+
+{% for w in t.worked %}
+- {{ w }}
+{% endfor %}
+
+{% endif %}
+{% if t.get("law") %}
+{{ lesson_heading }} {{ l.story.title }}
+
+{% with labels=l.story %}
+{% include "_story.md.j2" %}
+{% endwith %}
+
+{% endif %}
+{{ lesson_heading }} 사례에 적용하는 순서
+
+{% for s in t.how_to %}
+{{ loop.index }}. {{ s }}
+{% endfor %}
+
+{{ lesson_heading }} 실제 예
+
+{{ t.example }}
+
+{% if l.applied %}
+{{ lesson_heading }} 오늘 사례에 대입해 보기
+
+위의 적용 순서를 아래 사례에 그대로 따라가 보세요.
+
+{% for a in l.applied %}
+- {{ a.kind }}: {% if a.link %}[{{ a.title|linktext }}]({{ a.link }}){% else %}{{ a.title }}{% endif +%}
+{% endfor %}
+
+{% endif %}
+{{ lesson_heading }} 자주 하는 오해
+
+{% for p in t.pitfalls %}
+- {{ p }}
+{% endfor %}
+
+{% if l.related or t.keywords %}
+{{ lesson_heading }} 더 공부하기
+
+{% if l.related %}
+- 같이 보면 좋은 카드: {% for r in l.related %}[{{ r.title }}]({{ theory_book }}#{{ r.id }}){% if not loop.last %}, {% endif %}{% endfor +%}
+{% endif %}
+{% if t.keywords %}
+- 더 찾아볼 말: {{ t.keywords|join(', ') }}
+{% endif %}
+
+{% endif %}
