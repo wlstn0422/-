@@ -333,56 +333,124 @@ def quality_notes(r: dict, cur: dict) -> list[str]:
     return notes
 
 
-def parse_employees(rows: list[dict]) -> dict | None:
-    """직원 현황 → 총원, 1인 평균 급여, 평균 근속. 합계 행과 세부 행이 섞여 있어 이중 집계를 피한다."""
-    if not rows:
-        return None
-    totals_kw = {"합계", "총계", "계", "전체", "총합계", "소계", "남녀계", "남여계", "남녀합계", "남여합계"}
+_TOTAL_WORDS = ("합계", "총계", "소계", "총원", "총인원", "남녀계", "남여계")
+_TOTAL_EXACT = {"계", "합", "총"}
 
-    def is_total(r: dict) -> bool:
-        a = re.sub(r"\s+", "", str(r.get("fo_bbm") or ""))
-        b = re.sub(r"\s+", "", str(r.get("sexdstn") or ""))
-        return a in totals_kw or b in totals_kw
 
-    detail = [r for r in rows if not is_total(r)]
-    # 이름으로 못 거른 소계·합계 행도 뺀다: 같은 부문(또는 같은 성별)의 다른 행을 더한 값과 정확히 같거나,
-    # 나머지 행 전체를 더한 값과 정확히 같은 행. 소계를 빼면 합계가 드러나므로 더 없을 때까지 되풀이한다.
-    for _ in range(4):
-        sms = [parse_amount(r.get("sm")) or 0 for r in detail]
-        total = sum(sms)
-        hidden: set[int] = set()
-        for i, r in enumerate(detail):
-            v = sms[i]
-            if v <= 0:
-                continue
-            if len(detail) >= 3 and abs((total - v) - v) < 0.5:
-                hidden.add(i)
-                continue
-            for key in ("fo_bbm", "sexdstn"):
-                same = [sms[j] for j, q in enumerate(detail)
-                        if j != i and str(q.get(key) or "") == str(r.get(key) or "")]
-                if len(same) >= 2 and abs(sum(same) - v) < 0.5:
-                    hidden.add(i)
+def _label(r: dict, key: str) -> str:
+    return re.sub(r"\s+", "", str(r.get(key) or ""))
+
+
+def _is_total_label(text: str) -> bool:
+    """'합계', '성별합계', '성별 총계', '소 계', '총원' 같은 합계 이름인가."""
+    return text in _TOTAL_EXACT or any(w in text for w in _TOTAL_WORDS)
+
+
+def _hidden_subtotals(rows: list[dict]) -> set[int]:
+    """이름만으로는 안 보이는 소계·합계 행을 숫자 구조로 찾는다.
+
+    - 소계 묶음: 같은 이름(예: 부문 '부문계' 또는 성별 '계')을 가진 행 모두가, 다른 쪽 이름이 같은
+      나머지 행 2개 이상을 더한 값과 정확히 같을 때만 소계로 본다. 한 행만 우연히 맞는 경우(어느 부문
+      여직원 수가 다른 부문 여직원 합과 같은 경우)는 묶음 전체가 맞지 않으므로 걸리지 않는다.
+    - 전사 합계: 나머지 전부를 더한 값과 같고, 부문 이름과 성별 이름이 모두 그 행에만 있는 행.
+    """
+    sms = [parse_amount(r.get("sm")) or 0 for r in rows]
+    n = len(rows)
+    hidden: set[int] = set()
+    for key, other in (("fo_bbm", "sexdstn"), ("sexdstn", "fo_bbm")):
+        groups: dict[str, list[int]] = {}
+        for i, r in enumerate(rows):
+            groups.setdefault(_label(r, key), []).append(i)
+        if len(groups) < 2:
+            continue
+        for idx in groups.values():
+            members = set(idx)
+            ok = True
+            for i in idx:
+                peers = [j for j in range(n) if j not in members and _label(rows[j], other) == _label(rows[i], other)]
+                if sms[i] <= 0 or len(peers) < 2 or abs(sum(sms[j] for j in peers) - sms[i]) >= 0.5:
+                    ok = False
                     break
+            if ok:
+                hidden |= members
+    if n >= 3:
+        total = sum(sms)
+        for i, r in enumerate(rows):
+            if i in hidden or sms[i] <= 0 or abs((total - sms[i]) - sms[i]) >= 0.5:
+                continue
+            a, b = _label(r, "fo_bbm"), _label(r, "sexdstn")
+            if sum(_label(q, "fo_bbm") == a for q in rows) == 1 and sum(_label(q, "sexdstn") == b for q in rows) == 1:
+                hidden.add(i)
+    return hidden
+
+
+def _leaf_rows(rows: list[dict]) -> list[dict]:
+    """합계·소계를 뺀 가장 잘게 나뉜 행들. 이 행들만 더하면 직원이 한 번씩만 세어진다."""
+    leaves = [r for r in rows if not (_is_total_label(_label(r, "fo_bbm")) or _is_total_label(_label(r, "sexdstn")))]
+    if not leaves:  # 모든 행 이름이 '합계'류면(예: 합계/남, 합계/여) 이름은 무시하고 숫자 구조로만 본다
+        leaves = list(rows)
+    for _ in range(4):  # 소계를 빼면 전사 합계가 드러나므로 더 없을 때까지 되풀이
+        hidden = _hidden_subtotals(leaves)
         if not hidden:
             break
-        detail = [r for i, r in enumerate(detail) if i not in hidden]
-    use = detail or rows
-    count = sum(parse_amount(r.get("sm")) or 0 for r in use)
-    salary_total = sum(parse_amount(r.get("fyer_salary_totamt")) or 0 for r in use)
+        leaves = [r for i, r in enumerate(leaves) if i not in hidden]
+    return leaves or list(rows)
+
+
+def _pay_total(r: dict) -> float | None:
+    """그 행의 연간 급여 총액. 총액이 없으면 1인 평균 급여 × 인원으로 채운다."""
+    total = parse_amount(r.get("fyer_salary_totamt"))
+    if total:
+        return total
+    each, count = parse_amount(r.get("jan_salary_am")), parse_amount(r.get("sm"))
+    return each * count if each and count else None
+
+
+def parse_employees(rows: list[dict]) -> dict | None:
+    """직원 현황 → 총원, 1인 평균 급여, 평균 근속.
+
+    회사마다 표 모양이 달라 부문×성별 세부 행에 소계·합계 행이 섞여 있다. 인원은 세부 행만 더하고,
+    급여·근속은 숫자가 적힌 행으로 구한다. 세부 행에는 인원만 적고 급여는 '성별합계' 같은 합계 행에만
+    적는 회사(삼성전자 등)가 있어서다. 합계 행끼리는 같은 직원을 여러 번 덮어도 인원 가중평균이므로
+    평균값은 그대로다.
+    """
+    if not rows:
+        return None
+    leaves = _leaf_rows(rows)
+    count = sum(parse_amount(r.get("sm")) or 0 for r in leaves)
     if count <= 0:
         return None
-    avg_salary = salary_total / count if salary_total else None
-    if avg_salary is None:
-        weighted = [(parse_amount(r.get("jan_salary_am")), parse_amount(r.get("sm"))) for r in use]
-        weighted = [(s, c) for s, c in weighted if s and c]
-        if weighted:
-            avg_salary = sum(s * c for s, c in weighted) / sum(c for _, c in weighted)
-    tenure = [(parse_amount(r.get("avrg_cnwk_sdytrn")), parse_amount(r.get("sm"))) for r in use]
-    tenure = [(t, c) for t, c in tenure if t and c]
-    avg_tenure = sum(t * c for t, c in tenure) / sum(c for _, c in tenure) if tenure else None
-    excluded = [f"{r.get('fo_bbm') or ''}/{r.get('sexdstn') or ''}" for r in rows if r not in use]
-    return {"count": count, "avg_salary": avg_salary, "salary_total": salary_total or None, "avg_tenure": avg_tenure,
+    leaf_ids = {id(r) for r in leaves}
+    totals = [r for r in rows if id(r) not in leaf_ids]
+
+    def weighted(group: list[dict], value) -> tuple[float, float]:
+        pairs = [(value(r), parse_amount(r.get("sm"))) for r in group]
+        pairs = [(v, c) for v, c in pairs if v and c]
+        return sum(v for v, _ in pairs), sum(c for _, c in pairs)
+
+    # 급여: 세부 행에 인원의 90% 이상 급여가 적혀 있으면 세부 행, 아니면 합계 행 기준
+    pay, covered = weighted(leaves, _pay_total)
+    salary_total = pay if covered >= count - 0.5 else None
+    if covered < 0.9 * count:
+        alt_pay, alt_cov = weighted(totals, _pay_total)
+        if alt_cov:
+            pay, covered = alt_pay, alt_cov
+    avg_salary = pay / covered if covered else None
+    if salary_total is None and avg_salary:
+        salary_total = avg_salary * count
+
+    def tenure_of(r: dict):
+        t = parse_amount(r.get("avrg_cnwk_sdytrn"))
+        return t * (parse_amount(r.get("sm")) or 0) if t else None
+
+    ten, ten_cov = weighted(leaves, tenure_of)
+    if ten_cov < 0.9 * count:
+        alt_ten, alt_cov = weighted(totals, tenure_of)
+        if alt_cov:
+            ten, ten_cov = alt_ten, alt_cov
+    avg_tenure = ten / ten_cov if ten_cov else None
+    excluded = [f"{r.get('fo_bbm') or ''}/{r.get('sexdstn') or ''}" for r in totals]
+    return {"count": count, "avg_salary": avg_salary, "salary_total": salary_total, "avg_tenure": avg_tenure,
             "rows": len(rows), "excluded": excluded}
 
 
