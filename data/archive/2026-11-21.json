@@ -113,14 +113,6 @@
   ],
   "IPO·상장": [
    {
-    "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
-    "link": "https://www.yna.co.kr/view/AKR20261120037551008",
-    "source": "연합뉴스 산업",
-    "published": "2026-11-20T15:37:29+09:00",
-    "category": "ipo",
-    "coverage": 6
-   },
-   {
     "title": "[IPO챗] 내주 엠비디 코스닥 입성…4개사 수요예측",
     "link": "https://www.yna.co.kr/view/AKR20261120071600008",
     "source": "연합뉴스 마켓+",
@@ -135,6 +127,14 @@
     "published": "2026-11-20T15:01:49+09:00",
     "category": "ipo",
     "coverage": 3
+   },
+   {
+    "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261120037551008",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-20T15:37:29+09:00",
+    "category": "ipo",
+    "coverage": 5
    }
   ],
   "자본정책·주주환원": [
@@ -144,12 +144,12 @@
     "source": "서울경제",
     "published": "2026-11-20T17:00:02+09:00",
     "category": "capital",
-    "coverage": 7
+    "coverage": 6
    },
    {
     "title": "CJ, 자사주 소각 등 주주환원 확대 필요...목표가 '하향'",
-    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9uc2VTUExDbTFsbWFzbC04bUp6ZTlqbWk1V3FNajdaUllITWZSUzExQ3dPOXIyTWhFLXFJb1lTX0dJYTVIeHZ4U0p1ZkFNM2MzYmFOQ25GMkZSQll2dHFYNWxDMmROVS1ld1NGYQ?oc=5",
-    "source": "메디컬투데이",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5fWDZWc0RZeUxkU2duQjhnUDFVVjdYeThjZmZxT0p1M3ZLak5Jdk4xR25kakdHM2Q5eVdTSFpKVURDb3pjZEJHYkhUT21ndWI4enJ2WEt6Z05iVEFER09GT091OUlta1Ixa21rbUlR?oc=5",
+    "source": "알파경제",
     "published": "2026-11-20T11:19:27+09:00",
     "category": "capital",
     "coverage": 1
@@ -206,15 +206,7 @@
     "source": "전북타임즈",
     "published": "2026-11-20T16:38:28+09:00",
     "category": "governance",
-    "coverage": 3
-   },
-   {
-    "title": "한진, ESG 평가 4년 연속 통합 A등급…사회·지배구조 등급 상승",
-    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5ZZHZueEdFcm1BeWVTVmlBUUx2OVhfM0szRkJhM0pJb1dFSHhWaUEydHVaZEE4UWt2c09vc0EtQm4tVjVXUDg5WGVpWDQ1U1ozVGVJTTlib19YQdIBWEFVX3lxTE9CQ2lDb0M3VzE2eHU2enhPZWRWcnRIQ1F4T1pjbllrVHdQdFNCWXBpSngyYmllQk9tLUxSVnBQYmFUQjBmVnhGeTVFLUxDdFAtbUxFN0k0dTk?oc=5",
-    "source": "아주경제",
-    "published": "2026-11-20T16:27:13+09:00",
-    "category": "governance",
-    "coverage": 5
+    "coverage": 2
    },
    {
     "title": "재난으로 숨져도 보험금 못 받는 아이들... 김의겸, 상법 개정 추진",
@@ -223,17 +215,17 @@
     "published": "2026-11-20T16:22:05+09:00",
     "category": "governance",
     "coverage": 1
+   },
+   {
+    "title": "김의겸 '15세 미만 재난 사망보험금 지급' 상법 개정 추진",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBhU0pERlNseFlkcEN4d0pBT0NJMUp3TWRjSnNNQWxINVBiazcwLWJtV2ktYWdzSy1ia3BGX1VRUnF6c1ZXRjlieUtSOW52M0V4Q1B6UXo4c0wyR0VlbHdzZVhtTVhMV29JNnRiN0tPMNIBc0FVX3lxTE5pbmlvamJIakhJYXU4ck9jYzlWLVRsenhDUVBoZUpFbHNDZzlHX0s5U0xubG1EcDFHOVZiQ0lPNlRrZ1l2X0tWZGhPWC15X2ZKV0w3MnJxdVpZUDEyOXZic2JMWEZRUXpvNGhOODRyVHpXWjA?oc=5",
+    "source": "세이프타임즈",
+    "published": "2026-11-20T14:14:54+09:00",
+    "category": "governance",
+    "coverage": 1
    }
   ],
   "세금·세법": [
-   {
-    "title": "퇴직 임직원 할인판매 과세 소득세법개정안, 재경위 조세소위 잠정 의결",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBBaGlPcHQ4RFVrdlpXX1QwMWRoMkx3aFhUbkVkd0pkWWFlT2diSzM4NkxVTG5TZXdMdUdJWERHcGdid0RURzd0dHNJSVNVQWpUZVFBWXZxRWxrT3BsaEtMQjA3YnhOMXdXT1E?oc=5",
-    "source": "Daily NTN",
-    "published": "2026-11-20T11:01:00+09:00",
-    "category": "tax",
-    "coverage": 1
-   },
    {
     "title": "국회는 2027년부터 시행되는 3개 세법 개정안을 통과시켰습니다.",
     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQTTYwemJGU2FaVl82ekJuZ3ZEa1ZSRXY5Vmx0VS1nbXVkZGJ1M0psbjdaNTdUZnpKQ1o5dUxycV9sTjdJRHA2bzQybVBKQXlMT1RGbmMyYXFLbHc3cGRLQ2Jja3lnUnpneFVGUUNSZ19zMEZuRXBUemJISkdJejRoQzhIUTI5YzFsUDRBdUJLeTlyRFJQNVE?oc=5",
@@ -249,6 +241,14 @@
     "published": "2026-11-21T06:25:27+09:00",
     "category": "tax",
     "coverage": 1
+   },
+   {
+    "title": "법인 소득세, 비농업용 토지 이용세 및 개인 소득세에 관한 법률의 특정 조항에 대한 수정 및 추가 사항.",
+    "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQcTZ1NnRkSzUxUjdIRzFmaTlERUlEMkdRVVhmNDNaYXdmRVJBYTl5LXlDRlFOLVZuR2xmaU5NNS1qaDcyZzc1dXl2aFpIX21Sa2xmNGY1dENWQzlNZThDYzRYZFJfdUw5QlY0V1ZGdFlXNlhGbWJ6dDN1UFd0QUg5Z19yQ2RwYU5VZFlBZ21QV05LZmx0LTNFT25PY0lhang4dTlpcldfMnpRYzJMRmlnOEtPLWVyQTRienA4SGtRVXVrSFk0dHhpTm42WFV6RUhMVVR1aE5PdkJUeldodXloRTJmd1FWZw?oc=5",
+    "source": "Vietnam.vn",
+    "published": "2026-11-21T04:38:21+09:00",
+    "category": "tax",
+    "coverage": 1
    }
   ],
   "경쟁·공정거래": [
@@ -258,7 +258,7 @@
     "source": "연합뉴스 경제",
     "published": "2026-11-20T14:50:25+09:00",
     "category": "competition",
-    "coverage": 6
+    "coverage": 5
    },
    {
     "title": "한국 식품·배달업계, 공정위 과징금 급증에 소송전 확대",
@@ -269,10 +269,10 @@
     "coverage": 1
    },
    {
-    "title": "한경록 한솔제지 대표, 인쇄용지 담합 3,383억 과징금…주사위 굴려 인상 순서 정했다",
-    "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE04enVkZWh2VHNnNEQxMG53M3dzMXd0NFliUXdJMmFVcTNMUUFmT1VKMGpsQkNNUTB4N2Y1Qjg1MW1FbkxaZXVER2hHM2oway11RGR0UXlhT2NLaVlVeFF5OXRBRFpGd9IBa0FVX3lxTE9ybDU5QzRRY1pXSS1DR293dHpRbDFNZkp1WDVTVVJhTDNWNWQ3LWhMY0tNLXhEcTVHR0ZXaGtTZXVLczR3eVJuVEpUTl9JTVpzMW1HdjJfbW9DaUpyY0poUnBIMnBUV2E1QXlJ?oc=5",
-    "source": "CEO저널",
-    "published": "2026-11-21T09:35:00+09:00",
+    "title": "삼성증권, 3분기 실적 호조 속 공정위 과징금 1189억 미반영 '눈길'",
+    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1FbzVCV1d4LThFeG1HTjVKZS04RlRaX1Rfci1yZVNOdHlFdXhBVHNQbEVwRmY2U2drVnhndUpmcEhuY3M5WXJSWkJaWVF1cno0?oc=5",
+    "source": "톱데일리",
+    "published": "2026-11-20T15:22:00+09:00",
     "category": "competition",
     "coverage": 1
    }
@@ -383,20 +383,12 @@
   ],
   "마케팅·브랜드": [
    {
-    "title": "삼양식품, 소지섭 앞세워 '스핀들' 광고 4편 공개",
-    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1YaDVqMmV5cC1ISkN1VHRNS2NTVm1YaVI3MV8ybWwwQVRkVkpVdnhtVFphZ2ZFQXBKYWRRTnljd2E3aVU5SzBUeThmczJkMTVjUG8yNTk2am5sYTRsRkZpZlotZGUwbTlvR0lzTjl1RdIBc0FVX3lxTE1pY09HUjhDZ2xDdWlkVVZBZzFMSEFrd2hNRFdBb2dOSE1vbG1tVG0waEVlQjhnVGppbGtMUHV6MXNWNTVXNFoxYVNEQkxoVGJZdkNxTU9idGwtZExGdnFsdHY2WENacW5WajVpNEFwWmR3Q00?oc=5",
-    "source": "뉴스웍스",
-    "published": "2026-11-20T19:57:00+09:00",
+    "title": "삼양식품, 헬스케어 브랜드 '스핀들' 모델에 소지섭 발탁…근력 관리 시장 공략",
+    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE10aVo2QXd1aFE2Mzhhdzg0RzBuOHY0S3BBSVhOdGFXWHRYMF95dERUem5SdERYQTJFNDhhaDd2N3RCeTUtOE5SZ1hXSGRSZDBEUTI1dWxDVHd0TGtlcThiU1I3WE1jN3dUeHhPT3RpSGFpUQ?oc=5",
+    "source": "인더스트리뉴스",
+    "published": "2026-11-20T17:00:08+09:00",
     "category": "marketing",
-    "coverage": 10
-   },
-   {
-    "title": "하이트진로음료 “‘테라 제로’ 출시 첫해 광고·홍보 3관왕 달성”",
-    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5LN0VNNFRqV2JZY0p6bTctY2M5WHdUNXZaME1MZVlIdGh0WUc2LXN1MHlMMjlRaWpXY2lkT1l1ZE1GaXFIRGNTc0VEald5SUJ4X2VicDNCd2JHM2NGRVl5WDY2WUtYRFXSAWdBVV95cUxOSzdFTTRUaldiWWNKem03LWNjOVh3VDV2WjBNTGVZSHRodFlHNi1zdTB5TDI5UWlqV2NpZE9ZdWRNRmlxSERjU3NFRGpXeUlCeF9lYnAzQndiRzNjRkVZeVg2NllLWERV?oc=5",
-    "source": "리버티코리아포스트",
-    "published": "2026-11-20T20:03:29+09:00",
-    "category": "marketing",
-    "coverage": 5
+    "coverage": 9
    },
    {
     "title": "[해외 크리에이티브] 파멜라 앤더슨의 정원이 크리스마스 광고로… 스킨케어 브랜드 손시, 첫 연말 캠페인 공개",
@@ -405,9 +397,25 @@
     "published": "2026-11-21T00:00:00+09:00",
     "category": "marketing",
     "coverage": 1
+   },
+   {
+    "title": "하이트진로음료 “‘테라 제로’ 출시 첫해 광고·홍보 3관왕 달성”",
+    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE96T2hsSDNCbDhRcHF0dXZUNVkxSEdNSFZCUk5WaFpucnBOOVlKdkRqMWpwMjVXU0t5UmllNllJMkQyakdsYU5iNUNnM1g4Tm14ODNXU2hlUHNnV0ZuMXRVaGRpZ9IBZ0FVX3lxTE5LN0VNNFRqV2JZY0p6bTctY2M5WHdUNXZaME1MZVlIdGh0WUc2LXN1MHlMMjlRaWpXY2lkT1l1ZE1GaXFIRGNTc0VEald5SUJ4X2VicDNCd2JHM2NGRVl5WDY2WUtYRFU?oc=5",
+    "source": "리버티코리아포스트",
+    "published": "2026-11-20T17:21:01+09:00",
+    "category": "marketing",
+    "coverage": 4
    }
   ],
   "스타트업·벤처투자": [
+   {
+    "title": "경과원, 바이오스타트업 10곳 투자유치 지원",
+    "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5BdDhacHQ5WGoxVFVwOFBxT1lJaVBWSEZSRHJxWEdHZkc0MkRTclM3V2Jad3NCNUt2WkFMSEJXcWpmYlFoS2FoMkltU3NMUlk3eV9NSzNlejlGUEdsUXlfRNIBeEFVX3lxTFB5M2gzWmF5WWlzQ2dLR1g3UVhlUnRsUVB6ZktnRXY2Wm12dXRBbjBxZVg4LUFLX28zVnp1LUQ1MGQyMjg0TUFlNFR6ZlJpcGNxUWhZaUprWldzWDVtQUV3Z3BzaHdFTFJ4X0d4cEVzN0pxdXRjRUpLTw?oc=5",
+    "source": "뉴시스",
+    "published": "2026-11-21T10:51:20+09:00",
+    "category": "startup",
+    "coverage": 7
+   },
    {
     "title": "서울 AI 허브, 신용보증기금과 ‘맞손’ … AI 스타트업 투자·금융 지원 확대",
     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBvenlaZ2hoVDkwRFRpaGgyTFlBQ1pDTnVRM0JEdU9raEtQMXlEcjRSeWx4RHE1YXVrNFphUkhsZXR5RnVNR3BiRURxek1TOWxudUdNWndIclo1am10ZXk2YUdfSloxLTgtMS1feQ?oc=5",
@@ -421,14 +429,6 @@
     "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBlcVB2cWpKWmhrQ0tVNG9YeEw1bGJNU3JRU01IcGNwMC1qUkhQRVVfaU1yaGptSURjempLc1gyUVJlUW00MGN4WW9ZOXpDd0p2VWs3Q3JZMEV3Vl9NXzRpeEJmTkFybGNYazVQZDFNM2fSAXRBVV95cUxNb2tkeHpZenVGd0pHUC1kUUY3cUxPWjUxamsxbldiRHpYdEFqOUthTDNNcmNRdlpPaWpZQ2lsQVJ6Uy1qUGhZRkRTdVE2QmVNaDZLMVNHZm8zX0YtU1FmZFRnbmcyTXltYWRaYWZvQXJEMUpCaQ?oc=5",
     "source": "이뉴스투데이",
     "published": "2026-11-20T18:08:15+09:00",
-    "category": "startup",
-    "coverage": 10
-   },
-   {
-    "title": "[글로벌 도약]재외동포청, K-스타트업 미국 시장 진출 교두보 마련",
-    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBVLXFLemxhdEdaLWJqUUJMbmxIM2ljRjEyay1sRlIyN1YwY3haYUlxMjJISVV5dFZZSUdKOW5uX2pqT2RTQ0tHYjBYSGM4UzlucUx0RUNyVFU2dFZQTTBsUUthVTlqQzRRdXRiRUtBUGQ?oc=5",
-    "source": "전국뉴스",
-    "published": "2026-11-20T17:42:59+09:00",
     "category": "startup",
     "coverage": 6
    }
@@ -461,12 +461,12 @@
   ],
   "ESG·에너지": [
    {
-    "title": "고려아연, ESG 평가 종합 'AAA' 획득 … 지배구조·환경 경쟁력 강화",
-    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9zdXVGX09ES0U0QnpELXE5ZkctQmpEcHlXNnl5aGZwUWpQZnN2SlBHTkZEZi1nY0pOcGJfYTlNTVhkMTNYcnZyT1ZEWnI1WURVaExlNG1rWkdLZHBqZW5sNnpMdUtvWnJLa0RYVA?oc=5",
-    "source": "워크투데이",
-    "published": "2026-11-20T22:45:40+09:00",
+    "title": "고려아연, ESG 평가 최고등급 'AAA'…지배구조도 한 단계 상승",
+    "link": "https://www.hankyung.com/article/202611200489g",
+    "source": "한국경제 경제",
+    "published": "2026-11-20T16:32:34+09:00",
     "category": "esg",
-    "coverage": 11
+    "coverage": 14
    },
    {
     "title": "서부발전, 재생에너지 전문가 자문 확대…태양광·VPP까지",
@@ -503,12 +503,12 @@
     "coverage": 2
    },
    {
-    "title": "의정부시, 내년 1조 6946억 원 예산안 제출…\"사회복지·교통 중점\"",
-    "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9mazB0Ykw4WHV2VGd5WjFNZHVoeHo1aDVmaXdqM0lCS0FfVjZWRUdZaDlDb3pBelR6VzhtWGd0eFl3Wko0V21ScHhYZ2RIalNsbkdlUTE4amttZGJN?oc=5",
-    "source": "뉴스핌",
-    "published": "2026-11-20T17:49:00+09:00",
+    "title": "울진군, 2027년도 예산안 7840억원 편성",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBaVHFfQk1KalBpdzRPZjRjdGhKemE3ejEyaVJOVVBCM3hpakFNeTBHQXJUZEdrbjZZdFAtOS1FM2g1YzF4amZHeHV1SEVueklyYW9zVlJqZUc2RFhORW1BY09YVmtzYkhGaTIwbk9VUnZzRmfSAXdBVV95cUxOZVY5VFVGOE9wMC10WUpBOTBNMFktbGk2eDNyZk1oZ1lhYUJBLW84RWh0V1FtMWwyMExxckU3aGZGM2M0MHVTbzVIcVllcEdnNW5rMkNoM1ZpSEZJRm1qb0Q5MXQ3d3FtMXg2UWhvNkVfMm5TV09maw?oc=5",
+    "source": "뉴스프리존",
+    "published": "2026-11-21T10:29:38+09:00",
     "category": "fiscal",
-    "coverage": 4
+    "coverage": 5
    }
   ],
   "산업·규제 정책": [
@@ -518,7 +518,7 @@
     "source": "워크투데이",
     "published": "2026-11-20T21:59:00+09:00",
     "category": "policy",
-    "coverage": 4
+    "coverage": 5
    },
    {
     "title": "중국산 자동차 발도 못 붙이게 한다…초당적 입법 처리 나선 美 의회",
@@ -600,40 +600,40 @@
    "articles": 20
   },
   "ipo": {
-   "stories": 20,
-   "articles": 34
+   "stories": 22,
+   "articles": 36
   },
   "capital": {
    "stories": 18,
    "articles": 31
   },
   "earnings": {
-   "stories": 21,
-   "articles": 32
+   "stories": 22,
+   "articles": 33
   },
   "accounting": {
    "stories": 1,
    "articles": 1
   },
   "governance": {
-   "stories": 5,
-   "articles": 11
+   "stories": 3,
+   "articles": 4
   },
   "tax": {
    "stories": 7,
    "articles": 7
   },
   "competition": {
-   "stories": 8,
-   "articles": 13
+   "stories": 7,
+   "articles": 11
   },
   "hr": {
-   "stories": 33,
-   "articles": 56
+   "stories": 32,
+   "articles": 55
   },
   "supply": {
-   "stories": 10,
-   "articles": 11
+   "stories": 12,
+   "articles": 13
   },
   "trade": {
    "stories": 6,
@@ -641,39 +641,39 @@
   },
   "pricing": {
    "stories": 4,
-   "articles": 5
+   "articles": 4
   },
   "marketing": {
-   "stories": 26,
-   "articles": 41
+   "stories": 17,
+   "articles": 30
   },
   "startup": {
    "stories": 33,
-   "articles": 61
+   "articles": 60
   },
   "global": {
-   "stories": 104,
-   "articles": 142
+   "stories": 113,
+   "articles": 154
   },
   "esg": {
-   "stories": 62,
-   "articles": 99
+   "stories": 60,
+   "articles": 98
   },
   "fiscal": {
-   "stories": 76,
+   "stories": 75,
    "articles": 105
   },
   "policy": {
    "stories": 13,
-   "articles": 17
+   "articles": 18
   },
   "strategy": {
    "stories": 5,
    "articles": 6
   },
   "macro": {
-   "stories": 46,
-   "articles": 70
+   "stories": 45,
+   "articles": 69
   }
  },
  "cards": [
@@ -681,7 +681,7 @@
   "business_transfer"
  ],
  "lessons": [
-  "ipo_underpricing"
+  "capital_structure"
  ],
  "subject": "원가관리회계",
  "subject_lessons": [
@@ -707,10 +707,10 @@
    "theory": "market_structure"
   },
   {
-   "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
-   "link": "https://www.yna.co.kr/view/AKR20261120037551008",
-   "category": "IPO·상장",
-   "theory": "ipo_underpricing"
+   "title": "나노, 자사주 17만2469주 전량 소각 결정…주주가치 제고 나서",
+   "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5CR0FPdnZuLW0xYlhZaWdMWUs5MzZ0cEI3bGUyS0RzUTQzb05wcnU5eklBWkh0a2l3cmlTWFdIQWdKd3JTMjd2M3RUV2NGUHJKR0HSAVNBVV95cUxQQThKWXZlYTZObG1tV3A5Vm10Q0FySFQ1dWZCU3RQN2Q2N2lOUGlyY2pNUTRmZXdBMnEzS0FQWHM4RWp3SGRETnlLNWlYeTlCaHhsYw?oc=5",
+   "category": "자본정책·주주환원",
+   "theory": "payout_policy"
   }
  ],
  "quiz": [
@@ -728,29 +728,29 @@
    "answer_label": "A"
   },
   {
-   "q": "정보가 부족한 투자자가 좋은 공모주는 적게, 나쁜 공모주는 많이 배정받는 문제를 설명한 개념은?",
+   "q": "법인세가 있을 때 부채가 기업가치를 높이는 주된 이유는?",
    "choices": [
-    "승자의 저주(록의 모형)",
-    "채찍효과",
-    "도덕적 해이",
-    "스무딩"
+    "배당 증가",
+    "이자비용의 절세 효과",
+    "주가 상승",
+    "매출 증가"
    ],
-   "answer": 0,
-   "explain": "그래서 공모가를 평균적으로 싸게 정해야 이들이 계속 참여한다는 설명이다.",
-   "topic": "IPO 저평가(공모가 할인)",
-   "answer_label": "A"
+   "answer": 1,
+   "explain": "이자는 비용으로 인정돼 세금을 줄인다. 대신 부채가 너무 많으면 파산 위험 비용이 커진다.",
+   "topic": "자본구조와 자본비용(WACC)",
+   "answer_label": "B"
   },
   {
-   "q": "근로기준법상 경영상 해고(정리해고)의 요건이 아닌 것은?",
+   "q": "점유율이 각각 50%, 30%, 20%인 시장의 HHI는?",
    "choices": [
-    "합리적이고 공정한 해고 기준",
-    "해고를 피하려는 노력",
-    "주주총회 특별결의",
-    "긴박한 경영상의 필요"
+    "1,000",
+    "10,000",
+    "3,800",
+    "2,500"
    ],
    "answer": 2,
-   "explain": "근로기준법 제24조의 요건은 앞의 세 가지와 근로자대표와의 성실한 협의다.",
-   "topic": "구조조정·변화관리·노사관계",
+   "explain": "50² + 30² + 20² = 2,500 + 900 + 400 = 3,800.",
+   "topic": "시장구조와 진입장벽",
    "answer_label": "C"
   },
   {
