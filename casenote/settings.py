@@ -29,7 +29,7 @@ DEFAULT_CONFIG = {
     "watchlist": [],
     "dart": {"request_interval_sec": 0.2, "scale_refresh_days": 30, "include_employees": True},
     "news": {"lookback_hours": 30, "timeout_sec": 15},
-    "ai": {"enabled": "auto", "model": "claude-opus-5-5", "effort": "medium", "max_cases": 3},
+    "ai": {"enabled": "auto", "model": "claude-opus-5-5", "effort": "medium", "max_cases": 4},
 }
 
 

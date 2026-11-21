@@ -34,8 +34,21 @@ def _install_fake_anthropic(monkeypatch, captured, stop="end_turn"):
         setattr(mod, name, type(name, (Exception,), {}))
     mod.APIStatusError = APIStatusError
 
+    class _Stream:
+        def __init__(self, resp):
+            self._resp = resp
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def get_final_message(self):
+            return self._resp
+
     class _Messages:
-        def create(self, **kwargs):
+        def stream(self, **kwargs):
             captured.update(kwargs)
             data = json.loads(kwargs["messages"][0]["content"].split("\n\n", 1)[1])
             payload = {"cases": [{
@@ -46,7 +59,7 @@ def _install_fake_anthropic(monkeypatch, captured, stop="end_turn"):
                 "id": n["id"], "one_line": "뉴스 요약", "theory_view": [f"{n['theory']['name']}로 보면"],
                 "implications": ["시사점 하나"], "questions": ["확인 질문"],
             } for n in data["news"]]}
-            return _Resp(payload, stop)
+            return _Stream(_Resp(payload, stop))
 
     class Anthropic:
         def __init__(self, **kwargs):
@@ -74,6 +87,11 @@ def test_ai_commentary_in_report(settings, monkeypatch):
     assert "이론으로 보면:" in md and "시사점: 시사점 하나" in md
     assert captured["model"] == "claude-opus-5-5"
     assert captured["fallbacks"] == "default"
+    assert captured["max_tokens"] >= 32000
+    # 노트에 실린 뉴스 사례가 모두 해설 대상이다
+    sent = json.loads(captured["messages"][0]["content"].split("\n\n", 1)[1])
+    assert len(sent["news"]) == md.count("\n### 2-")
+    assert md.count("이론으로 보면:") == len(sent["news"])
     assert captured["output_config"]["format"]["type"] == "json_schema"
 
 

@@ -42,7 +42,15 @@
 | 이름 | 값 | 필수 |
 |---|---|---|
 | `DART_API_KEY` | 위에서 받은 인증키 | 필수 |
-| `ANTHROPIC_API_KEY` | Claude API 키(공시·뉴스 사례 해설을 AI로 더 깊게 쓰고 싶을 때) | 선택 |
+| `ANTHROPIC_API_KEY` | Claude API 키(공시·뉴스 사례에 '선배의 해설'을 붙이고 싶을 때) | 선택 |
+
+#### Claude API 키 만들기(선택)
+
+1. [platform.claude.com](https://platform.claude.com)에 가입합니다. claude.ai 구독과는 별개 계정·별도 결제입니다.
+2. 돈 넣기: Settings → Billing에서 크레딧을 미리 충전합니다(선불). 자동 충전(auto-reload)은 꺼 두는 편이 안전합니다. Claude Max·Ultra 구독 중이면 claude.ai의 Settings → Billing → API credits에서 콘솔 조직을 연결하면 매달 API 크레딧(Max 100달러)이 들어와 충전 없이 쓸 수 있습니다. Pro는 해당되지 않습니다.
+3. 한도 걸기: Settings → Spend limits에서 월 한도(예: 10달러)를 정합니다. 한도에 닿으면 그달 남은 날은 해설만 빠지고 노트는 그대로 만들어집니다.
+4. 키 만들기: Settings → API keys → Create key. 워크스페이스는 Default Workspace를 고르고, 만료는 Never(또는 1년 이상)로 둡니다. 워크스페이스를 고르지 않으면 요청이 거절되고, 만료를 30일처럼 짧게 잡으면 그날부터 해설이 조용히 빠집니다.
+5. 키 값은 만들 때 한 번만 보여 주니 바로 복사해 위 표대로 `ANTHROPIC_API_KEY`로 등록합니다. 채팅이나 파일에는 붙여 넣지 않습니다.
 
 ### 3. 첫 실행
 
@@ -100,7 +108,8 @@ python -m casenote daily --date 2026-11-20   # 특정 날짜로 다시 만들기
 
 - DART API: 무료
 - GitHub Actions: 공개 저장소는 무료, 비공개 저장소는 월 2,000분 무료 한도 안에서 충분합니다(한 번에 2~5분)
-- AI 해설(선택): Claude API 사용량만큼 과금됩니다. 공시 3건·뉴스 4건, 노력 수준 medium 기준으로 하루 수백 원 안팎입니다. 키를 등록하지 않으면 쓰지 않습니다.
+- AI 해설(선택): Claude API 사용량만큼 과금됩니다. 평일 노트를 만들 때 한 번 호출해 공시 3건·뉴스 4건 해설을 한꺼번에 받습니다. 기본 설정(claude-opus-5-5, 노력 수준 medium)으로 한 번에 0.2~0.5달러, 평일만 돌면 한 달 5~11달러 정도로 추정합니다. 수동 실행도 한 번마다 과금됩니다. 실제 사용량은 Actions 실행 기록의 'AI 해설 토큰 사용' 줄과 콘솔 Usage 화면에서 확인합니다.
+- 비용을 줄이려면 `config.yaml`의 `ai.model`을 `claude-sonnet-5-5`로 바꾸면 단가가 절반(입력 2달러, 출력 10달러/100만 토큰)이 됩니다. 기본값 `claude-opus-5-5`는 입력 4달러, 출력 20달러입니다. 키를 등록하지 않으면 해설 없이 무료로 돌아갑니다.
 
 ## 문제 해결
 
@@ -108,6 +117,7 @@ python -m casenote daily --date 2026-11-20   # 특정 날짜로 다시 만들기
 |---|---|
 | 노트에 'DART 사용 중단: 등록되지 않은 인증키' | Secrets의 `DART_API_KEY` 값에 공백이 섞였는지, 키가 맞는지 |
 | '요청 제한 초과' | 하루 2만 건 한도. 같은 날 수동 실행을 여러 번 했는지 |
+| 키를 넣었는데 '선배의 해설'이 안 붙음 | Actions 실행 기록에서 'AI 해설' 줄 확인. 키 오류면 키 값·워크스페이스·만료를, 'credit balance is too low'면 충전을, 'usage limits'면 월 한도를 본다 |
 | 금융지주·보험사 숫자가 빈칸 | DART 재무 API가 금융업 일부를 다루지 않습니다 |
 | 뉴스가 0건 | 언론사 RSS 주소가 바뀌었을 수 있습니다. `data/news_sources.yaml`에서 주소를 고치거나 빼면 됩니다 |
 | 아침에 노트가 늦게 생김 | GitHub 예약 실행은 몰리는 시간에 수십 분 늦어질 수 있습니다 |

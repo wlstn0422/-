@@ -9,6 +9,9 @@ from .util import fmt_krw
 
 log = logging.getLogger(__name__)
 
+# 실행 기록에 대략의 비용을 남기기 위한 단가(달러/100만 토큰, 입력·출력). 2026년 11월 공식 요금표 기준
+PRICES = {"claude-opus-5-5": (4.0, 20.0), "claude-sonnet-5-5": (2.0, 10.0), "claude-haiku-5-5": (0.10, 0.50)}
+
 SYSTEM_PROMPT = """너는 기업 재무·M&A 실무와 경영전략·마케팅·경제 분석, 회계·세법·상법·재정 분야를 두루 10년 넘게 다뤄 온 선배다. 함께 공부하는 후배는 경영학과 학생이고, 회계사·세무사 시험을 5년 준비해서 K-IFRS, 원가관리회계, 세법, 상법, 재정학 기본기가 탄탄하다. 매일 아침 전날 나온 공시와 기사를 같이 뜯어보며, 사례를 경영학·경제학 이론과 제도로 설명해 주는 자리라고 생각하고 해설을 쓴다.
 
 지킬 것:
@@ -112,7 +115,7 @@ def commentary(events: list, news_cases: list, settings) -> dict[str, dict]:
         log.warning("anthropic 패키지가 없어 AI 해설을 건너뜀(pip install anthropic)")
         return empty
     cfg = settings.config.get("ai", {})
-    limit = int(cfg.get("max_cases", 3))
+    limit = int(cfg.get("max_cases", 4))  # 노트에 실리는 사례 수(공시 3건, 뉴스 4건)를 모두 덮는다
     payload = {
         "filings": [_case_payload(ev) for ev in events[:limit]],
         "news": [_news_payload(nc) for nc in news_cases[:limit]],
@@ -135,17 +138,23 @@ def commentary(events: list, news_cases: list, settings) -> dict[str, dict]:
         "자료가 비어 있는 쪽은 빈 배열로 돌려준다.\n\n"
         + json.dumps(payload, ensure_ascii=False, indent=1)
     )
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key, max_retries=2, timeout=300)
+    client = anthropic.Anthropic(api_key=settings.anthropic_api_key, max_retries=2, timeout=600)
+    model = cfg.get("model", "claude-opus-5-5")
     try:
-        resp = client.beta.messages.create(
-            model=cfg.get("model", "claude-opus-5-5"),
-            max_tokens=16000,
+        # 생각하는 데 쓴 토큰과 한국어 해설 7건을 합치면 길어질 수 있어 출력 한도를 넉넉히 두고,
+        # 긴 응답도 시간 초과 없이 받도록 스트리밍으로 받는다. 요금은 실제로 쓴 토큰만큼만 나간다.
+        extra = {}
+        if not str(model).startswith("claude-haiku"):  # Haiku에는 거절 시 다른 모델로 넘기는 기능이 없다
+            extra = {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+        with client.beta.messages.stream(
+            model=model,
+            max_tokens=64000,
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": user}],
             output_config={"effort": cfg.get("effort", "medium"), "format": {"type": "json_schema", "schema": SCHEMA}},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-        )
+            **extra,
+        ) as stream:
+            resp = stream.get_final_message()
     except anthropic.AuthenticationError:
         log.warning("ANTHROPIC_API_KEY가 올바르지 않아 AI 해설을 건너뜀")
         return empty
@@ -158,8 +167,18 @@ def commentary(events: list, news_cases: list, settings) -> dict[str, dict]:
     except anthropic.APIConnectionError:
         log.warning("Claude API 연결 실패로 AI 해설을 건너뜀")
         return empty
+    usage = getattr(resp, "usage", None)
+    if usage is not None:
+        inp = getattr(usage, "input_tokens", 0) or 0
+        out = getattr(usage, "output_tokens", 0) or 0
+        price = PRICES.get(getattr(resp, "model", model) or model)
+        cost = f", 약 {(inp * price[0] + out * price[1]) / 1e6:.2f}달러" if price else ""
+        log.info("AI 해설 토큰 사용: 입력 %s, 출력 %s%s", f"{inp:,}", f"{out:,}", cost)
     if resp.stop_reason == "refusal":
         log.warning("모델이 요청을 거절해 AI 해설을 건너뜀")
+        return empty
+    if resp.stop_reason == "max_tokens":
+        log.warning("AI 해설이 출력 한도에 걸려 잘려서 건너뜀")
         return empty
     text = next((b.text for b in resp.content if getattr(b, "type", "") == "text"), "")
     try:
@@ -167,9 +186,6 @@ def commentary(events: list, news_cases: list, settings) -> dict[str, dict]:
     except ValueError:
         log.warning("AI 해설 응답을 해석하지 못함(stop_reason=%s)", resp.stop_reason)
         return empty
-    usage = getattr(resp, "usage", None)
-    if usage is not None:
-        log.info("AI 해설 토큰 사용: 입력 %s, 출력 %s", getattr(usage, "input_tokens", "?"), getattr(usage, "output_tokens", "?"))
     return {
         "cases": {c["rcept_no"]: c for c in data.get("cases", []) if c.get("rcept_no")},
         "news": {n["id"]: n for n in data.get("news", []) if n.get("id")},

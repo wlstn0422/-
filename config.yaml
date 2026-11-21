@@ -33,4 +33,4 @@ ai:
   enabled: auto             # auto: ANTHROPIC_API_KEY가 있을 때만 사용, false: 끔
   model: claude-opus-5-5
   effort: medium            # low / medium / high. 높을수록 해설이 깊어지고 비용이 늘어난다
-  max_cases: 3
+  max_cases: 4             # 공시·뉴스 사례 각각 최대 몇 건까지 해설할지(노트에는 공시 3건, 뉴스 4건)
