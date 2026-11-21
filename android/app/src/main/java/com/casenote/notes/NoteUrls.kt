@@ -40,7 +40,7 @@ object NoteUrls {
     fun request(config: RepoConfig, rel: String, etag: String?): HttpRequest {
         val headers = linkedMapOf("User-Agent" to "casenote-android")
         val url = if (config.token.isNotBlank()) {
-            headers["Accept"] = "application/vnd.github.raw"
+            headers["Accept"] = "application/vnd.github.raw+json"
             headers["Authorization"] = "Bearer ${config.token}"
             headers["X-GitHub-Api-Version"] = "2022-11-28"
             "https://api.github.com/repos/${encodeSegment(config.owner)}/${encodeSegment(config.repo)}" +

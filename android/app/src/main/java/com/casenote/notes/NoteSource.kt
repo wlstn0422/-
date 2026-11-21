@@ -4,6 +4,7 @@ import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Base64
 
 /** 노트를 읽어 올 저장소 정보. */
 interface RepoConfig {
@@ -62,10 +63,11 @@ class NoteSource(
             val res = fetcher.fetch(NoteUrls.request(config, rel, etag))
             when {
                 res.code in 200..299 -> {
+                    val body = unwrap(res.body)
                     cacheDir.mkdirs()
-                    cacheFile.writeBytes(res.body)
+                    cacheFile.writeBytes(body)
                     if (res.etag.isNullOrBlank()) etagFile.delete() else etagFile.writeText(res.etag)
-                    Page(res.body, mime)
+                    Page(body, mime)
                 }
                 res.code == 304 && cached != null -> Page(cached, mime)
                 !isHtml -> Page(ByteArray(0), mime)
@@ -79,5 +81,32 @@ class NoteSource(
                 else -> Page(ErrorPages.offline().toByteArray(Charsets.UTF_8), "text/html")
             }
         }
+    }
+
+    /** GitHub가 원문 대신 JSON(파일 정보 + base64 내용)으로 답한 경우 내용을 풀어낸다.
+     *  내용이 비어 있으면(큰 파일) 함께 온 내려받기 주소에서 원문을 다시 받는다. 원문이면 그대로 돌려준다. */
+    private fun unwrap(body: ByteArray): ByteArray {
+        val text = String(body, Charsets.UTF_8).trimStart()
+        if (!text.startsWith("{") || !text.contains("\"encoding\"")) return body
+        val content = JSON_CONTENT.find(text)?.groupValues?.get(1)
+            ?.replace("\\n", "")?.replace("\\r", "")?.replace("\\/", "/")
+        if (!content.isNullOrEmpty()) {
+            try {
+                return Base64.getMimeDecoder().decode(content)
+            } catch (e: IllegalArgumentException) {
+                // 아래 내려받기 주소로 넘어간다
+            }
+        }
+        val download = JSON_DOWNLOAD.find(text)?.groupValues?.get(1)?.replace("\\/", "/")
+        if (download != null && download.startsWith("https://")) {
+            val res = fetcher.fetch(HttpRequest(download, mapOf("User-Agent" to "casenote-android")))
+            if (res.code in 200..299) return res.body
+        }
+        return body
+    }
+
+    private companion object {
+        val JSON_CONTENT = Regex("\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"")
+        val JSON_DOWNLOAD = Regex("\"download_url\"\\s*:\\s*\"([^\"]+)\"")
     }
 }

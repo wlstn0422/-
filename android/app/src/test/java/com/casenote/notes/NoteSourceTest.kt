@@ -36,7 +36,7 @@ class NoteSourceTest {
             req.url,
         )
         assertEquals("Bearer github_pat_x", req.headers["Authorization"])
-        assertEquals("application/vnd.github.raw", req.headers["Accept"])
+        assertEquals("application/vnd.github.raw+json", req.headers["Accept"])
         assertEquals("\"abc\"", req.headers["If-None-Match"])
     }
 
@@ -80,6 +80,24 @@ class NoteSourceTest {
         val offline = String(source.load("index.html").body)
         assertTrue(offline.contains("오늘 노트") && offline.contains("인터넷에 연결되어 있지 않아"))
         assertEquals(3, calls)
+    }
+
+    @Test
+    fun unwrapsJsonContentWhenGithubDoesNotSendRawFile() {
+        val dir = Files.createTempDirectory("notes").toFile()
+        val html = "<html><body><main>오늘의 공시 사례</main></body></html>"
+        val b64 = java.util.Base64.getMimeEncoder(60, "\n".toByteArray()).encodeToString(html.toByteArray())
+        val json = "{\"name\":\"index.html\",\"encoding\":\"base64\",\"content\":\"" +
+            b64.replace("\n", "\\n") + "\",\"download_url\":null}"
+        val source = NoteSource(dir, Cfg(token = "t"), Fetcher { HttpResponse(200, json.toByteArray(), "\"e\"") })
+        assertEquals(html, String(source.load("index.html").body, Charsets.UTF_8))
+        // 내용이 비어 있으면(큰 파일) 내려받기 주소에서 원문을 받는다
+        val big = "{\"encoding\":\"none\",\"content\":\"\",\"download_url\":\"https:\\/\\/raw.example\\/x.html?token=abc\"}"
+        val source2 = NoteSource(dir, Cfg(token = "t"), Fetcher { req ->
+            if (req.url.startsWith("https://raw.example/x.html")) HttpResponse(200, html.toByteArray(), null)
+            else HttpResponse(200, big.toByteArray(), null)
+        })
+        assertEquals(html, String(source2.load("theories.html").body, Charsets.UTF_8))
     }
 
     @Test
