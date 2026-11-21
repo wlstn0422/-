@@ -32,15 +32,16 @@ def test_stock_acquisition_applies_synergy_with_numbers():
     }, induty="21102")
     out = ex.explain_filing(ev, {"id": "ma_synergy", "title": "M&A 시너지", "watch": "x"})
     t = text_of(out)
-    assert out["what"].startswith("의약품 제조 회사 애드바이오텍이 드림인사이트(광고대행업) 주식을 80억원에 삽니다")
-    assert "18.55%" in out["what"]
-    assert "투자에 가까운 지분" in out["plain"] and "금융자산" in out["plain"]
-    assert "약 6분의 1(16.5%)" in out["size"] and "빚을 내서" in out["size"]
-    assert "약 431억원짜리" in t  # 80억 ÷ 18.55%
-    assert "매년 4억원" in t  # 연 5% 가정의 본전 조건
+    assert out["what"] == "의약품 제조 기업 애드바이오텍이 드림인사이트(광고대행업)의 주식을 80억원에 취득한다. 취득 후 지분율은 18.55%이다."
+    assert "투자 목적의 지분이다" in out["plain"] and "금융자산으로 분류" in out["plain"]
+    assert "약 6분의 1(16.5%)" in out["size"] and "차입금으로 조달한다" in out["size"]
+    assert "지분 전체 가치를 약 431억원으로 평가한 것이다" in t  # 80억 ÷ 18.55%
+    assert "연간 자본비용은 4억원이다" in t  # 연 5% 가정의 손익분기
     assert "매출 시너지" in t
     assert "제약·바이오·의료" in t and "미디어·광고·콘텐츠" in t and "다각화" in t
-    assert "경영권" in t and out["takeaway"].startswith("회사 재산의 약 6분의 1(16.5%)을 빚을 내서")
+    assert "지배력:" in t and out["takeaway"].startswith("회사 총자산의 약 6분의 1(16.5%)에 해당하는 자금을 차입금으로 조달하여")
+    # 교과서 문체: 경어체와 명령형이 섞이지 않는다
+    assert "습니다" not in t and "입니다" not in t and "보세요" not in t
 
 
 def test_asset_sale_computes_debt_ratio_and_interest_saving():
@@ -52,11 +53,11 @@ def test_asset_sale_computes_debt_ratio_and_interest_saving():
     }, fin=fin)
     out = ex.explain_filing(ev, None)
     t = text_of(out)
-    assert "본사 사옥을 630억원에 팝니다" in out["what"]
-    assert "부채비율(빚 ÷ 자기자본)이 102%에서 약 22%로" in t
-    assert "매년 이자 약 32억원" in t
-    assert "빚을 줄이는 결정" in out["takeaway"]
-    assert "년치" not in out["size"]  # 파는 거래에는 '본업 이익 몇 년치'를 붙이지 않는다
+    assert "본사 사옥을 630억원에 매각한다" in out["what"]
+    assert "부채비율(부채÷자기자본)은 102%에서 약 22%로 하락한다" in t
+    assert "연간 이자비용이 약 32억원 감소한다" in t
+    assert "부채를 줄이는 결정이다" in out["takeaway"]
+    assert "년분" not in out["size"]  # 매각 거래에는 '연간 영업이익의 몇 년분'을 붙이지 않는다
 
 
 def test_ipo_reads_counts_with_units():
@@ -64,7 +65,7 @@ def test_ipo_reads_counts_with_units():
     ev.facts = [("공모 주식 수", "1,400,000주"), ("공모가(모집가액)", "18,000원")]
     ev.amount, ev.amount_label = 252e8, "공모 총액"
     out = ex.explain_filing(ev, None)
-    assert "주식 1,400,000주를 1주 18,000원에 팔아 252억원을 모으고" in out["what"]
+    assert "주식 1,400,000주를 1주당 18,000원에 공모하여 252억원을 조달하고" in out["what"]
 
 
 def test_rights_offering_dilution_and_use_of_funds():
@@ -73,8 +74,8 @@ def test_rights_offering_dilution_and_use_of_funds():
         "fdpp_op": "50,000,000,000", "fdpp_dtrp": "10,000,000,000", "fdpp_fclt": "15,000,000,000",
     })
     t = text_of(ex.explain_filing(ev, None))
-    assert "지금 주식 수의 20.0%" in t and "약 0.83%" in t
-    assert "80%가 운영자금·빚 갚기" in t
+    assert "기존 발행주식 수의 20.0%" in t and "약 0.83%로 낮아진다" in t
+    assert "80%가 운영자금과 채무상환자금이다" in t
     assert "제3자배정" in t and "신호" in t
 
 
@@ -84,8 +85,8 @@ def test_mezzanine_refixing_and_private_placement():
         "cvisstk_tisstk_vs": "12.5", "act_mktprcfl_cvprc_lwtrsprc": "3,500",
     })
     t = text_of(ex.explain_filing(ev, None))
-    assert "200억원 규모의 전환사채를 발행합니다" in t
-    assert "1주 5,000원" in t and "12.5%" in t
+    assert "200억원 규모의 전환사채를 발행한다" in t
+    assert "1주당 5,000원" in t and "12.5%" in t
     assert "0%" in t and "3,500원까지" in t and "사모" in t
 
 
@@ -96,22 +97,22 @@ def test_merger_ratio_split_and_others_do_not_fall_back():
         "mg_pp": "부품 내재화를 통한 원가 절감",
     }, fin={"year": 2025, "revenue": 12e12, "assets": 10e12, "equity": 6e12, "liabilities": 4e12, "operating_income": 1e12})
     t = text_of(ex.explain_filing(merger, None))
-    assert "모의부품(전자부품 제조)과 합칩니다(소규모합병)" in t
-    assert "같은 그룹" in t and "비용 시너지" in t and "3.5%" in t
-    assert "합병비율(1 : 0.5): 없어지는 모의부품 주식 1주를 애드바이오텍 주식 0.5주로 바꿔 줍니다" in t
+    assert "모의부품(전자부품 제조)과 합병한다(소규모합병)" in t
+    assert "동일 기업집단" in t and "비용 시너지" in t and "3.5%" in t
+    assert "합병비율(1 : 0.5): 소멸회사 주식 1주당 존속회사 주식 0.5주를 교부한다" in t
     split = make("split", {
         "dv_mth": "물적분할", "dvfcmp_cmpnm": "샘플첨단소재(가칭)", "dvfcmp_mbsn": "첨단소재 제조",
         "dvfcmp_nbsn_rsl": "450,000,000,000", "atdv_excmp_exbsn_rsl": "1,500,000,000,000",
     })
     t = text_of(ex.explain_filing(split, None))
-    assert "샘플첨단소재를 새로 만듭니다(물적분할)" in t and "쪼개기 상장" in t and "약 4분의 1(23.1%)" in t
+    assert "샘플첨단소재를 신설한다(물적분할)" in t and "쪼개기 상장" in t and "약 4분의 1(23.1%)" in t
     for key, detail, marker in [
         ("bonus_issue", {"nstk_ostk_cnt": "10,000,000", "bfic_tisstk_ostk": "10,000,000", "nstk_ascnt_ps_ostk": "1"}, "약 50% 수준"),
-        ("treasury_buy", {"aqpln_prc_ostk": "10,000,000,000", "aq_pp": "주주가치 제고 및 소각"}, "주식 수가 실제로 줄어듭니다"),
-        ("stock_trf", {"iscmp_cmpnm": "가상전자", "trfdtl_trfprc": "5,000,000,000", "attrf_eqrt": "0", "trf_pp": "유동성 확보"}, "완전히 손을 뗍니다"),
-        ("asset_acq", {"ast_nm": "평택 제2공장", "inhdtl_inhprc": "30,000,000,000", "inh_pp": "생산능력 확대"}, "생산 능력을 늘리는"),
+        ("treasury_buy", {"aqpln_prc_ostk": "10,000,000,000", "aq_pp": "주주가치 제고 및 소각"}, "발행주식 수가 실제로 감소"),
+        ("stock_trf", {"iscmp_cmpnm": "가상전자", "trfdtl_trfprc": "5,000,000,000", "attrf_eqrt": "0", "trf_pp": "유동성 확보"}, "투자를 완전히 회수한다"),
+        ("asset_acq", {"ast_nm": "평택 제2공장", "inhdtl_inhprc": "30,000,000,000", "inh_pp": "생산능력 확대"}, "생산능력 확대이므로"),
         ("capital_reduction", {"cr_mth": "무상감자", "cr_rt_ostk": "90.0"}, "무상감자"),
-        ("treasury_sell", {"dppln_prc_ostk": "3,000,000,000", "dp_pp": "임직원 성과보상"}, "직원 보상용"),
+        ("treasury_sell", {"dppln_prc_ostk": "3,000,000,000", "dp_pp": "임직원 성과보상"}, "임직원 보상을 위한 처분"),
     ]:
         out = ex.explain_filing(make(key, detail), None)
         assert marker in text_of(out), (key, text_of(out))
@@ -121,7 +122,7 @@ def test_missing_data_still_gives_plain_explanation():
     ev = make("dividend", {}, fin={})
     out = ex.explain_filing(ev, {"id": "payout_policy", "title": "배당·자사주 정책", "watch": "번 돈을 어디에 쓰는지 보세요."})
     assert "배당 결정" in out["what"] and out["plain"].startswith("배당은")
-    assert out["steps"] == ["배당·자사주 정책로 보면: 번 돈을 어디에 쓰는지 보세요."] or out["steps"]
+    assert out["steps"] == ["배당·자사주 정책의 관점: 번 돈을 어디에 쓰는지 보세요."]
 
 
 def test_share_words_and_josa():
@@ -138,8 +139,8 @@ def test_news_helpers():
                             "4조원대 본예산안을 편성했다. 평택시는 20일", "평택시, 반도체 세수 증가에 본예산안 첫 4조원대")
     assert lead == "반도체 호황에 따른 세수 증가로 경기 평택시가 사상 처음으로 4조원대 본예산안을 편성했다."
     assert ex.number_phrases("2027년 4조원대 본예산안을 편성 4조원대 편성, 20% 인상") == ["4조원대 본예산안", "20% 인상"]
-    lines, words = ex.apply_cues("모의식품, MZ 겨냥 리브랜딩", [["겨냥|MZ", "제목의 '{m}'{m_eun} 표적시장입니다."]])
-    assert lines == ["제목의 'MZ'는 표적시장입니다."] and words == ["MZ"]
+    lines, words = ex.apply_cues("모의식품, MZ 겨냥 리브랜딩", [["겨냥|MZ", "'{m}'{m_eun} 표적시장을 선정한 부분이다."]])
+    assert lines == ["'MZ'는 표적시장을 선정한 부분이다."] and words == ["MZ"]
 
 
 def test_glossary_matching(tmp_path):

@@ -29,11 +29,11 @@ def test_daily_end_to_end(settings):
     assert "## 2. 뉴스로 보는 경영·경제 사례" in md
     assert "## 3. 오늘의 이론 수업" in md
     # 사례마다 쉬운 풀이와 이론 대입이 먼저, 원문 항목과 회계·세무·법은 접어 둔 '더 깊게 보기'에
-    assert "**한눈에**" in md and "- 무슨 일: " in md and "- 쉽게 말하면: " in md
-    assert "**이론에 대입하기: [" in md and "../../theories.md#" in md and "이론 한 줄: " in md and "비유: " in md
-    assert "더 깊게 보기: 공시 원문 항목" in md and "이론 더 알아보기: " in md
-    assert "**용어 풀이**" in md
-    assert "이론으로 보면: " in md
+    assert "**사례 개요**" in md and "- 사실관계: " in md and "- 거래의 성격: " in md
+    assert "**이론 적용: [" in md and "../../theories.md#" in md and "이론의 요지: " in md and "예시: " in md
+    assert "심화 학습: 공시 원문 항목" in md and "이론 심화: " in md
+    assert "**용어 해설**" in md
+    assert "분석의 관점: " in md
     assert "## 4. 오늘의 전공 수업(재정학)" in md  # 2026-11-20은 금요일
     assert "전공 수업(금요일 재정학)" in md
     assert "회계·세무·법으로 읽기" in md and "전공으로 더 깊게" in md

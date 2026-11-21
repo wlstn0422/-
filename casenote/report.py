@@ -351,17 +351,17 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
     why_by_cat = settings.plain.get("categories") or {}
     cues_by_card = settings.plain.get("cues") or {}
     for nc in news_cases:
-        # 이론 대입: 이론별 단서 → 기사 속 신호(용어) → 기사 속 숫자 → 이론으로 보면. 핵심만 남기게 4줄 안쪽으로.
+        # 이론 적용: 이론별 단서 → 용어의 의미 → 주요 수치 → 분석의 관점. 핵심만 남기도록 4줄 이내.
         easy = ex_mod.explain_news(nc, why_by_cat.get(nc["category"]["key"]))
         cue_lines, cue_words = ex_mod.apply_cues(easy["text"], cues_by_card.get(nc["theory"]["id"]), limit=2)
         easy["signals"] = ex_mod.pick_signals(easy["text"], glossary, seen_terms, limit=2 - len(cue_lines), skip_words=cue_words)
         easy["terms"] = ex_mod.pick_terms(easy["text"], glossary, seen_terms, limit=3, news=True)
         steps = list(cue_lines)
-        steps += [f"기사 속 신호 '{e['term']}': {e['signal']}." for e in easy["signals"]]
+        steps += [f"'{e['term']}'의 의미: {e['signal']}." for e in easy["signals"]]
         if easy["numbers"]:
-            steps.append(f"기사 속 숫자: {', '.join(easy['numbers'])}.")
+            steps.append(f"주요 수치: {', '.join(easy['numbers'])}.")
         if easy.get("watch"):
-            steps.append(f"이론으로 보면: {easy['watch']}")
+            steps.append(f"분석의 관점: {easy['watch']}")
         easy["steps"] = steps
         nc["easy"] = easy
     links_ctx = (case_blocks, news_cases, company_ctx, buckets, categories)

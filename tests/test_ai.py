@@ -82,16 +82,16 @@ def test_ai_commentary_in_report(settings, monkeypatch):
     settings.config["ai"]["enabled"] = "auto"
     out = report.run_daily(settings, date(2026, 11, 20), client=FakeDart(), news_fetcher=_news)
     md = out.read_text(encoding="utf-8")
-    assert "**선배의 해설**" in md
-    assert "회의에서 말한다면: 한 문장 정리" in md
-    assert "이론으로 보면:" in md and "시사점: 시사점 하나" in md
+    assert "**AI 해설**" in md
+    assert "한 문장 요약: 한 문장 정리" in md
+    assert "이론의 적용:" in md and "시사점: 시사점 하나" in md
     assert captured["model"] == "claude-opus-5-5"
     assert captured["fallbacks"] == "default"
     assert captured["max_tokens"] >= 32000
     # 노트에 실린 뉴스 사례가 모두 해설 대상이다
     sent = json.loads(captured["messages"][0]["content"].split("\n\n", 1)[1])
     assert len(sent["news"]) == md.count("\n### 2-")
-    assert md.count("\n- 이론으로 보면:") == len(sent["news"])  # 선배의 해설 줄(무료 해설의 번호 목록과 구분)
+    assert md.count("\n- 이론의 적용:") == len(sent["news"])  # AI 해설 줄(무료 해설의 번호 목록과 구분)
     assert captured["output_config"]["format"]["type"] == "json_schema"
 
 
@@ -100,4 +100,4 @@ def test_ai_refusal_is_skipped(settings, monkeypatch):
     settings.anthropic_api_key = "test-key"
     settings.config["ai"]["enabled"] = "auto"
     out = report.run_daily(settings, date(2026, 11, 20), client=FakeDart(), news_fetcher=_news)
-    assert "선배의 해설" not in out.read_text(encoding="utf-8")
+    assert "AI 해설" not in out.read_text(encoding="utf-8")

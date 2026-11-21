@@ -34,16 +34,16 @@
 - 공시 {{ events_total }}건: {% for g in groups %}{{ g.label }} {{ g.count }}{% if not loop.last %} · {% endif %}{% endfor +%}
 {% endif %}
 
-30분 읽는 순서: 사례(1·2장) 10분, 이론 수업(3장) 7분, 전공 수업(4장) 8분, 퀴즈(6장) 5분. 사례는 '한눈에'와 '이론에 대입하기'만 읽어도 핵심이 잡히고, '더 깊게 보기'는 시간 날 때 펼쳐 보면 됩니다. 7·8장은 훑어보는 참고 자료입니다.
+30분 읽는 순서: 사례(1·2장) 10분, 이론 수업(3장) 7분, 전공 수업(4장) 8분, 퀴즈(6장) 5분. 사례는 '사례 개요'와 '이론 적용'을 먼저 읽고, '심화 학습'은 필요할 때 펼쳐 보면 된다. 7·8장은 참고 자료이다.
 
 
 ## 1. 오늘의 공시 사례
 
 {% if not case_blocks %}
 {% if dart_status == 'ok' %}
-이번 구간에는 학습 대상 공시가 없습니다. 아래 뉴스 사례와 수업으로 공부하세요.
+이번 구간에는 학습 대상 공시가 없다. 아래 뉴스 사례와 수업으로 학습한다.
 {% else %}
-DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO 공시 중 중요한 것을 골라 여기서 풀어 줍니다.
+DART 인증키를 등록하면 전날 제출된 합병·분할·증자·자기주식·IPO 공시 가운데 중요한 사례를 골라 이곳에서 분석한다.
 {% endif %}
 
 {% endif %}
@@ -54,23 +54,23 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 {{ ev.market }} · 접수 {{ ev.rcept_dt[:4] }}.{{ ev.rcept_dt[4:6] }}.{{ ev.rcept_dt[6:8] }} · [{{ ev.report_nm|linktext }}]({{ ev.url }}){% if ev.same_day_count > 1 %} · 같은 유형 공시 {{ ev.same_day_count }}건 중 최신{% endif +%}
 
-**한눈에**
+**사례 개요**
 
-- 무슨 일: {{ x.what }}
+- 사실관계: {{ x.what }}
 {% if x.plain %}
-- 쉽게 말하면: {{ x.plain }}
+- 거래의 성격: {{ x.plain }}
 {% endif %}
 {% if x.size %}
-- 얼마나 큰가: {{ x.size }}
+- 거래 규모: {{ x.size }}
 {% endif %}
 
 {% if x.lens %}
-**이론에 대입하기: [{{ x.lens.title }}]({{ theory_book }}#{{ x.lens.id }})**
+**이론 적용: [{{ x.lens.title }}]({{ theory_book }}#{{ x.lens.id }})**
 
-이론 한 줄: {{ x.lens.one_line }}
+이론의 요지: {{ x.lens.one_line }}
 
 {% if x.lens.get("analogy") %}
-비유: {{ x.lens.analogy }}
+예시: {{ x.lens.analogy }}
 
 {% endif %}
 {% endif %}
@@ -81,11 +81,11 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 {% endif %}
 {% if x.takeaway %}
-**한 줄 정리**: {{ x.takeaway }}
+**요약**: {{ x.takeaway }}
 
 {% endif %}
 {% if x.terms %}
-**용어 풀이**
+**용어 해설**
 
 {% for t in x.terms %}
 - {{ t.term }}: {{ t.plain }}
@@ -94,14 +94,14 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endif %}
 {% set note = ai_notes.cases.get(ev.rcept_no) %}
 {% if note %}
-**선배의 해설**
+**AI 해설**
 
-- 한 줄로: {{ note.one_line }}
+- 요지: {{ note.one_line }}
 {% for w in note.why %}
-- 왜 했을까: {{ w }}
+- 거래의 동기: {{ w }}
 {% endfor %}
 {% for w in note.numbers %}
-- 숫자로: {{ w }}
+- 수치 분석: {{ w }}
 {% endfor %}
 {% for w in note.accounting %}
 - 회계: {{ w }}
@@ -109,10 +109,10 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% for w in note.tax %}
 - 세무: {{ w }}
 {% endfor %}
-- 회의에서 말한다면: {{ note.say_it }}
+- 한 문장 요약: {{ note.say_it }}
 
 {% endif %}
-<details markdown="1"><summary>더 깊게 보기: 공시 원문 항목, 다른 이론, 회계·세무·법</summary>
+<details markdown="1"><summary>심화 학습: 공시 원문 항목, 관련 이론, 회계·세무·법</summary>
 
 {% if ev.facts %}
 | 항목 | 내용 |
@@ -141,7 +141,7 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endif %}
 {% set more = b.theories[1:] if x.lens else b.theories %}
 {% if more %}
-**다른 이론으로도 보기**
+**관련 이론**
 
 {% for t in more %}
 - [{{ t.title }}]({{ theory_book }}#{{ t.id }}): {{ t.one_line }}
@@ -191,7 +191,7 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 ## 2. 뉴스로 보는 경영·경제 사례
 
 {% if news_cases %}
-전날 많이 보도된 기사 중 재무, 경영, 경제, 제도(회계·세법·상법·재정) 분야가 고르게 섞이도록 골라 이론과 제도에 대입했습니다.
+전날 보도된 기사 가운데 재무·경영·경제·제도(회계·세법·상법·재정) 분야를 고르게 선정하여 관련 이론과 제도를 적용하였다.
 
 {% for nc in news_cases %}
 {% set t = nc.theory %}
@@ -201,19 +201,19 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 [기사 보기]({{ n.link }}) · {{ n.source }}{% if n.coverage > 1 %} 외 {{ n.coverage - 1 }}곳 보도{% endif %} · {{ nc.category.label }}
 
-**한눈에**
+**사례 개요**
 
-- 무슨 일: {{ x.what }}
+- 사실관계: {{ x.what }}
 {% if x.why %}
-- 이 분야를 보는 이유: {{ x.why }}
+- 분야의 의의: {{ x.why }}
 {% endif %}
 
-**이론에 대입하기: [{{ t.title }}]({{ theory_book }}#{{ t.id }})**{% if t.field in subject_fields %}({{ t.field }}){% endif +%}
+**이론 적용: [{{ t.title }}]({{ theory_book }}#{{ t.id }})**{% if t.field in subject_fields %}({{ t.field }}){% endif +%}
 
-이론 한 줄: {{ t.one_line }}
+이론의 요지: {{ t.one_line }}
 
 {% if t.get("analogy") %}
-비유: {{ t.analogy }}
+예시: {{ t.analogy }}
 
 {% endif %}
 {% for s in x.steps %}
@@ -223,11 +223,11 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 {% endif %}
 {% if t.id in lesson_where %}
-이 이론은 아래 {{ lesson_where[t.id] }}에서 자세히 풀었습니다.
+이 이론은 아래 {{ lesson_where[t.id] }}에서 자세히 다룬다.
 
 {% endif %}
 {% if x.terms %}
-**용어 풀이**
+**용어 해설**
 
 {% for e in x.terms %}
 - {{ e.term }}: {{ e.plain }}
@@ -236,21 +236,21 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endif %}
 {% set note = ai_notes.news.get(nc.id) %}
 {% if note %}
-**선배의 해설**
+**AI 해설**
 
-- 한 줄로: {{ note.one_line }}
+- 요지: {{ note.one_line }}
 {% for w in note.theory_view %}
-- 이론으로 보면: {{ w }}
+- 이론의 적용: {{ w }}
 {% endfor %}
 {% for w in note.implications %}
 - 시사점: {{ w }}
 {% endfor %}
 {% for w in note.questions %}
-- 생각해볼 질문: {{ w }}
+- 검토 과제: {{ w }}
 {% endfor %}
 
 {% endif %}
-<details markdown="1"><summary>이론 더 알아보기: {{ t.title|htmltext }}</summary>
+<details markdown="1"><summary>이론 심화: {{ t.title|htmltext }}</summary>
 
 {% if t.id not in lesson_where %}
 {{ t.easy|first_para }}
@@ -276,7 +276,7 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 {% endfor %}
 {% else %}
-뉴스를 가져오지 못했습니다.
+뉴스를 수집하지 못했다.
 
 {% endif %}
 
@@ -294,10 +294,10 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 
 ## 4. 오늘의 전공 수업({{ subject }}){% if subject_lessons|length == 1 %}: {{ subject_lessons[0].theory.title }}{% endif +%}
 
-월요일 재무회계, 화요일 원가관리회계, 수요일 세법, 목요일 상법, 금요일 재정학을 돌아가며 다룹니다.
+월요일 재무회계, 화요일 원가관리회계, 수요일 세법, 목요일 상법, 금요일 재정학을 순서대로 다룬다.
 
 {% if not subject_lessons %}
-오늘 과목의 카드가 없습니다.
+오늘 과목의 카드가 없다.
 
 {% endif %}
 {% for l in subject_lessons %}
@@ -313,13 +313,13 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 ## 5. 오늘의 기업{% if company %}: {{ company.name }}{% endif +%}
 
 {% if company %}
-업종 대표 기업을 하루 하나씩 돌아가며 봅니다. 숫자는 {{ company.year }}년 사업보고서 기준입니다.
+업종 대표 기업을 하루에 한 곳씩 분석한다. 수치는 {{ company.year }}년 사업보고서 기준이다.
 
 {% with c=company %}
 {% include "_company_body.md.j2" %}
 {% endwith %}
 {% else %}
-DART 키를 등록하면 업종 대표 기업을 하루 하나씩 골라 그 업종이 돈 버는 구조, 재무 숫자, 규모 진단, 유효세율, 돈 감각 환산을 보여줍니다.
+DART 인증키를 등록하면 업종 대표 기업을 하루에 한 곳씩 골라 수익 구조, 재무 수치, 규모 진단, 유효세율, 금액 감각 환산을 제시한다.
 
 {% endif %}
 
@@ -343,7 +343,7 @@ DART 키를 등록하면 업종 대표 기업을 하루 하나씩 골라 그 업
 ## 7. 분야별 헤드라인
 
 {% if news_sections %}
-어제 기사를 {{ news_sections|length }}개 분야로 묶었습니다. 분야 옆 숫자는 같은 내용을 다룬 보도까지 합친 기사 수라 오늘 무엇이 화제인지 가늠할 수 있습니다. 줄을 누르면 기사가 펼쳐집니다.
+전날 기사를 {{ news_sections|length }}개 분야로 분류하였다. 분야 옆 숫자는 같은 내용을 다룬 보도를 포함한 기사 수로, 그날의 주요 관심사를 가늠하는 지표이다. 항목을 누르면 기사 목록이 펼쳐진다.
 
 {% for s in news_sections %}
 <details markdown="1"><summary>{{ s.label|htmltext }} {{ s.articles }}건 · {{ s.entries[0].title|htmltext(46) }}</summary>
@@ -356,14 +356,14 @@ DART 키를 등록하면 업종 대표 기업을 하루 하나씩 골라 그 업
 
 {% endfor %}
 {% else %}
-가져온 기사가 없습니다.
+수집된 기사가 없다.
 
 {% endif %}
 
 ## 8. 공시 목록
 
 {% if groups %}
-접수일 기준으로 학습할 만한 공시만 추렸습니다. 같은 회사·같은 유형은 최신 1건만 남겼습니다.
+접수일 기준으로 학습 가치가 있는 공시만 선별하였다. 같은 회사·같은 유형은 최신 1건만 남겼다.
 
 {% for g in groups %}
 ### {{ g.label }} ({{ g.count }}건)
@@ -379,12 +379,12 @@ DART 키를 등록하면 업종 대표 기업을 하루 하나씩 골라 그 업
 
 {% endfor %}
 {% elif dart_status == 'ok' %}
-학습 대상 공시가 없었습니다.
+학습 대상 공시가 없었다.
 
 {% else %}
-DART 키를 등록하면 채워집니다.
+DART 인증키를 등록하면 채워진다.
 
 {% endif %}
 ---
 
-자료: DART 전자공시(opendart.fss.or.kr), 언론사 RSS와 구글 뉴스. 공시 숫자는 원문 기준이고, 해설과 이론·제도 카드는 공부용 요약이니 실무에 쓸 때는 원문과 법령을 다시 확인하세요. 카드 전체는 [이론·제도 사전]({{ theory_book }})에 모여 있습니다.
+자료: DART 전자공시(opendart.fss.or.kr), 언론사 RSS와 구글 뉴스. 공시 수치는 원문 기준이며, 해설과 이론·제도 카드는 학습용 요약이므로 실무에 활용할 때는 원문과 법령을 다시 확인해야 한다. 카드 전체는 [이론·제도 사전]({{ theory_book }})에 수록되어 있다.

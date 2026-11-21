@@ -1,9 +1,9 @@
 {# 수업 한 개(이론 수업·전공 수업 공용). l, theory_book, lesson_heading이 필요하다. #}
 {% set t = l.theory %}
 {% if t.field in subject_fields %}
-{{ weekday_ko }}요일 전공 · {{ t.field }} {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 이어지지는 않지만 고루 익히도록 차례가 돌아온 주제입니다{% endif +%}
+{{ weekday_ko }}요일 전공 · {{ t.field }} {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 연결되지는 않으나 고르게 학습하도록 순서에 따라 배정된 주제이다{% endif +%}
 {% else %}
-{{ t.field }} · 이론 {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 이어지지는 않지만 고루 익히도록 차례가 돌아온 이론입니다{% endif +%}
+{{ t.field }} · 이론 {{ l.total }}개 중 {{ l.progress }}번째 수업{% if not l.applied %} · 오늘 사례와 직접 연결되지는 않으나 고르게 학습하도록 순서에 따라 배정된 이론이다{% endif +%}
 {% endif %}
 
 {{ t.one_line }}
@@ -51,7 +51,7 @@
 {% if l.applied %}
 {{ lesson_heading }} 오늘 사례에 대입해 보기
 
-위의 적용 순서를 아래 사례에 그대로 따라가 보세요.
+위의 적용 순서를 아래 사례에 그대로 적용해 본다.
 
 {% for a in l.applied %}
 - {{ a.kind }}: {% if a.link %}[{{ a.title|linktext }}]({{ a.link }}){% else %}{{ a.title }}{% endif +%}

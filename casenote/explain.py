@@ -1,4 +1,4 @@
-"""공시·뉴스 사례를 배경지식 없이도 읽히게 풀고, 이론에 실제 숫자를 넣어 대입한다.
+"""공시·뉴스 사례를 경영학·경제학 교과서 문체로 설명하고, 이론에 실제 숫자를 넣어 적용한다.
 
 AI를 부르지 않고 규칙과 미리 써 둔 설명으로만 만들어 추가 비용이 없다. 숫자는 공시 원문과 사업보고서에서
 가져오고, 가정을 쓰는 곳(본전 계산의 금리)은 문장 안에 가정이라고 밝힌다.
@@ -55,37 +55,37 @@ FAMILIES: list[tuple[str, tuple[str, ...], tuple[str, ...]]] = [
      ("에너지", "발전", "태양광", "풍력", "수소", "가스", "환경", "폐기물", "재활용")),
 ]
 
-# 공시 유형마다 '쉽게 말하면'의 첫 문장
+# 공시 유형마다 '거래의 성격' 첫 문장(교과서 문체)
 TYPE_PLAIN = {
-    "merger": "합병은 두 회사가 하나가 되는 것입니다. 흡수합병이면 한 회사만 남고, 없어지는 회사 주주는 남는 회사 주식을 받습니다.",
-    "split_merger": "분할합병은 한 회사의 사업 일부를 떼어 내 다른 회사에 바로 붙이는 것입니다.",
-    "split": "분할은 한 회사의 사업 일부를 떼어 새 회사를 만드는 것입니다.",
-    "share_exchange": "주식교환·이전은 상대 회사 주주가 가진 주식을 우리 회사 주식과 바꿔, 상대 회사를 100% 자회사로 만드는 방법입니다.",
-    "tender_offer": "공개매수는 '언제까지, 얼마에, 몇 주를 사겠다'고 공개하고 시장 밖에서 주식을 사 모으는 것입니다. 보통 시세보다 비싸게 사서 경영권을 확보하거나 상장을 폐지할 때 씁니다.",
-    "control_change": "최대주주가 바뀐다는 건 회사의 주인이 바뀐다는 뜻이라, 경영진과 전략이 함께 바뀌는 경우가 많습니다.",
-    "stock_acq": "다른 회사 주식을 사서 그 회사의 '공동 주인'이 되는 거래입니다.",
-    "stock_trf": "갖고 있던 다른 회사 주식을 팔아 현금으로 바꾸는 거래입니다.",
-    "business_acq": "영업양수는 회사 전체가 아니라 특정 사업 부문(사람·설비·거래처)을 통째로 사 오는 것입니다. 원하는 사업만 골라 올 수 있습니다.",
-    "business_trf": "영업양도는 회사의 사업 부문 하나를 사람·설비·거래처째 통째로 파는 것입니다.",
-    "asset_acq": "유형자산은 땅·건물·기계처럼 오래 쓰는 설비입니다. 사들이면 현금이 설비로 바뀌고, 그 값은 쓰는 동안 매년 감가상각비라는 비용으로 나눠 잡힙니다.",
-    "asset_trf": "가진 땅·건물·설비를 팔아 현금으로 바꾸는 거래입니다.",
-    "ipo": "IPO(기업공개)는 회사가 처음으로 일반 투자자에게 주식을 팔고 증권시장에 올라가는 것입니다. 그 뒤로는 누구나 이 회사 주식을 사고팔 수 있습니다.",
-    "rights_offering": "유상증자는 새 주식을 팔아 돈을 모으는 것입니다. 갚을 필요가 없는 돈이지만, 주식 수가 늘어 기존 주주 한 사람의 몫은 줄어듭니다(희석).",
-    "rights_bonus": "유무상증자는 새 주식을 팔아 돈을 모으면서(유상), 동시에 기존 주주에게 새 주식을 공짜로 나눠 주는(무상) 것입니다.",
-    "bonus_issue": "무상증자는 돈을 받지 않고 기존 주주에게 새 주식을 나눠 주는 것입니다. 피자를 더 잘게 자른 것과 같아 회사 가치는 그대로이고, 주가는 그만큼 낮아집니다(권리락).",
-    "capital_reduction": "감자는 자본금을 줄이는 것입니다. 주식 수를 줄여 장부에 쌓인 손실을 메우거나(무상감자), 주주에게 돈을 돌려줍니다(유상감자).",
-    "treasury_trust": "자사주 신탁은 증권사에 돈을 맡겨 정해진 기간 동안 회사 주식을 대신 사들이게 하는 것입니다.",
-    "treasury_buy": "자사주 매입은 회사가 시장에서 자기 회사 주식을 사들이는 것입니다. 시장에 도는 주식이 줄어 남은 주주의 몫이 커지고, 사서 없애면(소각) 그 효과가 확실해집니다.",
-    "treasury_sell": "자사주 처분은 회사가 갖고 있던 자기 주식을 다시 파는 것입니다. 현금을 마련하거나 직원 보상, 우호 세력에게 넘기는 데 씁니다.",
-    "treasury_cancel": "자사주 소각은 회사가 가진 자기 주식을 없애 주식 수를 줄이는 것입니다. 이익이 같아도 주식 수가 줄어 한 주당 몫이 커집니다.",
-    "cb": "전환사채는 처음엔 빌린 돈이지만, 투자자가 원하면 정해진 가격에 주식으로 바꿀 수 있는 채권입니다. 회사는 낮은 이자로 돈을 빌리고, 투자자는 주가가 오르면 주식으로 바꿔 차익을 봅니다.",
-    "bw": "신주인수권부사채는 빌린 돈(사채)에 '정해진 가격에 새 주식을 살 권리'가 붙은 채권입니다. 이자를 낮게 주는 대신 주가가 오르면 투자자가 싸게 주식을 살 수 있습니다.",
-    "eb": "교환사채는 회사가 가진 다른 주식(자사주나 계열사 주식)으로 바꿀 수 있는 채권입니다. 새 주식을 찍지 않고 들고 있던 주식을 내준다는 점이 전환사채와 다릅니다.",
-    "valueup": "기업가치 제고(밸류업) 계획은 주가가 회사 가치보다 낮게 평가되는 문제를 풀려고 회사가 내놓는 배당·자사주·수익성 목표입니다.",
-    "dividend": "배당은 회사가 번 이익의 일부를 주주에게 현금으로 나눠 주는 것입니다.",
-    "earnings": "잠정실적은 회계감사를 받기 전에 먼저 알리는 실적입니다. 실적이 크게 바뀌면 투자자가 빨리 알 수 있게 미리 공시합니다.",
-    "contract": "단일판매·공급계약 공시는 매출에 비해 큰 주문을 따냈다는 뜻입니다. 계약 금액이 일정 비율을 넘으면 꼭 알려야 합니다.",
-    "insolvency": "부도·회생·영업정지 같은 공시는 회사가 빚을 갚기 어렵거나 사업을 계속하기 어려운 상황이라는 신호입니다.",
+    "merger": "합병은 둘 이상의 회사가 하나의 회사로 결합하는 것이다. 흡수합병에서는 한 회사(존속회사)만 남고 다른 회사(소멸회사)는 해산하며, 소멸회사의 주주는 그 대가로 존속회사의 주식을 받는다.",
+    "split_merger": "분할합병은 한 회사의 사업 일부를 분리하여 다른 회사에 곧바로 합병시키는 것이다.",
+    "split": "회사분할은 한 회사의 사업 일부를 떼어 내어 새로운 회사를 설립하는 것이다.",
+    "share_exchange": "주식의 포괄적 교환·이전은 상대 회사 주주가 보유한 주식을 자사 주식과 교환하여 상대 회사를 완전자회사(지분 100%)로 만드는 방법이다.",
+    "tender_offer": "공개매수는 매수 기간·가격·수량을 공개하고 증권시장 밖에서 불특정 다수의 주주로부터 주식을 사들이는 것이다. 통상 시가보다 높은 가격을 제시하며, 경영권 확보나 상장폐지를 목적으로 하는 경우가 많다.",
+    "control_change": "최대주주의 변경은 회사의 지배권이 이전된다는 의미이므로, 경영진 교체와 경영 전략의 변화가 뒤따르는 경우가 많다.",
+    "stock_acq": "타법인 주식 취득은 다른 회사의 주식을 매입하여 그 회사의 지분을 보유하는 거래이다.",
+    "stock_trf": "타법인 주식 처분은 보유하던 다른 회사의 주식을 매각하여 현금화하는 거래이다.",
+    "business_acq": "영업양수는 회사 전체가 아니라 특정 사업 부문(인력·설비·거래처 등)을 일괄하여 인수하는 것이다. 주식 인수와 달리 필요한 사업만 선택하여 취득할 수 있다.",
+    "business_trf": "영업양도는 회사의 특정 사업 부문을 인력·설비·거래처와 함께 일괄하여 매각하는 것이다.",
+    "asset_acq": "유형자산은 토지·건물·기계장치처럼 물리적 형태가 있고 장기간 사용하는 자산이다. 이를 취득하면 현금이 설비로 바뀌고, 취득원가는 내용연수에 걸쳐 감가상각비로 배분된다.",
+    "asset_trf": "유형자산 양도는 보유한 토지·건물·설비를 매각하여 현금으로 전환하는 거래이다.",
+    "ipo": "기업공개(IPO)는 회사가 처음으로 불특정 다수의 투자자에게 주식을 매각하고 증권시장에 상장하는 것이다. 상장 이후에는 누구나 증권시장에서 그 회사의 주식을 매매할 수 있다.",
+    "rights_offering": "유상증자는 신주를 발행하여 투자자로부터 자금을 조달하는 것이다. 상환 의무가 없는 자기자본이 늘어나지만, 발행주식 수가 증가하여 기존 주주의 지분율과 주당 가치가 낮아지는 희석 효과가 발생한다.",
+    "rights_bonus": "유무상증자는 신주를 발행하여 자금을 조달하는 유상증자와, 대가 없이 기존 주주에게 신주를 배정하는 무상증자를 함께 실시하는 것이다.",
+    "bonus_issue": "무상증자는 대가를 받지 않고 기존 주주에게 보유 주식 수에 비례하여 신주를 배정하는 것이다. 잉여금이 자본금으로 대체될 뿐 회사의 가치는 변하지 않으며, 주가는 늘어난 주식 수만큼 조정된다(권리락).",
+    "capital_reduction": "감자는 자본금을 감소시키는 것이다. 주주에게 대가를 지급하지 않고 누적 결손을 보전하는 무상감자와, 주주에게 자금을 반환하는 유상감자로 나뉜다.",
+    "treasury_trust": "자기주식 취득 신탁계약은 증권회사 등에 자금을 맡겨 정해진 기간 동안 회사 주식을 대신 매입하게 하는 방식이다.",
+    "treasury_buy": "자기주식 취득은 회사가 시장에서 자사 주식을 매입하는 것이다. 유통 주식 수가 줄어 남은 주주의 지분 가치가 높아지며, 매입한 주식을 소각하면 그 효과가 확정된다.",
+    "treasury_sell": "자기주식 처분은 회사가 보유하던 자사 주식을 다시 매각하는 것이다. 자금 조달, 임직원 보상, 우호 세력 확보 등의 목적으로 이루어진다.",
+    "treasury_cancel": "자기주식 소각은 회사가 보유한 자사 주식을 없애 발행주식 수를 줄이는 것이다. 이익이 같더라도 주식 수가 줄어 주당순이익(EPS)이 증가한다.",
+    "cb": "전환사채(CB)는 발행 시점에는 회사채이지만, 투자자가 원하면 미리 정한 가격(전환가액)에 주식으로 전환할 수 있는 채권이다. 회사는 낮은 이자로 자금을 조달하고, 투자자는 주가가 상승하면 주식으로 전환하여 시세차익을 얻는다.",
+    "bw": "신주인수권부사채(BW)는 회사채에 '정해진 가격으로 신주를 인수할 권리'가 결합된 채권이다. 투자자는 낮은 이자를 받는 대신 주가가 오르면 시가보다 낮은 가격에 신주를 취득할 수 있다.",
+    "eb": "교환사채(EB)는 발행회사가 보유한 다른 주식(자기주식이나 계열회사 주식)으로 교환할 수 있는 채권이다. 신주를 발행하지 않고 보유 주식을 교부한다는 점에서 전환사채와 다르다.",
+    "valueup": "기업가치 제고(밸류업) 계획은 주가가 내재가치보다 낮게 평가되는 문제를 해소하기 위해 회사가 제시하는 배당·자기주식·수익성 목표이다.",
+    "dividend": "배당은 회사가 창출한 이익의 일부를 주주에게 현금 등으로 분배하는 것이다.",
+    "earnings": "잠정실적 공시는 외부감사를 받기 전에 영업실적을 먼저 알리는 것이다. 실적이 크게 변동하면 투자자가 신속히 알 수 있도록 사전에 공시하게 되어 있다.",
+    "contract": "단일판매·공급계약 공시는 매출액에 비해 규모가 큰 계약을 체결하였음을 알리는 것이다. 계약 금액이 일정 비율을 넘으면 공시 의무가 생긴다.",
+    "insolvency": "부도·회생절차·영업정지 공시는 회사가 채무를 상환하기 어렵거나 사업을 계속하기 어려운 상황에 처했다는 신호이다.",
 }
 
 # 거래 목적 문장에서 어떤 효과를 노리는지 가늠하는 단어
@@ -176,6 +176,15 @@ def _eun(word: str) -> str:
     return josa(_base_word(word), "은", "는")
 
 
+def _euro(word: str) -> str:
+    """'으로/로': 받침이 없거나 ㄹ 받침이면 '로'."""
+    w = _base_word(word).strip()
+    ch = w[-1] if w else ""
+    if "가" <= ch <= "힣" and (ord(ch) - 0xAC00) % 28 == 8:  # ㄹ 받침
+        return "로"
+    return josa(w, "으로", "로")
+
+
 def _raw(ev, key) -> str:
     v = str((ev.detail or {}).get(key) or "").strip()
     return "" if v in {"-", "해당사항없음", "해당없음"} else v
@@ -205,7 +214,7 @@ def _fact_pct(ev, *labels) -> float | None:
 
 def _short(text, limit: int = 60) -> str:
     t = clean_text(text)
-    t = re.sub(r"^\s*\d+[\.\)]\s*", "", t)
+    t = re.sub(r"^\s*\d+[\.\)]\s*", "", t).rstrip(" .")
     return t if len(t) <= limit else t[: limit - 1].rstrip() + "…"
 
 
@@ -215,30 +224,30 @@ def purpose_kinds(text) -> list[str]:
 
 
 def funding(ev) -> str | None:
-    """대금을 어떻게 마련하는지 쉬운 말로('빚을 내서' 등)."""
+    """대금 조달 방법을 '차입금으로' 같은 부사구로."""
     t = " ".join(filter(None, [_raw(ev, "dl_pym"), _fact(ev, "대금 지급 방식") or ""]))
     if not t:
         return None
     own = any(w in t for w in ("자기자금", "자체자금", "자체 자금", "자기 자금", "보유자금", "보유 자금", "보유현금", "보유 현금", "자기자본"))
     loan = "차입" in t or "대출" in t
     if own and loan:
-        return "가진 돈과 빌린 돈을 섞어"
+        return "자체 자금과 차입금으로"
     if loan:
-        return "빚을 내서"
+        return "차입금으로"
     if "증자" in t:
-        return "새 주식을 팔아 모은 돈으로"
+        return "유상증자 자금으로"
     if "사채" in t:
-        return "사채로 빌린 돈으로"
+        return "사채 발행 자금으로"
     if own:
-        return "가진 돈으로"
+        return "자체 자금으로"
     return None
 
 
 def subject(ev) -> str:
-    """'의약품 제조 회사 애드바이오텍'처럼 회사 앞에 업종을 붙인다."""
+    """'의약품 제조 기업 애드바이오텍'처럼 회사 앞에 업종을 붙인다."""
     name = industry_name(getattr(ev, "induty_code", ""))
     if name and "지주" not in name:
-        return f"{name} 회사 {ev.corp_name}"
+        return f"{name} 기업 {ev.corp_name}"
     return ev.corp_name
 
 
@@ -248,8 +257,8 @@ def _year(ev) -> str:
 
 
 def size_line(ev, amount: float | None = None, what: str | None = None, income_years: bool = True) -> str | None:
-    """거래 금액을 회사 재산·매출·이익과 견줘 '얼마나 큰 결정인가'를 한 문장으로.
-    income_years: 돈을 쓰는 거래면 '본업 이익 몇 년치'를 붙인다(파는 거래에는 어색해서 뺀다)."""
+    """거래 금액을 총자산·매출액·영업이익과 비교해 거래의 상대적 규모를 한 문장으로.
+    income_years: 자금을 지출하는 거래면 '연간 영업이익의 몇 년분'을 덧붙인다(매각 거래에는 붙이지 않는다)."""
     amt = amount if amount is not None else ev.amount
     if not amt:
         return None
@@ -258,47 +267,46 @@ def size_line(ev, amount: float | None = None, what: str | None = None, income_y
     assets, revenue, oi = fin.get("assets"), fin.get("revenue"), fin.get("operating_income")
     official = _fact_pct(ev, "총자산 대비", "자산총액 대비")
     if official:
-        sw = share_words(official, 100)
-        parts.append(f"회사 재산 전부(총자산)의 {sw}")
+        parts.append(f"회사 총자산의 {share_words(official, 100)}")
     elif assets:
-        parts.append(f"회사 재산 전부(총자산 {fmt_krw(assets)})의 {share_words(amt, assets)}")
+        parts.append(f"회사 총자산({fmt_krw(assets)})의 {share_words(amt, assets)}")
     if revenue:
-        parts.append(f"{_year(ev)}매출({fmt_krw(revenue)})의 {share_words(amt, revenue)}")
+        parts.append(f"{_year(ev)}매출액({fmt_krw(revenue)})의 {share_words(amt, revenue)}")
     if not parts:
         return None
     head = what or fmt_krw(amt)
-    line = f"{head}{_eun(head)} " + ", ".join(parts) + "에 해당합니다."
+    line = f"{head}{_eun(head)} " + ", ".join(parts) + "에 해당한다."
     if oi is not None and oi <= 0:
-        line += f" {_year(ev)}본업은 적자(영업손실 {fmt_krw(-oi)})였습니다."
+        line += f" {_year(ev)}에는 영업손실({fmt_krw(-oi)})을 기록하였다."
     elif income_years and oi and amt / oi >= 1.5:
-        line += f" 본업으로 1년에 버는 이익(영업이익 {fmt_krw(oi)})의 {amt / oi:.1f}년치입니다."
+        line += f" 이는 연간 영업이익({fmt_krw(oi)})의 {amt / oi:.1f}년분에 해당한다."
     return line
 
 
-def breakeven_line(ev, amt: float, why: str = "이 투자로") -> str:
+def breakeven_line(ev, amt: float, source: str = "이 투자에서") -> str:
     cost = amt * ASSUMED_RATE
-    line = (f"본전 조건: {fmt_krw(amt)}{_eul(fmt_krw(amt))} 연 5% 금리로 빌렸다고 치면(가정) 이자만 매년 {fmt_krw(cost)}입니다. "
-            f"{why} 매년 그 이상을 더 벌어야 남는 장사입니다.")
+    line = (f"투자의 손익분기: {fmt_krw(amt)}의 자금을 연 5%의 비용(차입 이자 또는 기회비용)으로 조달한다고 가정하면 "
+            f"연간 자본비용은 {fmt_krw(cost)}이다. 따라서 {source} 매년 그 이상의 추가 이익이 발생해야 기업가치가 증가한다.")
     oi = (ev.fin or {}).get("operating_income")
     if oi and oi > 0:
-        line += f" 회사가 본업으로 1년에 버는 이익({fmt_krw(oi)})의 {share_words(cost, oi)} 규모의 부담입니다."
+        line += f" 이는 연간 영업이익({fmt_krw(oi)})의 {share_words(cost, oi)}에 해당하는 부담이다."
     elif oi is not None and oi <= 0:
-        line += " 본업이 적자라 이 부담은 더 무겁습니다."
+        line += " 본업이 영업손실 상태이므로 이 부담은 더욱 크다."
     return line
 
 
 def stake_text(p: float | None) -> tuple[str, str] | None:
-    """지분율 → (경영상 의미, 회계상 의미)."""
+    """지분율 → (지배구조상 의미, 회계상 의미)."""
     if p is None:
         return None
     if p > 50:
-        return ("회사를 사실상 지배하는 지분(50% 초과)이라 자회사가 됩니다",
-                "회계에서는 자회사로 보고 재무제표를 합칩니다(연결). 순자산보다 더 얹어 준 값은 영업권으로 남습니다")
+        return ("과반 지분(50% 초과)으로 대상 회사를 지배하게 되므로 대상 회사는 종속회사(자회사)가 된다",
+                "회계상으로는 대상 회사를 연결재무제표에 합산하며, 순자산 공정가치를 초과하여 지급한 금액은 영업권으로 인식한다")
     if p >= 20:
-        return ("경영에 목소리를 낼 수 있는 지분(20~50%)입니다",
-                "회계에서는 보통 관계회사로 보고, 그 회사 이익 중 내 몫만 내 이익에 더합니다(지분법)")
-    return ("경영권(보통 50% 초과)이 없는, 투자에 가까운 지분입니다",
-            "회계에서는 보통 투자 주식(금융자산)으로 적고, 값이 오르내리면 평가손익을 반영합니다")
+        return ("경영에 유의적인 영향력을 행사할 수 있는 지분(20~50%)이다",
+                "회계상으로는 통상 관계기업으로 분류하여, 대상 회사 순이익 중 지분율에 해당하는 금액을 투자이익으로 인식한다(지분법)")
+    return ("지배력(통상 50% 초과)이나 유의적 영향력(통상 20% 이상)에 미치지 못하는 투자 목적의 지분이다",
+            "회계상으로는 통상 금융자산으로 분류하여 공정가치로 측정하고, 가치 변동을 평가손익으로 반영한다")
 
 
 def relatedness(ev, target_text) -> str | None:
@@ -307,30 +315,33 @@ def relatedness(ev, target_text) -> str | None:
     if not mine or not theirs:
         return None
     if mine == theirs:
-        return (f"업종을 견줘 보면 우리 회사와 상대 모두 {mine} 쪽이라, 판매망 공유나 원가 절감 같은 시너지를 "
-                "비교적 계산하기 쉽습니다.")
-    return (f"업종을 견줘 보면 우리 회사는 {mine}, 상대는 {theirs} 쪽으로 서로 달라 본업의 역량을 그대로 쓰기 어렵습니다. "
-            "앤소프 매트릭스로 보면 새 제품·새 시장으로 가는 '다각화'에 가까워 위험이 큰 편입니다.")
+        return (f"사업 관련성: 두 회사 모두 {mine} 업종에 속하므로 판매망 공유나 원가 절감 등의 시너지를 비교적 정량화하기 쉽다"
+                "(관련 다각화 또는 수평적 결합).")
+    return (f"사업 관련성: 인수 회사는 {mine}, 대상 회사는 {theirs} 업종으로 서로 달라 기존 사업의 역량을 그대로 활용하기 어렵다. "
+            "앤소프 매트릭스에 따르면 신제품으로 신시장에 진출하는 '다각화'에 가까워 위험이 가장 큰 성장 경로에 해당한다.")
 
 
-def synergy_kind_line(purpose: str | None) -> str | None:
+def synergy_kind_line(purpose: str | None, what: str = "취득") -> str | None:
     if not purpose:
         return None
     kinds = purpose_kinds(purpose)
-    quote = f"공시에 적힌 목적('{_short(purpose, 50)}')"
+    q = _short(purpose, 50)
     if "revenue" in kinds:
-        return f"노리는 시너지: {quote}을 보면 판매를 늘리는 매출 시너지를 노립니다. 매출 시너지는 비용을 줄이는 시너지보다 실현이 불확실한 편입니다."
+        return (f"시너지의 유형: 공시된 {what} 목적('{q}')은 판매 확대를 통한 매출 시너지를 겨냥한다. "
+                "매출 시너지는 비용 시너지에 비해 실현 여부가 불확실한 것으로 알려져 있다.")
     if "cost" in kinds:
-        return f"노리는 시너지: {quote}을 보면 원가를 줄이는 비용 시너지를 노립니다. 중복 비용을 없애는 것이라 비교적 계산이 쉽고 실현 가능성도 높은 편입니다."
+        return (f"시너지의 유형: 공시된 {what} 목적('{q}')은 중복 비용 제거를 통한 비용 시너지를 겨냥한다. "
+                "비용 시너지는 측정이 비교적 쉽고 실현 가능성도 높은 편이다.")
     if "capability" in kinds:
-        return f"노리는 시너지: {quote}을 보면 기술이나 인력을 얻으려는 것입니다. 성과가 숫자로 나오기까지 시간이 걸립니다."
+        return (f"시너지의 유형: 공시된 {what} 목적('{q}')은 기술·인력 등 핵심 역량의 확보에 있다. "
+                "이러한 시너지는 성과가 재무 수치로 나타나기까지 시간이 걸린다.")
     if "financial" in kinds:
-        return f"노리는 것: {quote}을 보면 사업 시너지보다 투자 수익이 목적입니다. 이 경우엔 산 값이 싼지 비싼지가 전부입니다."
+        return f"거래의 목적: 공시된 {what} 목적('{q}')으로 볼 때 사업 시너지보다 재무적 투자수익이 목적이다. 이 경우 취득 가격의 적정성이 투자 성과를 좌우한다."
     if "diversify" in kinds:
-        return f"노리는 것: {quote}을 보면 새 사업에 들어가는 다각화입니다. 본업과 멀수록 실패 위험이 커집니다."
+        return f"거래의 목적: 공시된 {what} 목적('{q}')으로 볼 때 신규 사업에 진출하는 다각화이다. 기존 사업과의 관련성이 낮을수록 실패 위험이 커진다."
     if "control" in kinds:
-        return f"노리는 것: {quote}을 보면 경영권이나 지배력을 얻으려는 거래입니다."
-    return f"노리는 것: {quote}."
+        return f"거래의 목적: 공시된 {what} 목적('{q}')으로 볼 때 경영권 또는 지배력 확보를 위한 거래이다."
+    return f"거래의 목적: '{q}'."
 
 
 # ------------------------------------------------------------------ 공시 유형별 풀이
@@ -350,21 +361,21 @@ def _num(text) -> float | None:
 
 
 def _stock_acq(ev, out: dict) -> None:
-    tgt = clean_name(_raw(ev, "iscmp_cmpnm")) or "상대 회사"
+    tgt = clean_name(_raw(ev, "iscmp_cmpnm")) or "대상 회사"
     biz = _raw(ev, "iscmp_mbsn")
     after = _raw_pct(ev, "atinh_eqrt")
     amt = ev.amount
     me = subject(ev)
-    out["what"] = f"{me}{_i(me)} {tgt}{f'({biz})' if biz else ''} 주식을 {fmt_krw(amt)}에 삽니다." if amt else \
-        f"{me}{_i(me)} {tgt}{f'({biz})' if biz else ''} 주식을 삽니다."
+    who = f"{tgt}({biz})" if biz else tgt
+    out["what"] = f"{me}{_i(me)} {who}의 주식을 {fmt_krw(amt)}에 취득한다." if amt else f"{me}{_i(me)} {who}의 주식을 취득한다."
     if after is not None:
-        out["what"] += f" 사고 나면 지분이 {after:.2f}%가 됩니다."
+        out["what"] += f" 취득 후 지분율은 {after:.2f}%이다."
     st = stake_text(after)
     if st:
-        out["plain"] += f" {after:.1f}%는 {st[0]}. {st[1]}."
+        out["plain"] += f" 취득 후 지분율 {after:.1f}%는 {st[0]}. {st[1]}."
     fund = funding(ev)
     if out["size"] and fund:
-        out["size"] += f" 돈은 {fund} 냅니다."
+        out["size"] += f" 취득 대금은 {fund} 조달한다."
     steps = []
     shares, after_sh, total_sh = _raw_num(ev, "inhdtl_stkcnt"), _raw_num(ev, "atinh_owstkcnt"), _raw_num(ev, "iscmp_tisstk")
     bought = None
@@ -376,12 +387,12 @@ def _stock_acq(ev, out: dict) -> None:
         bought = after
     if amt and bought and bought > 0.5:
         whole = amt / (bought / 100)
-        steps.append(f"회사값으로 바꿔 보면: 이번에 사는 지분 {bought:.1f}%에 {fmt_krw(amt)}{_eul(fmt_krw(amt))} 내니, {tgt} 전체를 약 "
-                     f"{fmt_krw(whole)}짜리로 본 가격입니다. 이 값이 그 회사가 1년에 버는 이익의 몇 배인지가 비싼지 싼지의 기준입니다.")
+        steps.append(f"기업가치 환산: 지분 {bought:.1f}%에 {fmt_krw(amt)}{_eul(fmt_krw(amt))} 지급하므로, 이 가격은 {tgt}의 지분 전체 가치를 "
+                     f"약 {fmt_krw(whole)}{_euro(fmt_krw(whole))} 평가한 것이다. 이 금액을 대상 회사의 연간 순이익과 비교한 배수(PER)가 "
+                     "취득 가격의 적정성을 판단하는 기준이 된다.")
     if amt:
         steps.append(breakeven_line(ev, amt))
-    purpose = _fact(ev, "취득 목적")
-    line = synergy_kind_line(purpose)
+    line = synergy_kind_line(_fact(ev, "취득 목적"))
     if line:
         steps.append(line)
     rel = relatedness(ev, biz)
@@ -389,17 +400,20 @@ def _stock_acq(ev, out: dict) -> None:
         steps.append(rel)
     if after is not None:
         if after > 50:
-            steps.append("경영권: 지분이 절반을 넘어 시너지를 직접 만들 수 있습니다. 대신 실패하면 손실도 그대로 떠안습니다.")
+            steps.append("지배력: 과반 지분을 확보하므로 시너지를 직접 실현할 수 있다. 다만 인수가 실패할 경우 그 손실도 전부 부담하게 된다.")
         elif after >= 20:
-            steps.append("경영권: 이사회에 목소리를 낼 수는 있지만 마음대로 바꾸긴 어렵습니다. 시너지를 내려면 상대 경영진과의 협력이 필요합니다.")
+            steps.append("지배력: 이사회에 영향력을 행사할 수는 있으나 경영을 단독으로 결정하기는 어렵다. 시너지 실현에는 대상 회사 경영진의 협력이 필요하다.")
         else:
-            steps.append("경영권: 지분이 20%에 못 미쳐 경영을 직접 바꾸기 어렵습니다. 시너지를 내려면 별도 협력 계약이나 이사 파견이 있는지가 관건입니다.")
+            steps.append("지배력: 지분율이 20%에 미치지 못하여 경영에 직접 관여하기 어렵다. 따라서 시너지 실현 여부는 별도의 협력 계약이나 이사 파견 여부에 달려 있다.")
     out["steps"] = steps
     ta = (ev.fin or {}).get("assets")
     portion = share_words(_fact_pct(ev, "총자산 대비"), 100) if _fact_pct(ev, "총자산 대비") else share_words(amt, ta)
-    head = f"회사 재산의 {portion}{_eul(portion)} " if portion else ""
-    key = "경영권 없이 시너지를 낼 수 있느냐" if (after is not None and after <= 50) else "더 얹어 준 값만큼 시너지를 만들 수 있느냐"
-    out["takeaway"] = f"{head}{(fund + ' ') if fund else ''}{biz or tgt} 회사 지분{f' {after:.1f}%' if after is not None else ''}에 쓴 결정입니다. {key}가 관건입니다."
+    head = f"회사 총자산의 {portion}에 해당하는 자금을 " if portion else ""
+    fund_part = f"{fund} 조달하여 " if fund and portion else ""
+    stake = f"지분 {after:.1f}%" if after is not None else "지분"
+    key = ("지배력 없이 시너지를 실현할 수 있는지" if (after is not None and after <= 50)
+           else "지급한 프리미엄 이상의 시너지를 창출할 수 있는지")
+    out["takeaway"] = f"{head}{fund_part}{biz or tgt} 기업의 {stake}{_eul(stake)} 취득한 결정이다. {key}가 핵심 쟁점이다."
 
 
 def _stock_trf(ev, out: dict) -> None:
@@ -408,27 +422,30 @@ def _stock_trf(ev, out: dict) -> None:
     after = _raw_pct(ev, "attrf_eqrt")
     me = subject(ev)
     amt = ev.amount
-    out["what"] = f"{me}{_i(me)} 갖고 있던 {tgt}{f'({biz})' if biz else ''} 주식을 {fmt_krw(amt) + '에 ' if amt else ''}팝니다."
+    who = f"{tgt}({biz})" if biz else tgt
+    out["what"] = f"{me}{_i(me)} 보유하던 {who}의 주식을 {fmt_krw(amt) + '에 ' if amt else ''}매각한다."
     if after is not None:
-        out["what"] += f" 팔고 나면 지분이 {after:.2f}%가 됩니다."
+        out["what"] += f" 매각 후 지분율은 {after:.2f}%이다."
         if after == 0:
-            out["plain"] += " 지분을 모두 팔아 그 회사에서 완전히 손을 뗍니다."
+            out["plain"] += " 보유 지분을 전량 매각하므로 해당 회사에 대한 투자를 완전히 회수한다."
     liab = (ev.fin or {}).get("liabilities")
     if out["size"] and amt and liab:
-        out["size"] += f" 이 돈이면 회사 빚(부채 {fmt_krw(liab)})의 {share_words(amt, liab)}를 갚을 수 있습니다."
-    steps = ["BCG 매트릭스는 사업을 돈을 벌어 오는 사업, 돈을 넣어 키울 사업, 정리할 사업으로 나눕니다. "
-             "판다는 건 이 지분을 '정리하거나 현금으로 바꿀 쪽'으로 봤다는 뜻입니다."]
+        out["size"] += f" 매각 대금은 회사 부채총계({fmt_krw(liab)})의 {share_words(amt, liab)}에 해당한다."
+    steps = ["BCG 매트릭스의 관점: BCG 매트릭스는 사업을 시장성장률과 상대적 시장점유율에 따라 별, 현금 젖소, 물음표, 개로 분류하고 "
+             "자원 배분의 우선순위를 정한다. 지분 매각은 해당 투자를 회수 또는 철수 대상으로 판단했음을 의미한다."]
     purpose = _fact(ev, "처분 목적")
     kinds = purpose_kinds(purpose)
     if "liquidity" in kinds:
-        steps.append(f"공시 목적('{_short(purpose, 50)}')을 보면 사업 판단보다 현금 확보가 급한 경우로 보입니다.")
+        steps.append(f"처분 목적('{_short(purpose, 50)}')으로 볼 때 사업 포트폴리오 판단보다 유동성 확보가 우선된 경우로 해석된다.")
     elif "focus" in kinds:
-        steps.append(f"공시 목적('{_short(purpose, 50)}')을 보면 핵심 사업에 집중하려는 정리입니다.")
+        steps.append(f"처분 목적('{_short(purpose, 50)}')으로 볼 때 핵심 사업에 자원을 집중하기 위한 포트폴리오 조정이다.")
     elif purpose:
-        steps.append(f"공시 목적: '{_short(purpose, 60)}'.")
-    steps.append("판 값이 장부에 적힌 값보다 크면 처분이익, 작으면 처분손실이 이번 실적에 잡힙니다. 그리고 판 돈을 어디에 쓰는지(빚 갚기, 새 투자)가 다음 관전 포인트입니다.")
+        steps.append(f"처분 목적: '{_short(purpose, 60)}'.")
+    steps.append("회계적 영향: 매각 가격이 장부금액을 초과하면 처분이익이, 미달하면 처분손실이 당기손익에 반영된다. "
+                 "이후 매각 대금의 사용처(부채 상환 또는 신규 투자)가 후속 분석의 대상이다.")
     out["steps"] = steps
-    out["takeaway"] = f"{tgt} 지분을 팔아 {fmt_krw(amt) if amt else '현금'}{_eul(fmt_krw(amt)) if amt else '을'} 확보하는 결정입니다. 판 돈을 어디에 쓰는지가 관건입니다."
+    cash = fmt_krw(amt) if amt else "현금"
+    out["takeaway"] = f"{tgt} 지분을 매각하여 {cash}{'의 현금' if amt else ''}을 확보하는 결정이다. 매각 대금의 활용 방안이 핵심 쟁점이다."
 
 
 def _business_acq(ev, out: dict) -> None:
@@ -436,14 +453,14 @@ def _business_acq(ev, out: dict) -> None:
     bsn = _raw(ev, "inh_bsn") or "사업 부문"
     who = clean_name(_raw(ev, "dlptn_cmpnm"))
     amt = ev.amount
-    out["what"] = f"{me}{_i(me)} {who + '의 ' if who else ''}{bsn}{_eul(bsn)} {fmt_krw(amt) + '에 ' if amt else ''}통째로 사들입니다."
+    out["what"] = f"{me}{_i(me)} {who + '의 ' if who else ''}{bsn}{_eul(bsn)} {fmt_krw(amt) + '에 ' if amt else ''}일괄 양수한다."
     sl = _raw_pct(ev, "sl_rt")
     if sl:
-        out["what"] += f" 사 오는 사업의 매출은 우리 회사 매출의 {sl:.1f}% 규모입니다."
+        out["what"] += f" 양수 대상 사업의 매출액은 당사 매출액의 {sl:.1f}%에 해당한다."
     steps = []
     if amt:
-        steps.append(breakeven_line(ev, amt, "사 온 사업에서"))
-    line = synergy_kind_line(_fact(ev, "양수 목적"))
+        steps.append(breakeven_line(ev, amt, "양수한 사업에서"))
+    line = synergy_kind_line(_fact(ev, "양수 목적"), "양수")
     if line:
         steps.append(line)
     rel = relatedness(ev, bsn + " " + (_fact(ev, "양수 영업의 주요 내용") or ""))
@@ -451,9 +468,10 @@ def _business_acq(ev, out: dict) -> None:
         steps.append(rel)
     rl = _raw(ev, "dlptn_rl_cmpn")
     if any(w in rl for w in ("계열", "특수관계", "최대주주", "자회사", "종속")):
-        steps.append(f"파는 쪽이 우리와 특수관계({_short(rl, 20)})라, 값이 공정한지(외부평가)가 특히 중요합니다. 그룹 안에서 값을 높게 쳐주면 한쪽 주주가 손해를 봅니다.")
+        steps.append(f"거래의 공정성: 거래상대방이 특수관계인({_short(rl, 20)})이므로 양수가액의 공정성(외부평가)이 특히 중요하다. "
+                     "계열회사 간 거래에서 가격이 과대 산정되면 한쪽 회사의 주주가 손실을 입는다.")
     out["steps"] = steps
-    out["takeaway"] = f"{bsn}{_eul(bsn)} 사 와서 키우려는 결정입니다. 산 값보다 큰 추가 이익(시너지)을 만들 수 있느냐가 관건입니다."
+    out["takeaway"] = f"{bsn}{_eul(bsn)} 인수하여 성장을 도모하는 결정이다. 지급한 대가 이상의 시너지를 창출할 수 있는지가 핵심 쟁점이다."
 
 
 def _business_trf(ev, out: dict) -> None:
@@ -461,78 +479,87 @@ def _business_trf(ev, out: dict) -> None:
     bsn = _raw(ev, "trf_bsn") or "사업 부문"
     who = clean_name(_raw(ev, "dlptn_cmpnm"))
     amt = ev.amount
-    out["what"] = f"{me}{_i(me)} {bsn}{_eul(bsn)} {who + '에 ' if who else ''}{fmt_krw(amt) + '에 ' if amt else ''}통째로 팝니다."
+    out["what"] = f"{me}{_i(me)} {bsn}{_eul(bsn)} {who + '에 ' if who else ''}{fmt_krw(amt) + '에 ' if amt else ''}일괄 양도한다."
     sl = _raw_pct(ev, "sl_rt")
-    steps = ["BCG 매트릭스로 보면, 파는 사업은 회사가 '더 키우지 않을 사업'으로 판단한 것입니다. 성장이 낮거나 1등이 아닌 사업을 정리해 그 돈을 잘되는 사업에 넣는 그림입니다."]
+    steps = ["BCG 매트릭스의 관점: 사업 양도는 해당 사업을 더 이상 육성하지 않을 사업으로 판단했음을 의미한다. "
+             "성장성이 낮거나 시장 지위가 약한 사업을 정리하여 그 자금을 유망 사업에 재배분하는 전략이다."]
     if sl:
-        steps.append(f"떼어 파는 사업은 회사 매출의 {sl:.1f}%입니다. 이 매출이 빠진 뒤 남은 사업만으로 성장할 수 있는지 봐야 합니다.")
+        steps.append(f"양도 사업은 회사 매출액의 {sl:.1f}%를 차지한다. 이 매출이 제외된 뒤 잔존 사업만으로 성장할 수 있는지를 검토해야 한다.")
     purpose = _fact(ev, "양도 목적")
     if purpose:
-        steps.append(f"공시 목적: '{_short(purpose, 60)}'.")
-    steps.append("판 값이 그 사업의 장부값보다 크면 처분이익이 생기고, 그 사업 실적은 '중단영업'으로 따로 표시될 수 있습니다.")
+        steps.append(f"양도 목적: '{_short(purpose, 60)}'.")
+    steps.append("회계적 영향: 양도가액이 해당 사업의 장부금액을 초과하면 처분이익이 발생하며, 요건을 충족하면 그 사업의 손익은 중단영업으로 구분하여 표시된다.")
     out["steps"] = steps
-    out["takeaway"] = f"{bsn}{_eul(bsn)} 정리해 {fmt_krw(amt) if amt else '현금'}{_eul(fmt_krw(amt)) if amt else '을'} 확보하는 결정입니다. 남은 사업의 성장성과 판 돈의 쓰임이 관건입니다."
+    cash = fmt_krw(amt) if amt else "현금"
+    out["takeaway"] = f"{bsn}{_eul(bsn)} 정리하여 {cash}{'의 현금' if amt else ''}을 확보하는 결정이다. 잔존 사업의 성장성과 매각 대금의 활용이 핵심 쟁점이다."
 
 
 def _asset_acq(ev, out: dict) -> None:
     me = subject(ev)
-    name = _raw(ev, "ast_nm") or _raw(ev, "ast_sen") or "설비"
+    name = _short(_raw(ev, "ast_nm") or _raw(ev, "ast_sen") or "설비", 40)
     amt = ev.amount
-    out["what"] = f"{me}{_i(me)} {_short(name, 40)}{_eul(_short(name, 40))} {fmt_krw(amt) + '에 ' if amt else ''}사들입니다."
+    out["what"] = f"{me}{_i(me)} {name}{_eul(name)} {fmt_krw(amt) + '에 ' if amt else ''}취득한다."
     purpose = " ".join(filter(None, [_fact(ev, "양수 목적"), _fact(ev, "양수 영향")]))
-    steps = ["규모의 경제: 설비를 늘려 많이 만들수록 제품 하나에 드는 고정비(설비값, 감가상각비)가 줄어듭니다."]
-    if any(w in purpose for w in ("생산", "증설", "캐파", "CAPA", "생산능력", "공장", "라인")):
-        steps[0] += f" 공시 목적('{_short(_fact(ev, '양수 목적') or purpose, 40)}')이 생산 능력을 늘리는 것이라 바로 이 논리입니다."
-    elif any(w in purpose for w in ("사옥", "본사", "사무", "업무용")):
-        steps[0] = (f"사옥·업무용 건물이라면 규모의 경제보다는 임차료를 아끼거나 자산으로 보유하려는 목적입니다"
-                    f"(공시 목적: '{_short(_fact(ev, '양수 목적') or purpose, 40)}').")
+    q = _short(_fact(ev, "양수 목적") or purpose, 40)
+    production = any(w in purpose for w in ("생산", "증설", "캐파", "CAPA", "생산능력", "공장", "라인"))
+    office = any(w in purpose for w in ("사옥", "본사", "사무", "업무용"))
+    if production:
+        first = ("규모의 경제: 생산 설비를 확충하여 생산량이 늘면 제품 단위당 고정비(설비 원가, 감가상각비)가 감소한다. "
+                 f"공시된 목적('{q}')이 생산능력 확대이므로 이 논리가 적용된다.")
+    elif office:
+        first = f"취득의 성격: 사옥 등 업무용 자산의 취득은 규모의 경제보다는 임차료 절감이나 자산 보유 목적으로 해석된다(공시된 목적: '{q}')."
+    else:
+        first = "규모의 경제: 생산 설비를 확충하여 생산량이 늘면 제품 단위당 고정비(설비 원가, 감가상각비)가 감소한다."
+    steps = [first]
     if amt:
-        steps.append(breakeven_line(ev, amt, "새 설비로"))
-    steps.append("가동률이 핵심: 설비를 놀리면 고정비만 늘어 오히려 이익이 줄어듭니다. 이 설비를 채울 주문(수요)이 있는지가 관건입니다.")
+        steps.append(breakeven_line(ev, amt, "신규 설비에서"))
+    steps.append("가동률의 중요성: 설비를 충분히 가동하지 못하면 고정비만 증가하여 오히려 이익이 감소한다. 따라서 새 설비를 채울 수요(수주)가 확보되어 있는지가 핵심이다.")
     out["steps"] = steps
-    out["takeaway"] = "현금을 설비로 바꿔 생산 능력을 키우는 결정입니다. 늘어난 고정비를 채울 만큼 팔 수 있느냐가 관건입니다." \
-        if "규모의 경제" in steps[0] else "현금을 부동산·설비로 바꾸는 결정입니다. 그 자산이 비용을 줄이거나 가치를 지켜 줄지가 관건입니다."
+    if office:
+        out["takeaway"] = "현금을 부동산·설비로 전환하는 결정이다. 해당 자산이 비용 절감이나 가치 보전에 기여하는지가 핵심 쟁점이다."
+    else:
+        out["takeaway"] = "현금을 생산 설비로 전환하여 생산능력을 확대하는 결정이다. 늘어난 고정비를 감당할 만큼 판매량을 확보할 수 있는지가 핵심 쟁점이다."
 
 
 def _asset_trf(ev, out: dict) -> None:
     me = subject(ev)
-    name = _raw(ev, "ast_nm") or _raw(ev, "ast_sen") or "자산"
+    name = _short(_raw(ev, "ast_nm") or _raw(ev, "ast_sen") or "자산", 40)
     amt = ev.amount
-    short_name = _short(name, 40)
-    out["what"] = f"{me}{_i(me)} {short_name}{_eul(short_name)} {fmt_krw(amt) + '에 ' if amt else ''}팝니다."
+    out["what"] = f"{me}{_i(me)} {name}{_eul(name)} {fmt_krw(amt) + '에 ' if amt else ''}매각한다."
     purpose = _fact(ev, "양도 목적") or ""
     effect = _fact(ev, "양도 영향") or ""
     both = purpose + " " + effect
     if any(w in both for w in ("재임차", "임차", "리스백", "임대차")):
-        out["plain"] += " 판 뒤 다시 빌려 쓰는 '세일 앤 리스백'이면, 계속 쓰면서 현금만 먼저 받는 셈입니다."
+        out["plain"] += " 매각 후 다시 임차하여 사용하는 세일 앤 리스백(sale and leaseback)이라면, 자산을 계속 사용하면서 현금을 먼저 확보하는 효과가 있다."
     fin = ev.fin or {}
     liab, eq, oi = fin.get("liabilities"), fin.get("equity"), fin.get("operating_income")
-    if out["size"] and amt and eq and eq > 0 and "자기자본" not in (out["size"] or ""):
-        out["size"] = out["size"].replace("에 해당합니다.", f", 주주 몫 재산(자기자본)의 {share_words(amt, eq)}에 해당합니다.", 1)
-    steps = ["자본구조 이론은 빚과 자기 돈의 비율이 회사 위험을 정한다고 봅니다. 빚이 많으면 이자 부담과 위기 때 버틸 힘이 약해집니다."]
+    if out["size"] and amt and eq and eq > 0:
+        out["size"] = out["size"].replace("에 해당한다.", f", 자기자본의 {share_words(amt, eq)}에 해당한다.", 1)
+    steps = ["자본구조 이론의 관점: 자본구조 이론은 부채와 자기자본의 구성 비율이 기업의 위험과 가치에 영향을 미친다고 본다. "
+             "부채 비중이 높을수록 이자 부담과 재무적 곤경의 위험이 커진다."]
     repay = any(w in both for w in ("차입금", "부채", "재무구조", "상환"))
     if amt and liab and eq and eq > 0 and repay:
         before = liab / eq * 100
         after = max(liab - amt, 0) / eq * 100
-        steps.append(f"판 돈을 모두 빚 갚는 데 쓰면 부채비율(빚 ÷ 자기자본)이 {before:.0f}%에서 약 {after:.0f}%로 내려갑니다"
-                     "(처분이익은 빼고 단순 계산).")
+        steps.append(f"부채비율의 변화: 매각 대금을 전액 부채 상환에 사용하면 부채비율(부채÷자기자본)은 {before:.0f}%에서 약 {after:.0f}%로 하락한다"
+                     "(처분손익은 제외한 단순 계산).")
     if amt and repay:
         saving = amt * ASSUMED_RATE
-        line = f"이자 절감: {fmt_krw(amt)}만큼 빚을 갚으면 연 5% 금리 가정으로 매년 이자 약 {fmt_krw(saving)}이 줄어듭니다."
+        line = f"이자비용 절감: {fmt_krw(amt)}의 부채를 상환하면 연 5%의 금리를 가정할 때 연간 이자비용이 약 {fmt_krw(saving)} 감소한다."
         if oi and oi > 0:
-            line += f" 본업으로 1년에 버는 이익({fmt_krw(oi)})의 {share_words(saving, oi)}에 해당합니다."
+            line += f" 이는 연간 영업이익({fmt_krw(oi)})의 {share_words(saving, oi)}에 해당한다."
         steps.append(line)
     if effect:
-        steps.append(f"대가: 판 자산에서 나오던 수익(임대료 등)이나 쓰던 공간이 사라집니다. 공시가 밝힌 영향은 '{_short(effect, 70)}'입니다.")
+        steps.append(f"기회비용: 매각으로 해당 자산에서 발생하던 수익(임대료 등)이나 사용 가치는 사라진다. 공시에는 그 영향이 '{_short(effect, 70)}'라고 기재되어 있다.")
     elif purpose:
-        steps.append(f"공시 목적: '{_short(purpose, 60)}'.")
+        steps.append(f"양도 목적: '{_short(purpose, 60)}'.")
     out["steps"] = steps
     portion = share_words(_fact_pct(ev, "자산총액 대비"), 100) if _fact_pct(ev, "자산총액 대비") else None
-    head = f"회사 재산의 {portion}{_eul(portion)} " if portion else "자산을 "
+    head = f"회사 총자산의 {portion}에 해당하는 자산을 " if portion else "자산을 "
     if repay:
-        out["takeaway"] = f"{head}현금으로 바꿔 빚을 줄이는 결정입니다. 줄어드는 이자와 잃는 자산의 쓰임새를 비교하는 게 핵심입니다."
+        out["takeaway"] = f"{head}현금으로 전환하여 부채를 줄이는 결정이다. 절감되는 이자비용과 포기하는 자산의 효용을 비교하는 것이 분석의 핵심이다."
     else:
-        out["takeaway"] = f"{head}현금으로 바꾸는 결정입니다. 판 돈을 어디에 쓰는지가 관건입니다."
+        out["takeaway"] = f"{head}현금으로 전환하는 결정이다. 매각 대금의 활용 방안이 핵심 쟁점이다."
 
 
 def _merger(ev, out: dict) -> None:
@@ -540,75 +567,79 @@ def _merger(ev, out: dict) -> None:
     partner = clean_name(_raw(ev, "mgptncmp_cmpnm")) or "상대 회사"
     biz = _raw(ev, "mgptncmp_mbsn")
     form = _raw(ev, "mg_stn")
-    out["what"] = f"{me}{_i(me)} {partner}{f'({biz})' if biz else ''}{josa(partner, '과', '와')} 합칩니다{f'({form})' if form else ''}."
+    who = f"{partner}({biz})" if biz else partner
+    out["what"] = f"{me}{_i(me)} {who}{josa(partner, '과', '와')} 합병한다{f'({form})' if form else ''}."
     rl = _raw(ev, "mgptncmp_rl_cmpn")
     group = any(w in rl for w in ("계열", "자회사", "종속", "특수관계", "최대주주"))
     if group:
-        out["plain"] += " 같은 그룹 안의 합병이라 시너지보다 지배구조 정리나 중복 비용 절감이 목적인 경우가 많습니다."
+        out["plain"] += " 동일 기업집단 내의 합병은 시너지보다 지배구조 정리나 중복 비용 절감을 목적으로 하는 경우가 많다."
     fin = ev.fin or {}
     o_ast, o_rev, o_ni = _raw_num(ev, "rbsnfdtl_tast"), _raw_num(ev, "rbsnfdtl_sl"), _raw_num(ev, "rbsnfdtl_nic")
     parts = []
     if o_ast and fin.get("assets"):
-        parts.append(f"재산(총자산 {fmt_krw(o_ast)})은 우리 회사의 {share_words(o_ast, fin['assets'])}")
+        parts.append(f"총자산({fmt_krw(o_ast)})은 당사의 {share_words(o_ast, fin['assets'])}")
     if o_rev and fin.get("revenue"):
-        parts.append(f"매출({fmt_krw(o_rev)})은 우리의 {share_words(o_rev, fin['revenue'])}")
-    out["size"] = (f"상대 회사의 " + ", ".join(parts) + "입니다.") if parts else None
+        parts.append(f"매출액({fmt_krw(o_rev)})은 당사의 {share_words(o_rev, fin['revenue'])}")
+    out["size"] = ("합병 상대 회사의 " + ", ".join(parts) + "이다.") if parts else None
     if o_ni is not None and o_ni < 0 and out["size"]:
-        out["size"] += f" 상대 회사는 직전 해 순손실({fmt_krw(-o_ni)})을 냈습니다."
+        out["size"] += f" 상대 회사는 직전 사업연도에 당기순손실({fmt_krw(-o_ni)})을 기록하였다."
     steps = []
     ratio = _raw(ev, "mg_rt")
     nums = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", ratio.replace(",", ""))][:2] if ratio else []
     if len(nums) == 2 and nums[0] > 0:
         per = f"{nums[1] / nums[0]:.4f}".rstrip("0").rstrip(".")
-        steps.append(f"합병비율({nums[0]:g} : {float(per):g}): 없어지는 {partner} 주식 1주를 {ev.corp_name} 주식 {per}주로 바꿔 줍니다. "
-                     "이 비율이 한쪽에 유리하면 다른 쪽 주주가 손해를 보니, 두 회사 값을 어떻게 매겼는지가 핵심입니다.")
+        steps.append(f"합병비율({nums[0]:g} : {float(per):g}): 소멸회사 주식 1주당 존속회사 주식 {per}주를 교부한다는 의미이다. "
+                     "합병비율이 어느 한쪽에 유리하게 정해지면 다른 쪽 주주가 손실을 입으므로, 두 회사의 가치평가 방법이 핵심이다.")
     elif ratio:
-        steps.append(f"합병비율({_short(ratio, 30)})은 없어지는 회사 주식 1주를 남는 회사 주식 몇 주로 바꿔 주는지 정한 것입니다. "
-                     "이 비율이 한쪽에 유리하면 다른 쪽 주주가 손해를 봅니다.")
-    line = synergy_kind_line(_fact(ev, "합병 목적"))
+        steps.append(f"합병비율({_short(ratio, 30)}): 소멸회사 주식 1주당 존속회사 주식을 몇 주 교부하는지를 정한 것이다. "
+                     "합병비율이 어느 한쪽에 유리하게 정해지면 다른 쪽 주주가 손실을 입는다.")
+    line = synergy_kind_line(_fact(ev, "합병 목적"), "합병")
     if line:
         steps.append(line)
     if group:
         ev_name = _raw(ev, "exevl_intn")
-        steps.append(f"같은 그룹끼리라 웃돈 문제보다 합병비율이 공정한지가 핵심입니다{f'(외부평가: {_short(ev_name, 20)})' if ev_name else ''}.")
+        steps.append(f"공정성: 동일 기업집단 내 합병에서는 인수 프리미엄보다 합병비율의 공정성이 핵심 쟁점이다"
+                     f"{f'(외부평가기관: {_short(ev_name, 20)})' if ev_name else ''}.")
     else:
-        steps.append("남남끼리의 합병이면 합쳐서 없앨 수 있는 중복 비용(본사, 영업망, 구매)이 시너지의 출발점입니다.")
-    rel = relatedness(ev, biz)
-    if rel and not group:
-        steps.append(rel)
+        steps.append("시너지의 원천: 독립 기업 간 합병에서는 본사·영업망·구매 등 중복 비용의 제거가 시너지의 출발점이 된다.")
+        rel = relatedness(ev, biz)
+        if rel:
+            steps.append(rel)
     out["steps"] = steps
-    out["takeaway"] = (f"{partner}{_eul(partner)} 흡수해 한 회사가 되는 결정입니다. "
-                       + ("합병비율이 양쪽 주주에게 공정한지가 관건입니다." if group else "합쳐서 생기는 시너지가 치른 값보다 크냐가 관건입니다."))
+    out["takeaway"] = (f"{partner}{josa(partner, '과', '와')}의 합병으로 두 회사를 하나로 통합하는 결정이다. "
+                       + ("합병비율이 양측 주주에게 공정하게 산정되었는지가 핵심 쟁점이다." if group
+                          else "결합으로 창출되는 시너지가 지급한 대가를 상회하는지가 핵심 쟁점이다."))
 
 
 def _split(ev, out: dict) -> None:
     me = subject(ev)
     mth = _raw(ev, "dv_mth")
-    new_co = clean_name(_raw(ev, "dvfcmp_cmpnm")) or "새 회사"
+    new_co = clean_name(_raw(ev, "dvfcmp_cmpnm")) or "신설회사"
     biz = _raw(ev, "dvfcmp_mbsn")
     physical = "물적" in mth
     personal = "인적" in mth
     kind = "물적분할" if physical else "인적분할" if personal else "분할"
-    out["what"] = f"{me}{_i(me)} {biz + ' ' if biz else ''}사업을 떼어 {new_co}{_eul(new_co)} 새로 만듭니다({kind})."
+    out["what"] = f"{me}{_i(me)} {biz + ' ' if biz else ''}사업을 분리하여 {new_co}{_eul(new_co)} 신설한다({kind})."
     if physical:
-        out["plain"] += (" 물적분할은 떼어 낸 새 회사 주식을 기존 회사가 100% 갖는 방식입니다. 당장 주주에게 달라지는 건 없지만, "
-                         "나중에 새 회사를 따로 상장하면 기존 주주 몫이 묽어질 수 있습니다.")
+        out["plain"] += (" 물적분할은 신설회사의 주식을 분할회사가 100% 보유하는 방식이다. 분할 직후 주주의 지위에는 변화가 없으나, "
+                         "이후 신설회사가 별도로 상장되면 기존 주주의 지분 가치가 희석될 수 있다.")
     elif personal:
-        out["plain"] += " 인적분할은 기존 주주가 지분대로 새 회사 주식을 나눠 받는 방식입니다. 한 회사 주식이 두 회사 주식으로 나뉩니다."
+        out["plain"] += " 인적분할은 기존 주주가 지분율에 따라 신설회사의 주식을 배정받는 방식으로, 하나의 회사 주식이 두 회사의 주식으로 나뉜다."
     new_rev, rest_rev = _raw_num(ev, "dvfcmp_nbsn_rsl"), _raw_num(ev, "atdv_excmp_exbsn_rsl")
     total = (new_rev or 0) + (rest_rev or 0) if new_rev and rest_rev else (ev.fin or {}).get("revenue")
-    out["size"] = f"떼어 내는 사업의 매출({fmt_krw(new_rev)})은 분할 전 매출의 {share_words(new_rev, total)}입니다." if new_rev and total else out["size"]
-    steps = ["복합기업 할인: 성격이 다른 사업이 한 회사에 섞여 있으면 시장이 사업별 가치를 제대로 쳐주지 않는 경향이 있습니다. "
-             "분할은 사업마다 따로 제값을 받게 하려는 시도입니다."]
+    if new_rev and total:
+        out["size"] = f"분리되는 사업의 매출액({fmt_krw(new_rev)})은 분할 전 매출액의 {share_words(new_rev, total)}에 해당한다."
+    steps = ["복합기업 할인: 성격이 다른 여러 사업을 한 회사가 영위하면 시장이 각 사업의 가치를 제대로 반영하지 못해, 기업가치가 사업별 가치의 합보다 "
+             "낮게 평가되는 경향이 있다. 회사분할은 이러한 할인을 해소하기 위한 수단이다."]
     if physical:
         relist = _raw(ev, "dvfcmp_rlst_atn")
-        steps.append("물적분할 뒤 새 회사를 상장하면 모회사 주주는 새 회사 주식을 직접 갖지 못해, 새 회사 가치가 새로 들어온 주주와 나뉩니다('쪼개기 상장' 논란)."
-                     + (f" 공시상 새 회사 재상장 계획: {_short(relist, 20)}." if relist else ""))
+        steps.append("주주가치의 희석: 물적분할 후 신설회사를 상장하면 모회사 주주는 신설회사 주식을 직접 보유하지 못하므로, 신설회사의 가치가 새로 유입되는 주주와 "
+                     "나뉜다(이른바 '쪼개기 상장' 논란)." + (f" 공시상 신설회사의 재상장 계획은 '{_short(relist, 20)}'이다." if relist else ""))
     elif personal:
-        steps.append("인적분할은 지주회사로 바뀌는 첫 단계로 자주 쓰입니다. 이 과정에서 대주주의 지배력이 커진다는 비판이 있습니다.")
-    steps.append("반대하는 주주가 회사에 '내 주식을 공정한 값에 사 달라'고 할 수 있는지(주식매수청구권)도 함께 봐야 합니다.")
+        steps.append("지배구조의 변화: 인적분할은 지주회사 체제로 전환하는 첫 단계로 활용되는 경우가 많으며, 이 과정에서 지배주주의 지배력이 강화된다는 비판이 제기된다.")
+    steps.append("주주 보호: 분할에 반대하는 주주가 회사에 공정한 가격으로 주식의 매수를 청구할 수 있는지(주식매수청구권)도 검토해야 한다.")
     out["steps"] = steps
-    out["takeaway"] = f"{biz or '일부'} 사업을 떼어 따로 값을 받게 하려는 결정입니다. 기존 주주 몫이 지켜지는지가 관건입니다."
+    out["takeaway"] = f"{biz or '일부'} 사업을 분리하여 사업별로 가치를 평가받으려는 결정이다. 기존 주주의 이익이 보호되는지가 핵심 쟁점이다."
 
 
 def _rights(ev, out: dict) -> None:
@@ -618,12 +649,14 @@ def _rights(ev, out: dict) -> None:
     before = _raw_num(ev, f"{prefix}bfic_tisstk_ostk")
     method = _raw(ev, f"{prefix}ic_mthn")
     amt = ev.amount
-    out["what"] = (f"{me}{_i(me)} 새 주식{f' {new:,.0f}주' if new else ''}를 팔아 {fmt_krw(amt) + '을 ' if amt else '돈을 '}모읍니다"
-                   f"{f'({method})' if method else ''}.")
-    steps = ["신호이론: 회사 사정은 경영진이 투자자보다 잘 압니다. 그래서 '새 주식을 판다'는 행동 자체가 '지금 주가가 비싸다고 본다'는 신호로 읽혀 주가가 떨어지는 경우가 많습니다."]
+    shares = f"신주 {new:,.0f}주를" if new else "신주를"
+    money = f"{fmt_krw(amt)}{_eul(fmt_krw(amt))}" if amt else "자금을"
+    out["what"] = f"{me}{_i(me)} {shares} 발행하여 {money} 조달한다{f'({method})' if method else ''}."
+    steps = ["신호이론: 기업 내부 정보는 경영자가 외부 투자자보다 많이 보유한다(정보 비대칭). 따라서 신주 발행은 경영자가 현재 주가를 고평가 상태로 "
+             "판단한다는 신호로 해석되어, 유상증자 발표 후 주가가 하락하는 경우가 많다."]
     if new and before:
         d = new / before
-        out["size"] = (f"새 주식은 지금 주식 수의 {d * 100:.1f}%입니다. 증자에 참여하지 않으면 지분 1%가 약 {1 / (1 + d):.2f}%로 줄어드는 셈입니다."
+        out["size"] = (f"신주는 기존 발행주식 수의 {d * 100:.1f}%에 해당한다. 유상증자에 참여하지 않는 주주의 지분율은 1%에서 약 {1 / (1 + d):.2f}%로 낮아진다."
                        + (f" {out['size']}" if out["size"] else ""))
     if amt:
         d = ev.detail or {}
@@ -631,31 +664,34 @@ def _rights(ev, out: dict) -> None:
         survive = use["fdpp_op"] + use["fdpp_dtrp"]
         grow = use["fdpp_fclt"] + use["fdpp_bsninh"] + use["fdpp_ocsa"]
         if survive / amt >= 0.5:
-            steps.append(f"돈의 쓰임: 모은 돈의 {survive / amt * 100:.0f}%가 운영자금·빚 갚기라 '버티기 위한 증자'로 읽히기 쉽습니다(나쁜 신호 쪽).")
+            steps.append(f"자금 용도: 조달 자금의 {survive / amt * 100:.0f}%가 운영자금과 채무상환자금이다. 이는 성장 투자보다 유동성 보강을 위한 증자로 해석될 여지가 크며, "
+                         "시장에는 부정적 신호로 작용하기 쉽다.")
         elif grow / amt >= 0.5:
-            steps.append(f"돈의 쓰임: 모은 돈의 {grow / amt * 100:.0f}%가 시설투자·인수 자금이라 '성장을 위한 증자'로 해석될 여지가 있습니다.")
+            steps.append(f"자금 용도: 조달 자금의 {grow / amt * 100:.0f}%가 시설투자와 타법인 취득 자금이다. 이는 성장 투자를 위한 증자로 해석될 여지가 있다.")
     if "제3자" in method:
-        steps.append("방식: 특정 투자자에게 파는 제3자배정이라 누가 사는지가 곧 신호입니다. 회사를 잘 아는 투자자가 들어오면 오히려 좋은 신호가 될 수 있습니다.")
+        steps.append("발행 방식: 특정인에게 신주를 배정하는 제3자배정 방식이므로 인수자가 누구인지가 신호의 성격을 좌우한다. "
+                     "기업 정보를 잘 아는 전략적 투자자의 참여는 긍정적 신호가 될 수 있다.")
     elif "주주배정" in method:
-        steps.append("방식: 기존 주주에게 먼저 살 기회를 주는 주주배정이라, 참여하면 지분이 유지됩니다.")
+        steps.append("발행 방식: 기존 주주에게 지분율에 따라 신주 인수 기회를 부여하는 주주배정 방식이므로, 청약에 참여하는 주주는 지분율을 유지할 수 있다.")
     elif "공모" in method:
-        steps.append("방식: 누구나 살 수 있는 일반공모라 흥행을 위해 할인 폭이 커질 수 있습니다.")
+        steps.append("발행 방식: 불특정 다수를 대상으로 하는 일반공모 방식이므로, 청약을 유도하기 위해 발행가 할인 폭이 커질 수 있다.")
     out["steps"] = steps
-    out["takeaway"] = "주주에게 돈을 더 받아 회사를 꾸리는 결정입니다. 모은 돈이 성장에 쓰이느냐 버티기에 쓰이느냐가 신호를 가릅니다."
+    out["takeaway"] = "주주로부터 자금을 추가로 조달하는 결정이다. 조달 자금이 성장 투자에 쓰이는지 유동성 보강에 쓰이는지가 신호의 방향을 결정한다."
 
 
 def _bonus(ev, out: dict) -> None:
     me = subject(ev)
     per = parse_amount(_raw(ev, "nstk_ascnt_ps_ostk"))
-    out["what"] = f"{me}{_i(me)} 주주에게{f' 1주당 {per:g}주씩' if per else ''} 새 주식을 공짜로 나눠 줍니다."
+    out["what"] = f"{me}{_i(me)} 주주에게{f' 1주당 {per:g}주의' if per else ''} 신주를 무상으로 배정한다."
     if per:
-        out["size"] = f"주식 수가 {1 + per:g}배가 되니, 이론상 주가는 지금의 약 {100 / (1 + per):.0f}% 수준으로 조정됩니다(권리락)."
+        out["size"] = f"발행주식 수가 {1 + per:g}배가 되므로, 이론상 주가는 기존의 약 {100 / (1 + per):.0f}% 수준으로 조정된다(권리락)."
     out["steps"] = [
-        "행동경제학: 사람들은 주식 수가 늘고 주가가 낮아지면 '싸졌다'고 느끼기 쉽습니다. 그래서 가치가 그대로인데도 발표 뒤 주가가 오르는 일이 잦습니다.",
-        "회계로는 쌓아 둔 잉여금을 자본금으로 옮기는 것뿐이라 자본 총액은 변하지 않습니다.",
-        "실제 효과는 거래되는 주식이 많아져 사고팔기 쉬워지는 정도입니다.",
+        "행동경제학: 투자자는 주식 수가 늘고 주가가 낮아지면 주식이 '저렴해졌다'고 인식하는 경향이 있다. 이 때문에 기업가치에 변화가 없음에도 "
+        "무상증자 발표 후 주가가 상승하는 현상이 자주 관찰된다.",
+        "회계적 실질: 무상증자는 자본잉여금 등을 자본금으로 대체하는 것에 불과하여 자본총계는 변하지 않는다.",
+        "실질적 효과: 유통 주식 수가 증가하여 거래가 용이해지는 유동성 개선 효과에 그친다.",
     ]
-    out["takeaway"] = "회사 가치는 그대로인 '숫자 쪼개기'입니다. 발표 뒤 주가가 오르면 기대 심리가 만든 부분일 수 있습니다."
+    out["takeaway"] = "기업가치에는 변화가 없는 주식 분할 성격의 결정이다. 발표 후의 주가 상승은 투자자 심리에 기인한 부분일 수 있다."
 
 
 def _reduction(ev, out: dict) -> None:
@@ -663,15 +699,17 @@ def _reduction(ev, out: dict) -> None:
     ratio = _raw(ev, "cr_rt_ostk")
     mth = _raw(ev, "cr_mth") + " " + (_fact(ev, "감자 사유") or "")
     free = "무상" in mth or "결손" in mth
-    out["what"] = f"{me}{_i(me)} 자본금을 줄입니다{f'(감자비율 {_short(ratio, 20)})' if ratio else ''}."
-    steps = []
+    out["what"] = f"{me}{_i(me)} 자본금을 감소시킨다{f'(감자비율 {_short(ratio, 20)})' if ratio else ''}."
     if free:
-        steps.append("무상감자: 주식 수를 줄여 장부에 쌓인 손실을 자본금으로 메웁니다. 주주는 돈을 받지 못하고 주식 수만 줄어 손해를 봅니다.")
-        steps.append("자본구조로 보면, 손실이 쌓여 자본이 깎인(자본잠식) 상태를 정리하는 절차입니다. 다음 단계로 새 돈을 넣는 유상증자가 이어지는 경우가 많습니다.")
+        out["steps"] = [
+            "무상감자: 주식 수를 줄여 누적 결손금을 자본금으로 보전하는 것이다. 주주는 대가를 받지 못하고 보유 주식 수만 감소한다.",
+            "자본구조의 관점: 누적 손실로 자본이 잠식된 상태를 정리하는 절차이며, 이후 신규 자금을 투입하는 유상증자가 뒤따르는 경우가 많다.",
+        ]
+        out["takeaway"] = "누적 결손을 장부상 정리하는 결정이다. 후속 자본 확충이 이루어지는지가 핵심 쟁점이다."
     else:
-        steps.append("유상감자: 주식을 줄이면서 주주에게 돈을 돌려줍니다. 쓸 데 없는 현금을 주주에게 돌려주는 주주환원이 될 수도 있고, 대주주가 돈을 빼 가는 수단이 될 수도 있습니다.")
-    out["steps"] = steps
-    out["takeaway"] = "장부상 손실을 정리하는 결정입니다. 이어서 새 돈이 들어오는지가 관건입니다." if free else "자본을 줄여 주주에게 돈을 돌려주는 결정입니다. 누가 그 돈을 가장 많이 받는지가 관건입니다."
+        out["steps"] = ["유상감자: 주식 수를 줄이면서 주주에게 자금을 반환하는 것이다. 잉여 현금을 주주에게 돌려주는 주주환원이 될 수도 있으나, "
+                        "지배주주의 자금 회수 수단으로 활용될 수도 있다."]
+        out["takeaway"] = "자본을 감소시켜 주주에게 자금을 반환하는 결정이다. 반환 자금이 누구에게 귀속되는지가 핵심 쟁점이다."
 
 
 def _treasury(ev, out: dict) -> None:
@@ -680,41 +718,44 @@ def _treasury(ev, out: dict) -> None:
     key = ev.rule.key
     fin = ev.fin or {}
     if key == "treasury_trust":
-        out["what"] = f"{me}{_i(me)} 증권사에 {fmt_krw(amt) + ' 한도로 ' if amt else ''}자기 회사 주식을 사 달라고 맡깁니다(신탁)."
+        out["what"] = f"{me}{_i(me)} 증권회사와 {fmt_krw(amt) + ' 규모의 ' if amt else ''}자기주식 취득 신탁계약을 체결한다."
     elif key == "treasury_buy":
-        out["what"] = f"{me}{_i(me)} 자기 회사 주식을 {fmt_krw(amt) + '어치 ' if amt else ''}사들입니다."
+        out["what"] = f"{me}{_i(me)} {fmt_krw(amt) + ' 규모의 ' if amt else ''}자기주식을 취득한다."
     elif key == "treasury_cancel":
-        out["what"] = f"{me}{_i(me)} 갖고 있던 자기 회사 주식을 없앱니다(소각)."
+        out["what"] = f"{me}{_i(me)} 보유한 자기주식을 소각한다."
     ni = fin.get("net_income")
     if amt and ni and ni > 0:
-        extra = f"{_year(ev)}순이익({fmt_krw(ni)})의 {share_words(amt, ni)} 규모입니다."
+        extra = f"이는 {_year(ev)}당기순이익({fmt_krw(ni)})의 {share_words(amt, ni)}에 해당한다."
         out["size"] = (out["size"] + " " + extra) if out["size"] else extra
     purpose = _fact(ev, "취득 목적", "계약 목적") or ""
-    steps = ["배당·자사주 이론: 번 돈을 주주에게 돌려주는 길은 배당과 자사주 두 가지입니다. 자사주는 팔고 싶은 주주만 현금을 받고, 남는 주주는 지분이 커지는 방식입니다."]
+    steps = ["배당정책 이론의 관점: 이익을 주주에게 환원하는 방법은 배당과 자기주식 취득이다. 자기주식 취득은 매도를 원하는 주주에게만 현금을 지급하고, "
+             "계속 보유하는 주주의 지분율을 높이는 방식이다."]
     if key == "treasury_cancel" or "소각" in purpose:
-        steps.append("소각: 산 주식을 없애 주식 수가 실제로 줄어듭니다. 이익이 같아도 한 주당 이익(주당순이익)이 커져 주가에 직접 도움이 됩니다.")
+        steps.append("소각 여부: 취득한 주식을 소각하면 발행주식 수가 실제로 감소하여 주당순이익(EPS)이 증가하고, 이는 주가에 직접적인 영향을 미친다.")
     else:
-        steps.append("소각 여부: 목적에 소각이 없으면 나중에 다시 팔 수도 있어 효과가 약합니다. 2026년 3월부터는 회사가 산 자사주를 원칙적으로 1년 안에 소각해야 합니다.")
-    steps.append("신호: 회사가 자기 주가를 싸다고 본다는 메시지로 읽히는 경우가 많습니다. 다만 다른 투자보다 자사주가 낫다는 건 성장 기회가 적다는 뜻일 수도 있습니다.")
+        steps.append("소각 여부: 취득 목적에 소각이 명시되지 않으면 향후 재매각될 수 있어 주주환원 효과가 제한적이다. "
+                     "2026년 3월부터는 취득한 자기주식을 원칙적으로 1년 이내에 소각해야 한다.")
+    steps.append("신호 효과: 자기주식 취득은 경영진이 현재 주가를 저평가로 판단한다는 신호로 해석된다. 다만 다른 투자 대안보다 자기주식 취득을 택했다는 것은 "
+                 "성장 기회가 제한적이라는 의미일 수도 있다.")
     out["steps"] = steps
-    out["takeaway"] = "번 돈을 자사주로 주주에게 돌려주는 결정입니다. 실제로 소각까지 하는지가 관건입니다."
+    out["takeaway"] = "이익을 자기주식 취득으로 주주에게 환원하는 결정이다. 실제 소각으로 이어지는지가 핵심 쟁점이다."
 
 
 def _treasury_sell(ev, out: dict) -> None:
     me = subject(ev)
     amt = ev.amount
-    out["what"] = f"{me}{_i(me)} 갖고 있던 자기 회사 주식을 {fmt_krw(amt) + '어치 ' if amt else ''}팝니다."
+    out["what"] = f"{me}{_i(me)} 보유한 자기주식을 {fmt_krw(amt) + ' 규모로 ' if amt else ''}처분한다."
     purpose = _fact(ev, "처분 목적") or ""
-    steps = ["신호이론: 회사가 자기 주식을 판다는 건 지금 주가를 충분히 높다고 본다는 신호로 읽힐 수 있습니다."]
+    steps = ["신호이론: 회사가 자기주식을 매각하는 것은 경영진이 현재 주가를 충분히 높다고 판단한다는 신호로 해석될 수 있다."]
     if any(w in purpose for w in ("임직원", "상여", "보상", "성과")):
-        steps.append(f"목적('{_short(purpose, 40)}')을 보면 직원 보상용이라, 시장에 한꺼번에 풀리는 물량 부담은 크지 않을 수 있습니다.")
+        steps.append(f"처분 목적('{_short(purpose, 40)}')으로 볼 때 임직원 보상을 위한 처분이므로, 시장 매도 물량에 따른 부담은 크지 않을 수 있다.")
     elif any(w in purpose for w in ("교환사채", "EB")):
-        steps.append("교환사채의 교환 대상으로 쓰는 처분이라, 사실상 자사주를 담보로 돈을 빌리는 셈입니다.")
+        steps.append("교환사채의 교환 대상으로 활용하는 처분이므로, 실질적으로는 자기주식을 담보로 자금을 조달하는 것과 유사하다.")
     elif purpose:
-        steps.append(f"목적: '{_short(purpose, 60)}'.")
-    steps.append("자사주가 다시 시장에 풀리면 유통 주식이 늘어 한 주당 몫이 묽어지고, 우호 세력에게 넘어가면 경영권 방어 수단이 되기도 합니다.")
+        steps.append(f"처분 목적: '{_short(purpose, 60)}'.")
+    steps.append("희석 효과: 자기주식이 다시 유통되면 유통 주식 수가 증가하여 주당 가치가 희석되며, 우호 세력에 매각될 경우 경영권 방어 수단으로 기능하기도 한다.")
     out["steps"] = steps
-    out["takeaway"] = "쌓아 둔 자사주를 현금이나 다른 용도로 돌리는 결정입니다. 누구에게, 왜 파는지가 관건입니다."
+    out["takeaway"] = "보유 자기주식을 현금화하거나 다른 목적에 활용하는 결정이다. 처분 상대방과 목적이 핵심 쟁점이다."
 
 
 def _mezzanine(ev, out: dict) -> None:
@@ -722,28 +763,31 @@ def _mezzanine(ev, out: dict) -> None:
     amt = ev.amount
     names = {"cb": "전환사채", "bw": "신주인수권부사채", "eb": "교환사채"}
     nm = names.get(ev.rule.key, "사채")
-    out["what"] = f"{me}{_i(me)} {fmt_krw(amt) + ' 규모의 ' if amt else ''}{nm}{_eul(nm)} 발행합니다."
+    out["what"] = f"{me}{_i(me)} {fmt_krw(amt) + ' 규모의 ' if amt else ''}{nm}{_eul(nm)} 발행한다."
     price = parse_amount(_raw(ev, "cv_prc") or _raw(ev, "ex_prc"))
     if price:
-        out["plain"] += f" 이번 조건은 1주 {price:,.0f}원입니다."
+        label = {"cb": "전환가액", "bw": "행사가액", "eb": "교환가액"}.get(ev.rule.key, "전환가액")
+        out["plain"] += f" 이번 발행의 {label}은 1주당 {price:,.0f}원이다."
     vs = _raw_pct(ev, "cvisstk_tisstk_vs") or _raw_pct(ev, "nstk_isstk_tisstk_vs") or _raw_pct(ev, "extg_tisstk_vs")
     if vs:
-        out["size"] = (f"모두 주식으로 바뀌면 지금 주식 수의 {vs:.1f}%만큼 주식이 새로 생기거나 넘어갑니다(잠재 희석)."
+        out["size"] = (f"전부 주식으로 전환되면 현재 발행주식 수의 {vs:.1f}%에 해당하는 주식이 새로 발행되거나 이전된다(잠재적 희석)."
                        + (f" {out['size']}" if out["size"] else ""))
     coupon = parse_amount(_raw(ev, "bd_intr_ex"))
-    steps = ["자본구조: 빚(이자 부담)과 주식(지분 희석)의 중간 형태입니다. 주가가 오르면 빚이 주식으로 바뀌어 갚을 돈이 사라지고, 주가가 안 오르면 만기에 빚으로 갚아야 합니다."]
+    steps = ["자본구조의 관점: 메자닌 증권은 부채(이자 부담)와 자기자본(지분 희석)의 중간적 성격을 지닌다. 주가가 상승하면 부채가 주식으로 전환되어 상환 부담이 "
+             "사라지고, 주가가 오르지 않으면 만기에 부채로 상환해야 한다."]
     if coupon is not None:
         if coupon == 0:
-            steps.append("이자: 표면이자율이 0%라 투자자는 이자가 아니라 주가 상승만 보고 들어옵니다.")
+            steps.append("표면이자율: 0%이므로 투자자는 이자 수익이 아니라 주가 상승에 따른 전환 차익을 기대하고 투자한다.")
         else:
-            steps.append(f"이자: 표면이자율 {coupon:g}%로 일반 회사채보다 낮게 빌리는 대신, 주식으로 바꿀 권리를 얹어 줍니다.")
+            steps.append(f"표면이자율: {coupon:g}%로 일반 회사채보다 낮은 이자를 부담하는 대신, 투자자에게 주식으로 전환할 수 있는 권리를 부여한다.")
     floor = parse_amount(_raw(ev, "act_mktprcfl_cvprc_lwtrsprc"))
     if floor:
-        steps.append(f"리픽싱: 주가가 떨어지면 전환가격을 {floor:,.0f}원까지 낮출 수 있어, 그만큼 새 주식이 늘어 희석이 커질 수 있습니다.")
+        steps.append(f"리픽싱(전환가액 조정): 주가가 하락하면 전환가액을 최저 {floor:,.0f}원까지 낮출 수 있어, 그만큼 발행될 주식 수가 늘고 희석 효과가 커질 수 있다.")
     if "사모" in _raw(ev, "bdis_mthn"):
-        steps.append("발행 방식: 소수 투자자에게만 파는 사모입니다. 일반 회사채를 찍기 어려운 회사가 이 방식을 많이 써서, 재무 여력이 넉넉지 않다는 신호로 보기도 합니다.")
+        steps.append("발행 방식: 소수의 투자자를 대상으로 하는 사모 방식이다. 일반 회사채 발행이 어려운 기업이 주로 활용하므로, 시장은 이를 재무적 여력이 "
+                     "부족하다는 신호로 받아들이기도 한다.")
     out["steps"] = steps
-    out["takeaway"] = f"이자 부담을 낮추는 대신 미래의 주식을 내주는 {nm} 발행입니다. 주가가 떨어질 때 희석이 얼마나 커지는지가 관건입니다."
+    out["takeaway"] = f"낮은 이자로 자금을 조달하는 대신 미래의 지분을 내주는 {nm} 발행 결정이다. 주가 하락 시 희석 규모가 얼마나 커지는지가 핵심 쟁점이다."
 
 
 def _ipo(ev, out: dict) -> None:
@@ -755,42 +799,47 @@ def _ipo(ev, out: dict) -> None:
     if count:
         bits.append(f"주식 {count:,.0f}주를")
     if price:
-        bits.append(f"1주 {price:,.0f}원에 팔아")
-    money = f"{fmt_krw(amt)}을 모으고" if amt else "돈을 모으고"
-    out["what"] = f"{name}{_i(name)} {' '.join(bits) + ' ' if bits else ''}{money} 증권시장에 상장하려 합니다."
-    steps = ["IPO 저평가: 처음 파는 주식은 일부러 조금 싸게 값을 정하는 경향이 있습니다. 회사를 잘 모르는 투자자를 끌어들이고 흥행 실패를 막으려는 '개업 할인'입니다."]
+        bits.append(f"1주당 {price:,.0f}원에 공모하여")
+    elif bits:
+        bits.append("공모하여")
+    money = f"{fmt_krw(amt)}{_eul(fmt_krw(amt))} 조달하고" if amt else "자금을 조달하고"
+    out["what"] = f"{name}{_i(name)} {' '.join(bits) + ' ' if bits else ''}{money} 증권시장에 상장할 예정이다."
+    steps = ["IPO 저평가 현상: 신규 상장 주식의 공모가는 시장에서 형성될 가격보다 낮게 결정되는 경향이 있다. 이는 정보가 부족한 투자자의 참여를 유도하고 "
+             "공모 실패 위험을 줄이기 위한 할인으로 설명된다."]
     if price:
-        steps.append(f"그래서 상장 첫날 주가가 공모가보다 오르는 경우가 많습니다. 상장 첫날 종가와 공모가 {price:,.0f}원의 차이가 이 할인의 크기입니다.")
-    steps.append("공모가는 기관투자자 수요예측으로 정합니다. 희망 범위 위쪽에서 정해질수록, 기관이 오래 팔지 않겠다고 약속한 물량(의무보유확약)이 많을수록 시장 기대가 크다는 뜻입니다.")
+        steps.append(f"이 때문에 상장 첫날 주가가 공모가를 상회하는 경우가 많으며, 상장일 종가와 공모가 {price:,.0f}원의 차이가 저평가의 크기를 나타낸다.")
+    steps.append("공모가 결정 과정: 공모가는 기관투자자를 대상으로 한 수요예측을 통해 결정된다. 공모가가 희망 범위의 상단에서 결정될수록, 그리고 기관투자자의 "
+                 "의무보유확약 비율이 높을수록 시장의 기대가 크다고 해석된다.")
     out["steps"] = steps
-    out["takeaway"] = "회사가 처음으로 시장에서 값을 매겨 받는 순간입니다. 공모가가 회사 가치에 비해 싼지, 상장 뒤 쏟아질 물량은 없는지가 관건입니다."
+    out["takeaway"] = "기업이 처음으로 시장에서 가치를 평가받는 결정이다. 공모가가 내재가치에 비해 적정한지, 상장 후 출회될 유통 물량이 과도하지 않은지가 핵심 쟁점이다."
 
 
 def _earnings(ev, out: dict) -> None:
     me = subject(ev)
-    out["what"] = f"{me}{_i(me)} 실적(또는 실적 변동)을 미리 알렸습니다."
+    out["what"] = f"{me}{_i(me)} 영업실적(또는 실적 변동)을 공시하였다."
     fin = ev.fin or {}
     rev, rev_p, oi, oi_p = fin.get("revenue"), fin.get("revenue_prev"), fin.get("operating_income"), fin.get("operating_income_prev")
-    steps = ["영업레버리지: 임차료·감가상각비·인건비처럼 고정비가 큰 회사는 매출이 조금만 변해도 이익이 크게 출렁입니다."]
+    steps = ["영업레버리지: 고정비(임차료·감가상각비·인건비 등)의 비중이 높은 기업은 매출액이 조금만 변해도 영업이익이 크게 변동한다."]
     if rev and rev_p and oi and oi_p and oi_p > 0 and rev_p > 0:
         g_rev = (rev / rev_p - 1) * 100
         g_oi = (oi / oi_p - 1) * 100
-        line = f"이 회사의 {_year(ev)}숫자로 보면 매출이 {g_rev:+.1f}% 변할 때 영업이익은 {g_oi:+.1f}% 변했습니다."
+        line = f"이 회사의 {_year(ev)}실적을 보면 매출액이 {g_rev:+.1f}% 변할 때 영업이익은 {g_oi:+.1f}% 변하였다."
         if abs(g_rev) >= 1 and abs(g_oi) > abs(g_rev) * 1.5:
-            line += f" 이익이 매출보다 {abs(g_oi / g_rev):.1f}배 크게 움직인 셈이라 고정비 부담이 큰 구조로 보입니다."
+            line += f" 영업이익 변동률이 매출액 변동률의 {abs(g_oi / g_rev):.1f}배이므로 영업레버리지가 높은 구조로 판단된다."
         steps.append(line)
-    steps.append("이번 공시의 매출·영업이익 변화율을 같은 방식으로 나눠 보면, 실적 변화가 판매량 때문인지 비용 구조 때문인지 가늠할 수 있습니다.")
+    steps.append("이번 공시의 매출액·영업이익 변동률을 같은 방식으로 비교하면, 실적 변화가 판매량에 기인한 것인지 비용 구조에 기인한 것인지 판단할 수 있다.")
     out["steps"] = steps
-    out["takeaway"] = "실적이 크게 바뀌었다는 알림입니다. 매출 변화보다 이익 변화가 얼마나 더 큰지가 이 회사의 체질을 보여 줍니다."
+    out["takeaway"] = "실적의 큰 변동을 알리는 공시이다. 매출액 변동에 비해 이익 변동이 얼마나 큰지가 그 기업의 비용 구조를 보여 준다."
 
 
 def _generic(ev, out: dict, lens: dict | None) -> None:
     me = subject(ev)
-    out["what"] = f"{me}{_i(me)} '{ev.rule.label}' 공시를 냈습니다."
+    out["what"] = f"{me}{_i(me)} '{ev.rule.label}' 공시를 제출하였다."
     if ev.amount:
-        out["what"] += f" {ev.amount_label or '금액'}{_eun(ev.amount_label or '금액')} {fmt_krw(ev.amount)}입니다."
+        label = ev.amount_label or "금액"
+        out["what"] += f" {label}{_eun(label)} {fmt_krw(ev.amount)}이다."
     if lens and lens.get("watch"):
-        out["steps"] = [f"{lens['title']}로 보면: {lens['watch']}"]
+        out["steps"] = [f"{lens['title']}의 관점: {lens['watch']}"]
     out["takeaway"] = ""
 
 
@@ -818,7 +867,7 @@ def explain_filing(ev, lens: dict | None = None) -> dict:
     if not out.get("what"):
         _generic(ev, out, lens)
     if ev.is_correction:
-        out["what"] += " (앞서 낸 공시 내용을 고친 정정 공시입니다.)"
+        out["what"] += " (앞서 제출한 공시를 정정한 공시이다.)"
     out["lens"] = lens
     out["steps"] = [s for s in out.get("steps") or [] if s]
     return out
