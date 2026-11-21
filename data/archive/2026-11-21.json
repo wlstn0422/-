@@ -9,32 +9,32 @@
   {
    "type": "stock_acq",
    "label": "타법인 주식 취득",
-   "corp_name": "SK하이닉스",
-   "stock_code": "000660",
-   "market": "유가증권",
-   "rcept_no": "20261120800721",
+   "corp_name": "애드바이오텍",
+   "stock_code": "179530",
+   "market": "코스닥",
+   "rcept_no": "20261120000623",
    "rcept_dt": "20261120",
-   "report_nm": "[기재정정]타법인주식및출자증권취득결정              ",
-   "amount": null,
-   "amount_label": null,
+   "report_nm": "주요사항보고서(타법인주식및출자증권양수결정)",
+   "amount": 8000000000.0,
+   "amount_label": "취득금액",
    "notes": [],
-   "score": 10.5,
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120800721"
+   "score": 13.5,
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120000623"
   },
   {
-   "type": "valueup",
-   "label": "밸류업(기업가치 제고)",
-   "corp_name": "LG화학",
-   "stock_code": "051910",
-   "market": "유가증권",
-   "rcept_no": "20261120800332",
+   "type": "asset_trf",
+   "label": "유형자산 양도",
+   "corp_name": "잉크테크",
+   "stock_code": "049550",
+   "market": "코스닥",
+   "rcept_no": "20261119000427",
    "rcept_dt": "20261120",
-   "report_nm": "기업가치제고계획(자율공시)              (2026년 이행현황)",
-   "amount": null,
-   "amount_label": null,
+   "report_nm": "주요사항보고서(유형자산양도결정)",
+   "amount": 63000000000.0,
+   "amount_label": "양도금액",
    "notes": [],
-   "score": 10.0,
-   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120800332"
+   "score": 11.5,
+   "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261119000427"
   },
   {
    "type": "ipo",
@@ -45,10 +45,10 @@
    "rcept_no": "20261120000538",
    "rcept_dt": "20261120",
    "report_nm": "증권신고서(지분증권)",
-   "amount": null,
-   "amount_label": null,
+   "amount": 25200000000.0,
+   "amount_label": "공모 총액",
    "notes": [],
-   "score": 10.0,
+   "score": 11.5,
    "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261120000538"
   }
  ],
@@ -118,7 +118,7 @@
     "source": "연합뉴스 산업",
     "published": "2026-11-20T15:37:29+09:00",
     "category": "ipo",
-    "coverage": 6
+    "coverage": 5
    },
    {
     "title": "[IPO챗] 내주 엠비디 코스닥 입성…4개사 수요예측",
@@ -126,7 +126,7 @@
     "source": "연합뉴스 마켓+",
     "published": "2026-11-21T09:00:04+09:00",
     "category": "ipo",
-    "coverage": 3
+    "coverage": 2
    },
    {
     "title": "급락장에 IPO시장 '꽁꽁'…잇단 상장철회에 공모청약 미달도",
@@ -155,10 +155,10 @@
     "coverage": 1
    },
    {
-    "title": "[공시]에스켐, 자사주 12만2560주 소각···5억원 규모",
-    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTTG8xT3BhaDcwT0tYalRkT2N0cTZacEo5S3FpeFFaQTdpY1BkcHZaUWZ2b1VjRTNMa1RJeEZyYVNuemJZVnZqRFFHbDJzbWwtVl9pcXNkZnpMcnlzVG1xRkRzUTJHbU1oVGZj0gFrQVVfeXFMUFNMbzFPcGFoNzBPS1hqVGRPY3RxNlpwSjlLcWl4UVpBN2ljUGRwdlpRZnZvVWNFM0xrVEl4RnJhU256YllWdmpEUUdsMnNtbC1WX2lxc2RmekxyeXNUbXFGRHNRMkdtTWhUZmM?oc=5",
-    "source": "현대경제신문",
-    "published": "2026-11-20T16:11:49+09:00",
+    "title": "[한국알콜] 한국알콜, 3분기 영업이익 66% 급감…퓨리트 성장·자사주 소각이 반등 변수(2026년_3Q)",
+    "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNOFM2QmxNVy13dlJjbEFUVTJvNTZwdXprbmxZWDVwMzY3bUNESWtnZE9tTXFtcGRqenp3ek9zRnNBazBrLXVieklmaURycHBxdVJOTkZMcDJVa0lBOG45OFJCWlNQck5TQi1ReVFqT0UwYUh6Q0VQUWJSQlFnSy0tSHZCOTBTUnBk?oc=5",
+    "source": "네이버 프리미엄콘텐츠",
+    "published": "2026-11-20T14:49:00+09:00",
     "category": "capital",
     "coverage": 2
    }
@@ -178,15 +178,15 @@
     "source": "뉴스핌",
     "published": "2026-11-20T22:18:00+09:00",
     "category": "earnings",
-    "coverage": 4
+    "coverage": 3
    },
    {
-    "title": "엔비디아, 3분기도 깜짝 실적…매출·영업이익 ‘더블’",
-    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1aY19aYWUtN0Njc1V4TVN1UEc1OGtEb3dXUEYwNFpyaUMwQ2dZQzNyNmNhWVkwaldyb2FjbXoyeWZvRnJRTWU4eXJ2VXhoeU81WHc?oc=5",
-    "source": "JTBC",
-    "published": "2026-11-21T09:54:57+09:00",
+    "title": "“영업이익률 3%·4년 연속 무배당…삼성SDI, 흑자전환 뒤 가려진 민낯”",
+    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE02QVlpUDJIWkRXVXA0aGcwS0JTa3J4T25JbEJOT05SX0dDZWtYdXVuLTduMWlSQVdpSmtkYnB0dlZxZnhYLUI4X2RqVngwVHVrdjNFRmgteHh4eDdaUlZsZTdSU0xMN0RfQXdtZ1cxcw?oc=5",
+    "source": "뉴스퀘스트",
+    "published": "2026-11-20T18:12:37+09:00",
     "category": "earnings",
-    "coverage": 2
+    "coverage": 1
    }
   ],
   "회계·감사": [
@@ -209,18 +209,18 @@
     "coverage": 3
    },
    {
+    "title": "한진, ESG 평가 4년 연속 통합 A등급…사회·지배구조 등급 상승",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5ZZHZueEdFcm1BeWVTVmlBUUx2OVhfM0szRkJhM0pJb1dFSHhWaUEydHVaZEE4UWt2c09vc0EtQm4tVjVXUDg5WGVpWDQ1U1ozVGVJTTlib19YQdIBWEFVX3lxTE9CQ2lDb0M3VzE2eHU2enhPZWRWcnRIQ1F4T1pjbllrVHdQdFNCWXBpSngyYmllQk9tLUxSVnBQYmFUQjBmVnhGeTVFLUxDdFAtbUxFN0k0dTk?oc=5",
+    "source": "아주경제",
+    "published": "2026-11-20T16:27:13+09:00",
+    "category": "governance",
+    "coverage": 5
+   },
+   {
     "title": "재난으로 숨져도 보험금 못 받는 아이들... 김의겸, 상법 개정 추진",
     "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBDdmRoSFlJNm1UVnlrSVJIREpuNHg4bzdOeGFkRFplQzFrZnBnUG40bnVsYXhTci1VSUlKaGdxN2tPQVQ5MzA1OVdndGNNUDFud3QyZy1tdmxEMW4zNF8yTk9NNkdHaU9fd1Vhb2ZOWlE0akdJNUdMbTVhXzJxQQ?oc=5",
     "source": "더파워",
     "published": "2026-11-20T16:22:05+09:00",
-    "category": "governance",
-    "coverage": 1
-   },
-   {
-    "title": "김의겸 '15세 미만 재난 사망보험금 지급' 상법 개정 추진",
-    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBhU0pERlNseFlkcEN4d0pBT0NJMUp3TWRjSnNNQWxINVBiazcwLWJtV2ktYWdzSy1ia3BGX1VRUnF6c1ZXRjlieUtSOW52M0V4Q1B6UXo4c0wyR0VlbHdzZVhtTVhMV29JNnRiN0tPMNIBc0FVX3lxTE5pbmlvamJIakhJYXU4ck9jYzlWLVRsenhDUVBoZUpFbHNDZzlHX0s5U0xubG1EcDFHOVZiQ0lPNlRrZ1l2X0tWZGhPWC15X2ZKV0w3MnJxdVpZUDEyOXZic2JMWEZRUXpvNGhOODRyVHpXWjA?oc=5",
-    "source": "세이프타임즈",
-    "published": "2026-11-20T14:14:54+09:00",
     "category": "governance",
     "coverage": 1
    }
@@ -292,15 +292,15 @@
     "source": "연합뉴스 산업",
     "published": "2026-11-20T15:45:38+09:00",
     "category": "hr",
-    "coverage": 9
+    "coverage": 10
    },
    {
-    "title": "이재근 KB금융 회장 체제 출범…연말 인사·조직개편 첫 시험대",
-    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1kcTRES21tYWJSU2xHWVB4emhMOFBJanQ5N2QtYk51N1A4WWJIVDVuOWxTMHA0dEJHMEpUWDNDRzk1Z0Q4MmZqdk1xODZOUlYyblYwaTNaS3lhYV9jbGpuUHp6Y09scC10bGJDNmp3?oc=5",
-    "source": "이지경제",
-    "published": "2026-11-20T14:47:47+09:00",
+    "title": "이재근호 KB금융 공식 출항…조직개편·계열사 인사로 세대교체 본격화",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE03T2E0UkdoM0psUW9iWDBBN0VEVE81U1FQVEota3NwVl94WE5qdnlweE95N05MT3pwVk9JaXdDZXNrNVl0bk5TZWdYNVRscTdhSW9ja3NlYlFXSDVBQWpXZGFQLVdWSW1UOHRQTjN3?oc=5",
+    "source": "일요경제",
+    "published": "2026-11-20T16:50:18+09:00",
     "category": "hr",
-    "coverage": 5
+    "coverage": 6
    }
   ],
   "공급망·생산": [
@@ -388,7 +388,7 @@
     "source": "인더스트리뉴스",
     "published": "2026-11-20T17:00:08+09:00",
     "category": "marketing",
-    "coverage": 10
+    "coverage": 9
    },
    {
     "title": "[해외 크리에이티브] 파멜라 앤더슨의 정원이 크리스마스 광고로… 스킨케어 브랜드 손시, 첫 연말 캠페인 공개",
@@ -400,19 +400,27 @@
    },
    {
     "title": "하이트진로음료 “‘테라 제로’ 출시 첫해 광고·홍보 3관왕 달성”",
-    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5LN0VNNFRqV2JZY0p6bTctY2M5WHdUNXZaME1MZVlIdGh0WUc2LXN1MHlMMjlRaWpXY2lkT1l1ZE1GaXFIRGNTc0VEald5SUJ4X2VicDNCd2JHM2NGRVl5WDY2WUtYRFXSAWdBVV95cUxOSzdFTTRUaldiWWNKem03LWNjOVh3VDV2WjBNTGVZSHRodFlHNi1zdTB5TDI5UWlqV2NpZE9ZdWRNRmlxSERjU3NFRGpXeUlCeF9lYnAzQndiRzNjRkVZeVg2NllLWERV?oc=5",
+    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE96T2hsSDNCbDhRcHF0dXZUNVkxSEdNSFZCUk5WaFpucnBOOVlKdkRqMWpwMjVXU0t5UmllNllJMkQyakdsYU5iNUNnM1g4Tm14ODNXU2hlUHNnV0ZuMXRVaGRpZ9IBZ0FVX3lxTE5LN0VNNFRqV2JZY0p6bTctY2M5WHdUNXZaME1MZVlIdGh0WUc2LXN1MHlMMjlRaWpXY2lkT1l1ZE1GaXFIRGNTc0VEald5SUJ4X2VicDNCd2JHM2NGRVl5WDY2WUtYRFU?oc=5",
     "source": "리버티코리아포스트",
-    "published": "2026-11-20T20:03:29+09:00",
+    "published": "2026-11-20T17:21:01+09:00",
     "category": "marketing",
     "coverage": 3
    }
   ],
   "스타트업·벤처투자": [
    {
+    "title": "서울 AI 허브, 신용보증기금과 ‘맞손’ … AI 스타트업 투자·금융 지원 확대",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBvenlaZ2hoVDkwRFRpaGgyTFlBQ1pDTnVRM0JEdU9raEtQMXlEcjRSeWx4RHE1YXVrNFphUkhsZXR5RnVNR3BiRURxek1TOWxudUdNWndIclo1am10ZXk2YUdfSloxLTgtMS1feQ?oc=5",
+    "source": "워크투데이",
+    "published": "2026-11-21T10:46:24+09:00",
+    "category": "startup",
+    "coverage": 5
+   },
+   {
     "title": "경과원 지원 엔바이오셀, 티비지파트너스 투자 유치",
-    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBlcVB2cWpKWmhrQ0tVNG9YeEw1bGJNU3JRU01IcGNwMC1qUkhQRVVfaU1yaGptSURjempLc1gyUVJlUW00MGN4WW9ZOXpDd0p2VWs3Q3JZMEV3Vl9NXzRpeEJmTkFybGNYazVQZDFNM2fSAXRBVV95cUxNb2tkeHpZenVGd0pHUC1kUUY3cUxPWjUxamsxbldiRHpYdEFqOUthTDNNcmNRdlpPaWpZQ2lsQVJ6Uy1qUGhZRkRTdVE2QmVNaDZLMVNHZm8zX0YtU1FmZFRnbmcyTXltYWRaYWZvQXJEMUpCaQ?oc=5",
+    "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1va2R4ell6dUZ3SkdQLWRRRjdxTE9aNTFqazFuV2JEelh0QWo5S2FMM01yY1F2Wk9pallDaWxBUnpTLWpQaFlGRFN1UTZCZU1oNksxU0dmbzNfRi1TUWZkVGduZzJNeW1hZFphZm9BckQxSkJp0gF0QVVfeXFMTW9rZHh6WXp1RndKR1AtZFFGN3FMT1o1MWprMW5XYkR6WHRBajlLYUwzTXJjUXZaT2lqWUNpbEFSelMtalBoWUZEU3VRNkJlTWg2SzFTR2ZvM19GLVNRZmRUZ25nMk15bWFkWmFmb0FyRDFKQmk?oc=5",
     "source": "이뉴스투데이",
-    "published": "2026-11-20T18:08:15+09:00",
+    "published": "2026-11-20T18:45:13+09:00",
     "category": "startup",
     "coverage": 10
    },
@@ -423,14 +431,6 @@
     "published": "2026-11-20T17:42:59+09:00",
     "category": "startup",
     "coverage": 6
-   },
-   {
-    "title": "인천시의회 이강구 의원, 스타트업 해외진출 성과 검증 촉구",
-    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5ldmpseEpxbm13SXBTNzgxRFBBZFZ3LXFkV0RTZURlM3RJZjhpUUdZSUxIN3Y1bWpRSkdOWmJFSFZmQk9YNmFGcTlLQkk4UmRlUWZEeURsZFYzMXJkSlZJR2Q0MXdWQUNqU0VwVHRn?oc=5",
-    "source": "국제뉴스",
-    "published": "2026-11-20T18:29:04+09:00",
-    "category": "startup",
-    "coverage": 5
    }
   ],
   "글로벌 기업": [
@@ -466,7 +466,7 @@
     "source": "한국경제 경제",
     "published": "2026-11-20T16:32:34+09:00",
     "category": "esg",
-    "coverage": 14
+    "coverage": 15
    },
    {
     "title": "서부발전, 재생에너지 전문가 자문 확대…태양광·VPP까지",
@@ -529,12 +529,12 @@
     "coverage": 2
    },
    {
-    "title": "정부 인정 AIDC 기준 나왔다...AIDC 특별법 하위법령서 구체화",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBGQjRzY2dWRzdRQ3lvWUM3WWZxUFB0Y05mODNwNWlnNnBaMXItbHRjV05sNFJkM1p2eGR5TTBwSXJjUkk2QWFnSGlIcVM5UTJGVy1LdUllZk9EalZGazJ1R1pFaktjRmVFTlE?oc=5",
-    "source": "AI타임스",
-    "published": "2026-11-20T13:00:55+09:00",
+    "title": "[정책 인사이트] 기름값 보조금 줄이는 日 vs 석유최고가 연장 검토하는 韓",
+    "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQR2RQcG5Cc2MzQ1g0MDlOZXRNc0cwM19vYXF1c0VMb1NBdFFsOU9nV1psZXFFMzdmS2EyT0NOUEFUMWVXcnJ3c1Zzb1BVdzVoUU9kUzhlaDFqZzFRVUxnTkhUWkJYMHlyNG1qYzBZMV90TW9zOGRyd1Rxak1LNHl4NWJIei1nQdIBmgFBVV95cUxQZzdBWDZXdHpnY1doc29VQ0NaUG1DLXQtbnZSN21xYlR3ZmxEcjhvRmZfX3JjM0NNcTBWdThJQjBaOGFYbGFWOThlaUtKUGNJTHkyWHJ1LXVUWWxyQlRQZlRCYm1TRkxYdmR0Z0p1RnVTYVpXY3lDY1BlZ05PeFpFYkV2am11NEhVcVNrcy11TUo2am1mc3I4ZHhR?oc=5",
+    "source": "Chosunbiz",
+    "published": "2026-11-20T21:43:00+09:00",
     "category": "policy",
-    "coverage": 2
+    "coverage": 1
    }
   ],
   "전략·신사업": [
@@ -565,6 +565,14 @@
   ],
   "거시경제": [
    {
+    "title": "[다음주 경제] 숨 고르기 한 기준금리, 인상할까…한은 성장률 전망은",
+    "link": "https://www.yna.co.kr/view/AKR20261121014700002",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-21T08:36:08+09:00",
+    "category": "macro",
+    "coverage": 2
+   },
+   {
     "title": "수출 1조달러에 성장률 전망 '쑥'…한은 기준금리 추가 인상 확실시",
     "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5NS1pjNXZucHdxWE1wMnlJcnVjbVBpWnlIeGFCMXhuSjhwRE9jeExBY2JndXMxOGtweFRjMmgzRUtoOWN3YjZRZVpva0dYLWJPUjhrZkxDa19pZ2tod2M3aWFHSExRbzNyUVl5cl9MUdIBc0FVX3lxTE5MNldnWVNNQVpVMjNTajN2QXVZSWJxT3otMUxwUlVLWUtFaEcxZjVWV3EySGJSMm9BbjBZNEJQRllXOFplZW5Xb3NDcWMwcDBNeTgxNHNJcHRCd3NFaGdUbm1La3RrcDF4cGhzbmFfNDZzb00?oc=5",
     "source": "뉴스웍스",
@@ -578,15 +586,7 @@
     "source": "연합뉴스 경제",
     "published": "2026-11-20T15:34:29+09:00",
     "category": "macro",
-    "coverage": 12
-   },
-   {
-    "title": "[다음주 경제] 숨 고르기 한 기준금리, 인상할까…한은 성장률 전망은",
-    "link": "https://www.yna.co.kr/view/AKR20261121014700002",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-21T08:36:08+09:00",
-    "category": "macro",
-    "coverage": 1
+    "coverage": 13
    }
   ]
  },
@@ -596,40 +596,40 @@
    "articles": 5
   },
   "ma": {
-   "stories": 18,
-   "articles": 21
+   "stories": 17,
+   "articles": 20
   },
   "ipo": {
    "stories": 21,
    "articles": 35
   },
   "capital": {
-   "stories": 19,
-   "articles": 32
+   "stories": 21,
+   "articles": 33
   },
   "earnings": {
    "stories": 22,
-   "articles": 34
+   "articles": 31
   },
   "accounting": {
    "stories": 1,
    "articles": 1
   },
   "governance": {
-   "stories": 3,
-   "articles": 5
+   "stories": 5,
+   "articles": 11
   },
   "tax": {
    "stories": 8,
    "articles": 8
   },
   "competition": {
-   "stories": 6,
-   "articles": 10
+   "stories": 7,
+   "articles": 11
   },
   "hr": {
    "stories": 33,
-   "articles": 56
+   "articles": 59
   },
   "supply": {
    "stories": 12,
@@ -644,27 +644,27 @@
    "articles": 4
   },
   "marketing": {
-   "stories": 18,
-   "articles": 30
+   "stories": 20,
+   "articles": 31
   },
   "startup": {
-   "stories": 35,
-   "articles": 63
+   "stories": 36,
+   "articles": 66
   },
   "global": {
-   "stories": 113,
-   "articles": 153
+   "stories": 114,
+   "articles": 154
   },
   "esg": {
-   "stories": 61,
-   "articles": 100
+   "stories": 63,
+   "articles": 102
   },
   "fiscal": {
-   "stories": 77,
-   "articles": 106
+   "stories": 76,
+   "articles": 105
   },
   "policy": {
-   "stories": 14,
+   "stories": 15,
    "articles": 19
   },
   "strategy": {
@@ -672,13 +672,13 @@
    "articles": 6
   },
   "macro": {
-   "stories": 46,
-   "articles": 70
+   "stories": 50,
+   "articles": 78
   }
  },
  "cards": [
   "stock_acquisition",
-  "shareholder_return"
+  "business_transfer"
  ],
  "lessons": [
   "valuation"
@@ -701,16 +701,16 @@
    "theory": "restructuring_labor"
   },
   {
-   "title": "[특징주] 하나에어로, 코스닥 상장 첫날 6% 상승(종합)",
-   "link": "https://www.yna.co.kr/view/AKR20261120037551008",
-   "category": "IPO·상장",
-   "theory": "ipo_underpricing"
-  },
-  {
    "title": "공정위, 한화솔루션 등 현장조사…태양광 패널 담합 의혹(종합)",
    "link": "https://www.yna.co.kr/view/AKR20261120086251002",
    "category": "경쟁·공정거래",
    "theory": "market_structure"
+  },
+  {
+   "title": "대성산업, 3분기 누적 당기순이익 112억···흑자전환",
+   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1vYXhZNU1EOTRldE1EVTcyN3ZuYVBjSGZoYUFrcmYzTkgzMGhIRTNqRHhCSU1ybEM4RHlRYXlqSHhsVGxZaU5iak1ZeXFNVmJkUlZFNmF6ejhRdmpnbjNjcmxEWEp4QU82a2c0?oc=5",
+   "category": "실적",
+   "theory": "operating_leverage"
   }
  ],
  "quiz": [
@@ -754,17 +754,17 @@
    "answer_label": "B"
   },
   {
-   "q": "2026년 배당분부터 고배당 상장사 배당소득 분리과세의 최고세율은?",
+   "q": "포괄적 사업양도는 부가가치세법에서 어떻게 취급될까?",
    "choices": [
-    "45%",
-    "25%",
-    "30%",
-    "35%"
+    "면세",
+    "10% 과세",
+    "영세율",
+    "재화의 공급으로 보지 않음"
    ],
-   "answer": 2,
-   "explain": "정부안 35%가 국회 논의에서 30%(50억원 초과 구간)로 낮아졌다.",
-   "topic": "배당·밸류업(주주환원)",
-   "answer_label": "C"
+   "answer": 3,
+   "explain": "부가가치세법 제10조 제9항 제2호.",
+   "topic": "영업양수도",
+   "answer_label": "D"
   },
   {
    "q": "다른 조건과 관계없이 이것 하나만 넘어도 외부감사 대상이 되는 자산(또는 매출) 기준은?",
