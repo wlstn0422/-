@@ -1,6 +1,6 @@
 {
  "year": 2025,
- "built_at": 1795226170.9289541,
+ "built_at": 1795226500.8226874,
  "rows": [
   {
    "industry": "반도체",
@@ -29,8 +29,8 @@
    "liabilities_prev": 112339878000000.0,
    "op_margin": 13.069626776247608,
    "debt_ratio": 29.93712690499687,
-   "employees": 257762.0,
-   "avg_salary": 76814123.10581079
+   "employees": 128881.0,
+   "avg_salary": null
   },
   {
    "industry": "반도체",
@@ -149,8 +149,8 @@
    "liabilities_prev": 40417925000000.0,
    "op_margin": 2.7784388948082372,
    "debt_ratio": 140.33380119273502,
-   "employees": 68288.0,
-   "avg_salary": 60576148.0787254
+   "employees": 34144.0,
+   "avg_salary": null
   },
   {
    "industry": "전자·부품·디스플레이",
@@ -179,8 +179,8 @@
    "liabilities_prev": 3776548889114.0,
    "op_margin": 8.072247726002438,
    "debt_ratio": 48.9780845704352,
-   "employees": 24346.0,
-   "avg_salary": 55064733.42643555
+   "employees": 12173.0,
+   "avg_salary": null
   },
   {
    "industry": "전자·부품·디스플레이",
@@ -1109,8 +1109,8 @@
    "liabilities_prev": 4163194426688.0,
    "op_margin": 12.515153949107816,
    "debt_ratio": 190.3089595302959,
-   "employees": 7134.0,
-   "avg_salary": 86894168.7692739
+   "employees": 3567.0,
+   "avg_salary": 86894308.94308943
   },
   {
    "industry": "건설",
@@ -1139,8 +1139,8 @@
    "liabilities_prev": 24731886937019.0,
    "op_margin": 8.081900793282298,
    "debt_ratio": 50.49971623578309,
-   "employees": 18522.0,
-   "avg_salary": 61535687.29078933
+   "employees": 9261.0,
+   "avg_salary": null
   },
   {
    "industry": "건설",
@@ -1229,8 +1229,8 @@
    "liabilities_prev": 12716171000000.0,
    "op_margin": 3.5164401441983903,
    "debt_ratio": 234.20207304821875,
-   "employees": 4996.0,
-   "avg_salary": 108805444.35548438
+   "employees": 4688.0,
+   "avg_salary": 111656356.6552901
   },
   {
    "industry": "건설",
@@ -1499,8 +1499,8 @@
    "liabilities_prev": 3532880772221.0,
    "op_margin": 6.870867049220703,
    "debt_ratio": 31.090668533564035,
-   "employees": 22438.0,
-   "avg_salary": 70516712.71949372
+   "employees": 11219.0,
+   "avg_salary": null
   },
   {
    "industry": "게임",
@@ -2308,8 +2308,8 @@
    "liabilities_prev": 6431620287493.0,
    "op_margin": 45.40781477354044,
    "debt_ratio": 48.44420515790019,
-   "employees": 10910.0,
-   "avg_salary": 55874060.49495875
+   "employees": 5455.0,
+   "avg_salary": null
   },
   {
    "industry": "제약·바이오",
@@ -2578,8 +2578,8 @@
    "liabilities_prev": 8039781176784.0,
    "op_margin": 7.011360501400893,
    "debt_ratio": 78.92191369719413,
-   "employees": 4638.0,
-   "avg_salary": 57150423.465502374
+   "employees": 2319.0,
+   "avg_salary": null
   },
   {
    "industry": "항공·해운·물류",
