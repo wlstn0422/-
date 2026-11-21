@@ -56,6 +56,15 @@ def test_asset_sale_computes_debt_ratio_and_interest_saving():
     assert "부채비율(빚 ÷ 자기자본)이 102%에서 약 22%로" in t
     assert "매년 이자 약 32억원" in t
     assert "빚을 줄이는 결정" in out["takeaway"]
+    assert "년치" not in out["size"]  # 파는 거래에는 '본업 이익 몇 년치'를 붙이지 않는다
+
+
+def test_ipo_reads_counts_with_units():
+    ev = make("ipo", {}, fin={})
+    ev.facts = [("공모 주식 수", "1,400,000주"), ("공모가(모집가액)", "18,000원")]
+    ev.amount, ev.amount_label = 252e8, "공모 총액"
+    out = ex.explain_filing(ev, None)
+    assert "주식 1,400,000주를 1주 18,000원에 팔아 252억원을 모으고" in out["what"]
 
 
 def test_rights_offering_dilution_and_use_of_funds():
@@ -121,6 +130,7 @@ def test_share_words_and_josa():
     assert ex.share_words(180, 100) == "1.8배"
     assert ex._eul("약 6분의 1(16.5%)") == "을" and ex._eul("62%") == "를"
     assert ex.clean_name("(주)모의상사") == "모의상사"
+    assert ex.clean_name("주식회사 드림인사이트\n( DREAMINSIGHT\nCo,.Ltd).") == "드림인사이트"  # 원문 줄바꿈
 
 
 def test_news_helpers():

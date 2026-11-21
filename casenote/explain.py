@@ -103,8 +103,9 @@ PURPOSE_KINDS: list[tuple[str, tuple[str, ...]]] = [
 
 # ------------------------------------------------------------------ 작은 도구들
 def clean_name(s) -> str:
-    """'주식회사 드림인사이트 ( DREAMINSIGHT Co,.Ltd).' → '드림인사이트'."""
-    t = re.sub(r"\(.*?\)|（.*?）", " ", str(s or ""))
+    """'주식회사 드림인사이트 ( DREAMINSIGHT Co,.Ltd).' → '드림인사이트'. 공시 원문은 줄바꿈이 섞여 있어 먼저 한 줄로 편다."""
+    t = re.sub(r"\s+", " ", str(s or ""))
+    t = re.sub(r"\(.*?\)|（.*?）", " ", t)
     t = re.sub(r"주식회사|㈜|\(주\)|유한책임회사|유한회사", " ", t)
     t = re.sub(r"\s+", " ", t).strip(" .,·")
     return t
@@ -246,8 +247,9 @@ def _year(ev) -> str:
     return f"{y}년 " if y else ""
 
 
-def size_line(ev, amount: float | None = None, what: str | None = None) -> str | None:
-    """거래 금액을 회사 재산·매출·이익과 견줘 '얼마나 큰 결정인가'를 한 문장으로."""
+def size_line(ev, amount: float | None = None, what: str | None = None, income_years: bool = True) -> str | None:
+    """거래 금액을 회사 재산·매출·이익과 견줘 '얼마나 큰 결정인가'를 한 문장으로.
+    income_years: 돈을 쓰는 거래면 '본업 이익 몇 년치'를 붙인다(파는 거래에는 어색해서 뺀다)."""
     amt = amount if amount is not None else ev.amount
     if not amt:
         return None
@@ -268,7 +270,7 @@ def size_line(ev, amount: float | None = None, what: str | None = None) -> str |
     line = f"{head}{_eun(head)} " + ", ".join(parts) + "에 해당합니다."
     if oi is not None and oi <= 0:
         line += f" {_year(ev)}본업은 적자(영업손실 {fmt_krw(-oi)})였습니다."
-    elif oi and amt / oi >= 1.5:
+    elif income_years and oi and amt / oi >= 1.5:
         line += f" 본업으로 1년에 버는 이익(영업이익 {fmt_krw(oi)})의 {amt / oi:.1f}년치입니다."
     return line
 
@@ -332,8 +334,19 @@ def synergy_kind_line(purpose: str | None) -> str | None:
 
 
 # ------------------------------------------------------------------ 공시 유형별 풀이
+SALE_KEYS = {"stock_trf", "business_trf", "asset_trf", "treasury_sell"}
+
+
 def _base(ev) -> dict:
-    return {"what": "", "plain": TYPE_PLAIN.get(ev.rule.key, ""), "size": size_line(ev), "steps": [], "takeaway": ""}
+    size = size_line(ev, income_years=ev.rule.key not in SALE_KEYS)
+    return {"what": "", "plain": TYPE_PLAIN.get(ev.rule.key, ""), "size": size, "steps": [], "takeaway": ""}
+
+
+def _num(text) -> float | None:
+    """'1,400,000주', '18,000원', '12.5%'처럼 단위가 붙은 숫자를 읽는다."""
+    if text is None:
+        return None
+    return parse_amount(re.sub(r"[^\d.,\-()]", "", str(text)))
 
 
 def _stock_acq(ev, out: dict) -> None:
@@ -734,8 +747,8 @@ def _mezzanine(ev, out: dict) -> None:
 
 
 def _ipo(ev, out: dict) -> None:
-    price = parse_amount(_fact(ev, "공모가(모집가액)"))
-    count = parse_amount(_fact(ev, "공모 주식 수"))
+    price = _num(_fact(ev, "공모가(모집가액)"))
+    count = _num(_fact(ev, "공모 주식 수"))
     amt = ev.amount
     name = ev.corp_name
     bits = []
