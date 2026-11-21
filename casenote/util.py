@@ -93,7 +93,8 @@ def fmt_krw(amount: float | None, *, precise: bool = False) -> str:
         eok = a / 1e8
         if eok >= 10:
             return f"{sign}{eok:,.0f}억원"
-        return f"{sign}{eok:,.1f}억원"
+        text = f"{eok:,.1f}"
+        return f"{sign}{text[:-2] if text.endswith('.0') else text}억원"  # 4.0억원 → 4억원
     if a >= 1e4:
         if a < 1e6 and a % 1e4:  # 100만원 미만에서 만원 단위로 안 떨어지면 원 단위 그대로(최저임금 10,320원)
             return f"{sign}{a:,.0f}원"

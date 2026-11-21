@@ -8,6 +8,10 @@
 
 {{ t.one_line }}
 
+{% if t.get("analogy") %}
+비유: {{ t.analogy }}
+
+{% endif %}
 {{ lesson_heading }} 쉽게 이해하기
 
 {{ t.easy|paras }}

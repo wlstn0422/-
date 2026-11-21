@@ -11,6 +11,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from . import ai as ai_mod
+from . import explain as ex_mod
 from . import theory as th_mod
 from .dart import CorpIndex, DartClient, DartError, DartFatalError, viewer_url
 from .events import (
@@ -282,6 +283,13 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             for ev in events:
                 score_event(ev, watch)
             key_cases = pick_key_cases(events, int(rc.get("key_cases", 3)))
+            for ev in key_cases:  # 쉬운 해설에서 '의약품 제조 회사 ○○'처럼 업종을 붙이고 업종이 가까운지 비교한다
+                try:
+                    ev.induty_code = str((client.company(ev.corp_code) or {}).get("induty_code") or "")
+                except DartFatalError:
+                    raise
+                except DartError as exc:
+                    log.info("회사 개요 조회 실패 %s: %s", ev.corp_name, exc)
             if needs_refresh(settings, year):
                 log.info("업종 규모 지도를 새로 만든다(%s년)", year)
                 scale = build_scale(client, settings, index, year)
@@ -311,17 +319,24 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
     biz_theories, subject_cards = th_mod.split_library(settings.theories)
     case_blocks = []
     cards_map = card_by_id(settings.cards)
+    glossary = settings.glossary
+    seen_terms: set[str] = set()  # 노트 안에서 한 번 풀이한 용어는 다시 풀지 않는다
     for ev in key_cases:
         card = cards_map.get(ev.rule.card or "", {})
+        theories = th_mod.theories_for(RULE_THEORIES.get(ev.rule.key, []), by_tid, limit=2)
+        easy = ex_mod.explain_filing(ev, theories[0] if theories else None)
+        easy_text = " ".join([easy["what"], easy["plain"], easy.get("size") or "", *easy["steps"], easy.get("takeaway") or ""])
+        easy["terms"] = ex_mod.pick_terms(easy_text, glossary, seen_terms, limit=4)
         case_blocks.append({
             "ev": ev,
+            "easy": easy,
             "numbers": context_notes(ev),
             "card": card,
             "accounting": (card.get("accounting") or [])[:2],
             "tax": (card.get("tax") or [])[:2],
             "law": (card.get("law") or [])[:1],
             "questions": (card.get("questions") or [])[:2],
-            "theories": th_mod.theories_for(RULE_THEORIES.get(ev.rule.key, []), by_tid, limit=2),
+            "theories": theories,
             "subjects": th_mod.subject_cards_for_rule(ev.rule.key, subject_cards, limit=3),
         })
 
@@ -333,6 +348,22 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
                                         int(rc.get("news_cases", 4))) if buckets else []
     ranked_cats = sorted((c for c in categories if buckets.get(c["key"])),
                          key=lambda c: buckets[c["key"]][0].score, reverse=True)
+    why_by_cat = settings.plain.get("categories") or {}
+    cues_by_card = settings.plain.get("cues") or {}
+    for nc in news_cases:
+        # 이론 대입: 이론별 단서 → 기사 속 신호(용어) → 기사 속 숫자 → 이론으로 보면. 핵심만 남기게 4줄 안쪽으로.
+        easy = ex_mod.explain_news(nc, why_by_cat.get(nc["category"]["key"]))
+        cue_lines, cue_words = ex_mod.apply_cues(easy["text"], cues_by_card.get(nc["theory"]["id"]), limit=2)
+        easy["signals"] = ex_mod.pick_signals(easy["text"], glossary, seen_terms, limit=2 - len(cue_lines), skip_words=cue_words)
+        easy["terms"] = ex_mod.pick_terms(easy["text"], glossary, seen_terms, limit=3, news=True)
+        steps = list(cue_lines)
+        steps += [f"기사 속 신호 '{e['term']}': {e['signal']}." for e in easy["signals"]]
+        if easy["numbers"]:
+            steps.append(f"기사 속 숫자: {', '.join(easy['numbers'])}.")
+        if easy.get("watch"):
+            steps.append(f"이론으로 보면: {easy['watch']}")
+        easy["steps"] = steps
+        nc["easy"] = easy
     links_ctx = (case_blocks, news_cases, company_ctx, buckets, categories)
 
     # 오늘의 이론 수업(경영·경제)

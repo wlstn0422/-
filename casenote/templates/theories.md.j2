@@ -23,7 +23,16 @@
 
 {{ t.field }} · {{ t.one_line }}
 
+{% if t.get("analogy") %}
+비유: {{ t.analogy }}
+
+{% endif %}
 {{ t.easy|paras }}
+
+{% if t.get("watch") %}
+뉴스에서 볼 점: {{ t.watch }}
+
+{% endif %}
 
 **조금 더 깊게**
 

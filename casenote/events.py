@@ -325,6 +325,7 @@ class Event:
     score: float = 0.0
     related_news: list = field(default_factory=list)
     same_day_count: int = 1
+    induty_code: str = ""  # 표준산업분류 코드(쉬운 해설에서 업종 이름과 업종 비교에 쓴다)
 
     @property
     def url(self) -> str:

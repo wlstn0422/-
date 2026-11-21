@@ -41,6 +41,8 @@ def settings(tmp_path, monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     (tmp_path / "data" / "knowledge").mkdir(parents=True)
     shutil.copy(ROOT / "data" / "knowledge" / "cards.yaml", tmp_path / "data" / "knowledge" / "cards.yaml")
+    for name in ("glossary.yaml", "plain.yaml"):
+        shutil.copy(ROOT / "data" / "knowledge" / name, tmp_path / "data" / "knowledge" / name)
     shutil.copy(ROOT / "data" / "benchmarks.yaml", tmp_path / "data" / "benchmarks.yaml")
     shutil.copy(ROOT / "data" / "news_sources.yaml", tmp_path / "data" / "news_sources.yaml")
     shutil.copytree(ROOT / "data" / "knowledge" / "theories", tmp_path / "data" / "knowledge" / "theories")

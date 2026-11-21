@@ -91,7 +91,7 @@ def test_ai_commentary_in_report(settings, monkeypatch):
     # 노트에 실린 뉴스 사례가 모두 해설 대상이다
     sent = json.loads(captured["messages"][0]["content"].split("\n\n", 1)[1])
     assert len(sent["news"]) == md.count("\n### 2-")
-    assert md.count("이론으로 보면:") == len(sent["news"])
+    assert md.count("\n- 이론으로 보면:") == len(sent["news"])  # 선배의 해설 줄(무료 해설의 번호 목록과 구분)
     assert captured["output_config"]["format"]["type"] == "json_schema"
 
 

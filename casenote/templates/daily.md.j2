@@ -34,7 +34,7 @@
 - 공시 {{ events_total }}건: {% for g in groups %}{{ g.label }} {{ g.count }}{% if not loop.last %} · {% endif %}{% endfor +%}
 {% endif %}
 
-30분 읽는 순서: 사례(1·2장) 10분, 이론 수업(3장) 7분, 전공 수업(4장) 8분, 퀴즈(6장) 5분. 7·8장은 훑어보는 참고 자료입니다.
+30분 읽는 순서: 사례(1·2장) 10분, 이론 수업(3장) 7분, 전공 수업(4장) 8분, 퀴즈(6장) 5분. 사례는 '한눈에'와 '이론에 대입하기'만 읽어도 핵심이 잡히고, '더 깊게 보기'는 시간 날 때 펼쳐 보면 됩니다. 7·8장은 훑어보는 참고 자료입니다.
 
 
 ## 1. 오늘의 공시 사례
@@ -49,9 +49,70 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endif %}
 {% for b in case_blocks %}
 {% set ev = b.ev %}
+{% set x = b.easy %}
 ### 1-{{ loop.index }}. {{ ev.corp_name }} {{ ev.rule.label }}{% if ev.is_correction %}(정정){% endif +%}
 
 {{ ev.market }} · 접수 {{ ev.rcept_dt[:4] }}.{{ ev.rcept_dt[4:6] }}.{{ ev.rcept_dt[6:8] }} · [{{ ev.report_nm|linktext }}]({{ ev.url }}){% if ev.same_day_count > 1 %} · 같은 유형 공시 {{ ev.same_day_count }}건 중 최신{% endif +%}
+
+**한눈에**
+
+- 무슨 일: {{ x.what }}
+{% if x.plain %}
+- 쉽게 말하면: {{ x.plain }}
+{% endif %}
+{% if x.size %}
+- 얼마나 큰가: {{ x.size }}
+{% endif %}
+
+{% if x.lens %}
+**이론에 대입하기: [{{ x.lens.title }}]({{ theory_book }}#{{ x.lens.id }})**
+
+이론 한 줄: {{ x.lens.one_line }}
+
+{% if x.lens.get("analogy") %}
+비유: {{ x.lens.analogy }}
+
+{% endif %}
+{% endif %}
+{% for s in x.steps %}
+{{ loop.index }}. {{ s }}
+{% endfor %}
+{% if x.steps %}
+
+{% endif %}
+{% if x.takeaway %}
+**한 줄 정리**: {{ x.takeaway }}
+
+{% endif %}
+{% if x.terms %}
+**용어 풀이**
+
+{% for t in x.terms %}
+- {{ t.term }}: {{ t.plain }}
+{% endfor %}
+
+{% endif %}
+{% set note = ai_notes.cases.get(ev.rcept_no) %}
+{% if note %}
+**선배의 해설**
+
+- 한 줄로: {{ note.one_line }}
+{% for w in note.why %}
+- 왜 했을까: {{ w }}
+{% endfor %}
+{% for w in note.numbers %}
+- 숫자로: {{ w }}
+{% endfor %}
+{% for w in note.accounting %}
+- 회계: {{ w }}
+{% endfor %}
+{% for w in note.tax %}
+- 세무: {{ w }}
+{% endfor %}
+- 회의에서 말한다면: {{ note.say_it }}
+
+{% endif %}
+<details markdown="1"><summary>더 깊게 보기: 공시 원문 항목, 다른 이론, 회계·세무·법</summary>
 
 {% if ev.facts %}
 | 항목 | 내용 |
@@ -78,10 +139,11 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endfor %}
 
 {% endif %}
-{% if b.theories %}
-**이론으로 읽기**
+{% set more = b.theories[1:] if x.lens else b.theories %}
+{% if more %}
+**다른 이론으로도 보기**
 
-{% for t in b.theories %}
+{% for t in more %}
 - [{{ t.title }}]({{ theory_book }}#{{ t.id }}): {{ t.one_line }}
     - 적용해 보기: {{ t.how_to[:2]|join(' / ') }}
 {% endfor %}
@@ -96,33 +158,13 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% for t in b.tax %}
 - 세무: {{ t }}
 {% endfor %}
-{% for x in b.law %}
-- 법·제도: {{ x }}
+{% for l in b.law %}
+- 법·제도: {{ l }}
 {% endfor %}
 
 {% endif %}
 {% if b.subjects %}
 **전공으로 더 깊게**: {% for t in b.subjects %}[{{ t.field }}: {{ t.title }}]({{ theory_book }}#{{ t.id }}){% if not loop.last %}, {% endif %}{% endfor +%}
-
-{% endif %}
-{% set note = ai_notes.cases.get(ev.rcept_no) %}
-{% if note %}
-**선배의 해설**
-
-- 한 줄로: {{ note.one_line }}
-{% for w in note.why %}
-- 왜 했을까: {{ w }}
-{% endfor %}
-{% for w in note.numbers %}
-- 숫자로: {{ w }}
-{% endfor %}
-{% for w in note.accounting %}
-- 회계: {{ w }}
-{% endfor %}
-{% for w in note.tax %}
-- 세무: {{ w }}
-{% endfor %}
-- 회의에서 말한다면: {{ note.say_it }}
 
 {% endif %}
 {% set qs = (note.questions if note else []) + b.questions %}
@@ -142,47 +184,54 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endfor %}
 
 {% endif %}
+</details>
+
 {% endfor %}
 
 ## 2. 뉴스로 보는 경영·경제 사례
 
 {% if news_cases %}
-전날 많이 보도된 기사 중 재무, 경영, 경제, 제도(회계·세법·상법·재정) 분야가 고르게 섞이도록 골라 기사를 읽을 이론과 제도를 붙였습니다.
+전날 많이 보도된 기사 중 재무, 경영, 경제, 제도(회계·세법·상법·재정) 분야가 고르게 섞이도록 골라 이론과 제도에 대입했습니다.
 
 {% for nc in news_cases %}
 {% set t = nc.theory %}
 {% set n = nc.item %}
+{% set x = nc.easy %}
 ### 2-{{ loop.index }}. {{ n.title|cell }}
 
 [기사 보기]({{ n.link }}) · {{ n.source }}{% if n.coverage > 1 %} 외 {{ n.coverage - 1 }}곳 보도{% endif %} · {{ nc.category.label }}
 
-{% if n.summary %}
-> {{ n.summary }}
+**한눈에**
+
+- 무슨 일: {{ x.what }}
+{% if x.why %}
+- 이 분야를 보는 이유: {{ x.why }}
+{% endif %}
+
+**이론에 대입하기: [{{ t.title }}]({{ theory_book }}#{{ t.id }})**{% if t.field in subject_fields %}({{ t.field }}){% endif +%}
+
+이론 한 줄: {{ t.one_line }}
+
+{% if t.get("analogy") %}
+비유: {{ t.analogy }}
 
 {% endif %}
-**이 기사를 읽는 이론·제도: [{{ t.title }}]({{ theory_book }}#{{ t.id }})**{% if t.field in subject_fields %}({{ t.field }}){% endif +%}
-
-{% if t.id in lesson_where %}
-{{ t.one_line }} 이 내용은 아래 {{ lesson_where[t.id] }}에서 자세히 풀었으니, 거기 나온 적용 순서를 이 기사에 대입해 보세요.
-
-{% else %}
-{{ t.one_line }} {{ t.easy|first_para }}
-
-{% if t.get("law") %}
-- {{ story_labels.get(t.field, story_labels['세법']).purpose }}: {{ t.law.purpose }}
-
-{% endif %}
-**이렇게 분석해 보자**
-
-{% for step in t.how_to %}
-{{ loop.index }}. {{ step }}
+{% for s in x.steps %}
+{{ loop.index }}. {{ s }}
 {% endfor %}
+{% if x.steps %}
 
 {% endif %}
-**기사에서 찾아볼 숫자**: {{ nc.category.numbers|join(' / ') }}
+{% if t.id in lesson_where %}
+이 이론은 아래 {{ lesson_where[t.id] }}에서 자세히 풀었습니다.
 
-{% if nc.others %}
-**같이 볼 카드**: {% for o in nc.others %}[{{ o.title }}]({{ theory_book }}#{{ o.id }}){% if not loop.last %}, {% endif %}{% endfor +%}
+{% endif %}
+{% if x.terms %}
+**용어 풀이**
+
+{% for e in x.terms %}
+- {{ e.term }}: {{ e.plain }}
+{% endfor %}
 
 {% endif %}
 {% set note = ai_notes.news.get(nc.id) %}
@@ -201,6 +250,30 @@ DART 키를 등록하면 전날 나온 합병·분할·증자·자사주·IPO �
 {% endfor %}
 
 {% endif %}
+<details markdown="1"><summary>이론 더 알아보기: {{ t.title|htmltext }}</summary>
+
+{% if t.id not in lesson_where %}
+{{ t.easy|first_para }}
+
+{% if t.get("law") %}
+- {{ story_labels.get(t.field, story_labels['세법']).purpose }}: {{ t.law.purpose }}
+
+{% endif %}
+**이렇게 분석해 보자**
+
+{% for step in t.how_to %}
+{{ loop.index }}. {{ step }}
+{% endfor %}
+
+{% endif %}
+**기사에서 찾아볼 숫자**: {{ nc.category.numbers|join(' / ') }}
+
+{% if nc.others %}
+**같이 볼 카드**: {% for o in nc.others %}[{{ o.title }}]({{ theory_book }}#{{ o.id }}){% if not loop.last %}, {% endif %}{% endfor +%}
+
+{% endif %}
+</details>
+
 {% endfor %}
 {% else %}
 뉴스를 가져오지 못했습니다.

@@ -26,6 +26,7 @@ def test_fmt_krw_units():
     assert fmt_krw(1_000_000_000_000) == "1조원"
     assert fmt_krw(45_600_000_000) == "456억원"
     assert fmt_krw(350_000_000) == "3.5억원"
+    assert fmt_krw(400_000_000) == "4억원"
     assert fmt_krw(120_000) == "12만원"
     assert fmt_krw(-2_000_000_000_000) == "-2조원"
 

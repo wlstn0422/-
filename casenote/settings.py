@@ -87,7 +87,8 @@ class Settings:
 
     @cached_property
     def theories(self) -> list[dict]:
-        """경영·경제 이론 카드. data/knowledge/theories/*.yaml 을 파일 이름 순서대로 합친다."""
+        """경영·경제 이론 카드. data/knowledge/theories/*.yaml 을 파일 이름 순서대로 합치고,
+        data/knowledge/plain.yaml의 쉬운 비유(analogy)와 뉴스에서 볼 점(watch)을 붙인다."""
         out: list[dict] = []
         folder = self.data_dir / "knowledge" / "theories"
         if folder.exists():
@@ -95,7 +96,24 @@ class Settings:
                 data = load_yaml(path)
                 if isinstance(data, list):
                     out.extend(data)
+        extra = (self.plain.get("cards") or {}) if isinstance(self.plain, dict) else {}
+        for card in out:
+            for key, val in (extra.get(card.get("id")) or {}).items():
+                card.setdefault(key, val)
         return out
+
+    @cached_property
+    def plain(self) -> dict:
+        path = self.data_dir / "knowledge" / "plain.yaml"
+        data = load_yaml(path) if path.exists() else {}
+        return data if isinstance(data, dict) else {}
+
+    @cached_property
+    def glossary(self) -> list[dict]:
+        """배경지식 없이 읽도록 붙이는 용어 풀이(data/knowledge/glossary.yaml)."""
+        path = self.data_dir / "knowledge" / "glossary.yaml"
+        data = load_yaml(path) if path.exists() else []
+        return [e for e in data if isinstance(e, dict) and e.get("term") and e.get("plain")] if isinstance(data, list) else []
 
     @cached_property
     def benchmarks(self) -> dict:
