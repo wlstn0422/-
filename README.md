@@ -73,13 +73,13 @@ Actions 탭 → '매일 케이스 노트' → Run workflow. 2~3분 뒤 `reports/
 
 ### 1. 설치
 
-1. 휴대폰 브라우저에서 github.com에 로그인합니다(저장소가 비공개라서 로그인해야 내려받을 수 있습니다).
-2. https://github.com/wlstn0422/-/releases/download/app-latest/casenote.apk 를 엽니다. 저장소 화면에서 Releases → 케이스 노트 앱 → casenote.apk를 눌러도 됩니다.
-3. 내려받은 파일을 열면 '출처를 알 수 없는 앱' 설치를 허용할지 묻습니다. 브라우저(크롬 등)에 허용하고 설치합니다. Play 프로텍트 경고가 나오면 '설치' 또는 '무시하고 설치'를 고릅니다.
+1. 휴대폰 브라우저에서 https://github.com/wlstn0422/-/releases/download/app-latest/casenote.apk 를 엽니다. 저장소 화면에서 Releases → 케이스 노트 앱 → casenote.apk를 눌러도 됩니다.
+2. 내려받은 파일을 열면 '출처를 알 수 없는 앱' 설치를 허용할지 묻습니다. 브라우저(크롬 등)에 허용하고 설치합니다. Play 프로텍트 경고가 나오면 '설치' 또는 '무시하고 설치'를 고릅니다.
+3. 앱을 열면 바로 노트 목록이 나옵니다. 저장소가 공개라서 로그인이나 토큰이 필요 없습니다.
 
-### 2. 토큰 넣기(처음 한 번)
+### 2. 저장소를 비공개로 되돌릴 경우(토큰)
 
-저장소가 비공개라서 앱이 노트를 읽으려면 본인 계정의 읽기 전용 토큰이 필요합니다. 앱을 처음 열면 안내 화면이 나오고, 그 화면의 '토큰 만들기' 버튼이 아래 화면으로 바로 연결됩니다.
+저장소를 다시 비공개로 바꾸면 앱이 노트를 읽을 수 없게 되고, 앱에 토큰 안내 화면이 나옵니다. 이때는 본인 계정의 읽기 전용 토큰을 한 번 넣어야 합니다. 안내 화면의 '토큰 만들기' 버튼이 아래 화면으로 바로 연결됩니다. 휴대폰에서 만들기가 잘 안 되면 PC에서 만드는 편이 수월합니다.
 
 1. GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token
 2. Token name: casenote-app, Expiration: 길게(예: 1년)
@@ -87,7 +87,7 @@ Actions 탭 → '매일 케이스 노트' → Run workflow. 2~3분 뒤 `reports/
 4. Permissions → Repository permissions → Contents: Read-only
 5. Generate token을 누르고 나온 토큰(github_pat_로 시작)을 복사해 앱의 설정 → GitHub 토큰에 붙여 넣고 저장
 
-토큰은 휴대폰의 앱 전용 저장소에만 보관되고(백업 제외) 노트를 읽는 데만 씁니다. 휴대폰을 잃어버리면 같은 GitHub 화면에서 토큰을 삭제하면 됩니다. 토큰이 만료되면 앱이 안내 화면을 띄우니 새로 만들어 넣으면 됩니다. 저장소를 공개로 바꾸면 토큰 없이도 됩니다.
+토큰은 휴대폰의 앱 전용 저장소에만 보관되고(백업 제외) 노트를 읽는 데만 씁니다. 저장소가 공개인 동안에는 설정의 토큰 칸을 비워 두면 됩니다.
 
 ### 3. 사용
 
