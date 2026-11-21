@@ -159,6 +159,11 @@ def share_words(part, whole) -> str | None:
     return f"{p:.0f}%" if p >= 10 else f"{p:.1f}%"
 
 
+def pct_text(p: float) -> str:
+    """지분율 같은 비율을 소수 둘째 자리까지, 끝의 0은 떼고 적는다(18.55%, 18.6%, 20%)."""
+    return f"{p:.2f}".rstrip("0").rstrip(".") + "%"
+
+
 def _base_word(word: str) -> str:
     """조사는 괄호 앞 낱말에 맞춘다('약 6분의 1(16.5%)' → '약 6분의 1')."""
     return re.sub(r"\s*\([^()]*\)\s*$", "", str(word or "")) or str(word or "")
@@ -369,10 +374,10 @@ def _stock_acq(ev, out: dict) -> None:
     who = f"{tgt}({biz})" if biz else tgt
     out["what"] = f"{me}{_i(me)} {who}의 주식을 {fmt_krw(amt)}에 취득한다." if amt else f"{me}{_i(me)} {who}의 주식을 취득한다."
     if after is not None:
-        out["what"] += f" 취득 후 지분율은 {after:.2f}%이다."
+        out["what"] += f" 취득 후 지분율은 {pct_text(after)}이다."
     st = stake_text(after)
     if st:
-        out["plain"] += f" 취득 후 지분율 {after:.1f}%는 {st[0]}. {st[1]}."
+        out["plain"] += f" 취득 후 지분율 {pct_text(after)}는 {st[0]}. {st[1]}."
     fund = funding(ev)
     if out["size"] and fund:
         out["size"] += f" 취득 대금은 {fund} 조달한다."
@@ -387,7 +392,7 @@ def _stock_acq(ev, out: dict) -> None:
         bought = after
     if amt and bought and bought > 0.5:
         whole = amt / (bought / 100)
-        steps.append(f"기업가치 환산: 지분 {bought:.1f}%에 {fmt_krw(amt)}{_eul(fmt_krw(amt))} 지급하므로, 이 가격은 {tgt}의 지분 전체 가치를 "
+        steps.append(f"기업가치 환산: 지분 {pct_text(bought)}에 {fmt_krw(amt)}{_eul(fmt_krw(amt))} 지급하므로, 이 가격은 {tgt}의 지분 전체 가치를 "
                      f"약 {fmt_krw(whole)}{_euro(fmt_krw(whole))} 평가한 것이다. 이 금액을 대상 회사의 연간 순이익과 비교한 배수(PER)가 "
                      "취득 가격의 적정성을 판단하는 기준이 된다.")
     if amt:
@@ -410,7 +415,7 @@ def _stock_acq(ev, out: dict) -> None:
     portion = share_words(_fact_pct(ev, "총자산 대비"), 100) if _fact_pct(ev, "총자산 대비") else share_words(amt, ta)
     head = f"회사 총자산의 {portion}에 해당하는 자금을 " if portion else ""
     fund_part = f"{fund} 조달하여 " if fund and portion else ""
-    stake = f"지분 {after:.1f}%" if after is not None else "지분"
+    stake = f"지분 {pct_text(after)}" if after is not None else "지분"
     key = ("지배력 없이 시너지를 실현할 수 있는지" if (after is not None and after <= 50)
            else "지급한 프리미엄 이상의 시너지를 창출할 수 있는지")
     out["takeaway"] = f"{head}{fund_part}{biz or tgt} 기업의 {stake}{_eul(stake)} 취득한 결정이다. {key}가 핵심 쟁점이다."
@@ -425,7 +430,7 @@ def _stock_trf(ev, out: dict) -> None:
     who = f"{tgt}({biz})" if biz else tgt
     out["what"] = f"{me}{_i(me)} 보유하던 {who}의 주식을 {fmt_krw(amt) + '에 ' if amt else ''}매각한다."
     if after is not None:
-        out["what"] += f" 매각 후 지분율은 {after:.2f}%이다."
+        out["what"] += f" 매각 후 지분율은 {pct_text(after)}이다."
         if after == 0:
             out["plain"] += " 보유 지분을 전량 매각하므로 해당 회사에 대한 투자를 완전히 회수한다."
     liab = (ev.fin or {}).get("liabilities")
@@ -895,9 +900,30 @@ def lead_sentence(summary, title: str = "") -> str:
     m = re.match(r"(.+?(?:다|요|음|함)\.)(\s|$)", s)
     if m:
         s = m.group(1)
+    elif re.search(r"다$", s):
+        s += "."
+    else:
+        s = _close_clause(s)  # 요약이 문장 중간에서 잘렸다
     if len(s) < 15 or re.sub(r"\W", "", s) == re.sub(r"\W", "", title or ""):
         return ""
     return s if len(s) <= 200 else s[:199].rstrip() + "…"
+
+
+_CLAUSE_END = re.compile(r"(했|됐|였|었|았|있|없)(?:고|으며),|(하|되)(?:고|며),")
+
+
+def _close_clause(s: str) -> str:
+    """'…수요예측을 진행하고, 엠비디가...'처럼 잘린 요약에서 마지막으로 끝난 절을 찾아
+    '…수요예측을 진행한다.'로 닫는다. 닫을 절이 없으면 빈 문자열."""
+    last = None
+    for m in _CLAUSE_END.finditer(s):
+        last = m
+    if last is None:
+        return ""
+    head = s[:last.start()]
+    if last.group(1):
+        return f"{head}{last.group(1)}다."
+    return head + ("한다." if last.group(2) == "하" else "된다.")
 
 
 _JOSA_TAIL = re.compile(r"(에서|으로|을|를|이|가|은|는|의|에|로|와|과|도|만)$")
@@ -924,7 +950,7 @@ def number_phrases(text, limit: int = 3) -> list[str]:
 def explain_news(nc: dict, why: str | None = None) -> dict:
     item = nc["item"]
     card = nc["theory"]
-    what = lead_sentence(getattr(item, "summary", ""), item.title) or item.title
+    what = lead_sentence(getattr(item, "summary", ""), item.title)
     return {
         "what": what,
         "why": why,

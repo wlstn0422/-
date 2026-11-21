@@ -201,13 +201,17 @@ DART 인증키를 등록하면 전날 제출된 합병·분할·증자·자기�
 
 [기사 보기]({{ n.link }}) · {{ n.source }}{% if n.coverage > 1 %} 외 {{ n.coverage - 1 }}곳 보도{% endif %} · {{ nc.category.label }}
 
+{% if x.what or x.why %}
 **사례 개요**
 
+{% if x.what %}
 - 사실관계: {{ x.what }}
+{% endif %}
 {% if x.why %}
 - 분야의 의의: {{ x.why }}
 {% endif %}
 
+{% endif %}
 **이론 적용: [{{ t.title }}]({{ theory_book }}#{{ t.id }})**{% if t.field in subject_fields %}({{ t.field }}){% endif +%}
 
 이론의 요지: {{ t.one_line }}
