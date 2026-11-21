@@ -95,31 +95,23 @@
     "coverage": 2
    },
    {
+    "title": "앤트로픽 상장 열풍, 코인 시장으로…공모주도 토큰으로 산다",
+    "link": "https://www.hankyung.com/article/202611209908i",
+    "source": "한국경제 경제",
+    "published": "2026-11-21T09:00:16+09:00",
+    "category": "ipo",
+    "coverage": 2
+   },
+   {
     "title": "이번주 공모주 청약, KMF·ANH스트럭쳐 등 2개사",
     "link": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOXy1IczcwMXdRWWZ3VEQxQmZfeWc1REdBYzc0RnpId0ZIZ1ZLb0xMcmpkcFR1ZjNZcjkxX2E0QzBsUFNZZXZfaE5XY0lVbUVlRlU5Y05rZ3ZPRFdnc3QyNlJTdjZCY1NzQi1FSFI0Rk1FWFFwUzR5Qkc1QTdBclpLM0M4TnVleVh6V2VadV82TmNwdk9wc1pKU2FvMUY0ZkI3amp0VG9QdDF3QVFGR2g5bzJkZzZaTnNtWFh1RlR1VVA4SnhDZl9pNjhQb2RTaHBjaE5nUFNiRHFJdEFLeExMZjYzT1ZJSk15ZU5CUVBn?oc=5",
     "source": "데일리안",
     "published": "2026-11-22T00:10:00+09:00",
     "category": "ipo",
     "coverage": 1
-   },
-   {
-    "title": "챗GPT 경쟁자 앤트로픽, 공모가 83달러 확정…스페이스X 기록 깰까 > 시애틀 뉴스/핫이슈",
-    "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE1VUmxhbEozS3pEMzJNY01fVzVHTUx5ME1fZzhIakptZUN4em5ka2habUs0a25EOVRtUUEyUmRnV2phYnVSM1g4OHlB?oc=5",
-    "source": "SeattleN",
-    "published": "2026-11-21T20:05:11+09:00",
-    "category": "ipo",
-    "coverage": 1
    }
   ],
   "자본정책·주주환원": [
-   {
-    "title": "피에이치에이, 자사주 최대 10% 소각 가능성…주주환원 카드 꺼냈다",
-    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBPenYwRnpYWVM3d29CclFZajhyNTY5VUVKWEFNdkF6Qkx4dXJLTHIyNGZpbzdKMDEzbkFCZVEweWQ4WmhFel83M2QyQXE3Mmp5OGxXUmZwNWY4NkUwaW9qd1E5Qkc1SFVfbW5yVDhuNzhYcE3SAXdBVV95cUxPTjVVV2E0V1pDZkhuT2c5TmRkcXBhZFVwUWpDOFJCVkFJWWU2RGVHSjU0Zkg3RGJZVV9nTndRZkZfUjNDMUw3bGZMTVFKcUR6OUM2TUp4akFWMHZiYXFlT0NzSWh1eVc5dFpyOFA4aHV5SjBWZXBQNA?oc=5",
-    "source": "핀포인트뉴스",
-    "published": "2026-11-21T09:49:52+09:00",
-    "category": "capital",
-    "coverage": 1
-   },
    {
     "title": "삼전닉스, 3분기 배당성향 껑충…상반기 대비 21배로 늘기도",
     "link": "https://www.yna.co.kr/view/AKR20261120152600003",
@@ -135,6 +127,14 @@
     "published": "2026-11-21T19:15:13+09:00",
     "category": "capital",
     "coverage": 2
+   },
+   {
+    "title": "반도체부터 금융·소비재까지 매물 출회…기업가치 제고주 '흔들'",
+    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1IdWZ2cE5MRDE5QkpKb2tCWm02STNmOFZ3cFdyYkhpZ3lQS1dydzFqNGdnVTZZUzFvMk4yWjdyWEdtQ1kycTR5eEVBRXI2d0p4NllhTnJWRWhFMVJjY2tHV0pTR3MyUmxueHRUQmV4MHdfeVB6cW9F0gF3QVVfeXFMTUh1ZnZwTkxEMTlCSkpva0JabTZJM2Y4VndwV3JiSGlneVBLV3J3MWo0Z2dVNllTMW8yTjJaN3JYR21DWTJxNHl4RUFFcjZ3Sng2WWFOclZFaEUxUmNja0dXSlNHczJSbG54dFRCZXgwd195UHpxb0U?oc=5",
+    "source": "핀포인트뉴스",
+    "published": "2026-11-21T15:40:45+09:00",
+    "category": "capital",
+    "coverage": 1
    }
   ],
   "실적": [
@@ -246,9 +246,9 @@
   "공급망·생산": [
    {
     "title": "동성화인텍, 환율 하락·원자재 상승에도 영업익 증가…고단가 수주가 버팀목",
-    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5vMXRWNXZNbE1XZWVadGkxcG5qQzlmMWhsOEZERm83M1I4WFphb2MwWDNXZVY2REJ3eWlyaXFfRUJQczI4aHVnZkRtMzQ2azhpQWJZcUxBcjRYVl81ZE81RnZXckhnQUdCcXFWTVpJTVNMX0RacWlB0gF3QVVfeXFMTm8xdFY1dk1sTVdlZVp0aTFwbmpDOWYxaGw4RkRGbzczUjhYWmFvYzBYM1dlVjZEQnd5aXJpcV9FQlBzMjhodWdmRG0zNDZrOGlBYllxTEFyNFhWXzVkTzVGdldySGdBR0JxcVZNWklNU0xfRFpxaUE?oc=5",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE54Rzl0SEthVzdxeTlzNkh3NWJBcmlEdEU1NFdFVTlyZVd5Q0hDMXdGWHRDcEhfWDFUOGM4cTE5aFh2dTlqVmZabVh2MTRic1N5NTQxWk5vQnE0TDN6bXdtZVR3Y1Z5ek5MYTBseHdhVDY0eWPSAXdBVV95cUxObzF0VjV2TWxNV2VlWnRpMXBuakM5ZjFobDhGREZvNzNSOFhaYW9jMFgzV2VWNkRCd3lpcmlxX0VCUHMyOGh1Z2ZEbTM0Nms4aUFiWXFMQXI0WFZfNWRPNUZ2V3JIZ0FHQnFxVk1aSU1TTF9EWnFpQQ?oc=5",
     "source": "핀포인트뉴스",
-    "published": "2026-11-21T19:21:09+09:00",
+    "published": "2026-11-21T19:04:36+09:00",
     "category": "supply",
     "coverage": 2
    },
@@ -261,10 +261,10 @@
     "coverage": 1
    },
    {
-    "title": "환율·원자재·건조 지연 삼중고… 한국카본 실적 회복은 4분기",
-    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1DdGVlbldQMmVXMm9XM0lTc0RUVDUzNUhudFc4el9RZlRsUnJQaml5YjBxZGdlNVI4RWNlUEtkLURHQTVKbzAxOHdwYUhWdWJJcjFVb2w2eTZMczB5OGVPYnNZY2dTU25hczJZcGVYcF9DUVB3Vkdr0gF3QVVfeXFMTUN0ZWVuV1AyZVcyb1czSVNzRFRUNTM1SG50Vzh6X1FmVGxSclBqaXliMHFkZ2U1UjhFY2VQS2QtREdBNUpvMDE4d3BhSFZ1YklyMVVvbDZ5NkxzMHk4ZU9ic1ljZ1NTbmFzMllwZVhwX0NRUHdWR2s?oc=5",
-    "source": "핀포인트뉴스",
-    "published": "2026-11-21T19:21:09+09:00",
+    "title": "식품 업체들이 2027년 설날을 대비해 시장 안정화를 위해 선제적으로 공급망을 확보하고 있다.",
+    "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPaDVLak5nWEJnY29lNHBpVXUyRHdNRzlHNzJxNHljYS1XUG45WkRXMS0zcDhtaUFzaDVaM3pVZlFsQk5tclF5d0pOTWtOcGNnOEctUnN4bmhJZWVwZ2RYM29SOUludUZnYm0zUXdMOTJOUFBpa0V3eW5CZnBrYU9VcTdKQzRJQlFkSlN0ZGt0UGJrTGs5eFpTbTQ3dGg?oc=5",
+    "source": "Vietnam.vn",
+    "published": "2026-11-21T17:23:43+09:00",
     "category": "supply",
     "coverage": 1
    }
@@ -375,20 +375,20 @@
   ],
   "글로벌 기업": [
    {
+    "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
+    "link": "https://www.mk.co.kr/news/stock/12215112",
+    "source": "매일경제 증권",
+    "published": "2026-11-21T06:24:01+09:00",
+    "category": "global",
+    "coverage": 5
+   },
+   {
     "title": "엔비디아 일주일 만에 23% 폭락…SEC 조사·8대 법적 리스크에 위기 더 커지나?",
     "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBDY2h3VTJ3TTd6c0pJdWFIT0Q5U1pkS19SdndTX0t4R1ZKQU5Way1mNjhJU21JcEc3TUpGVXlBbTZMcGhDcV9pQ2Nn?oc=5",
     "source": "코인리더스",
     "published": "2026-11-21T19:58:00+09:00",
     "category": "global",
     "coverage": 6
-   },
-   {
-    "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
-    "link": "https://www.mk.co.kr/news/stock/12215112",
-    "source": "매일경제 증권",
-    "published": "2026-11-21T06:24:01+09:00",
-    "category": "global",
-    "coverage": 4
    },
    {
     "title": "EU, 연 1.1조원 매출 빅테크에 디지털세 3% 제안…미국과 통상 마찰 우려",
@@ -409,18 +409,18 @@
     "coverage": 1
    },
    {
+    "title": "韓 ESG채권 발행 16% 늘었지만…공공기관·은행 쏠림 심화",
+    "link": "https://www.yna.co.kr/view/AKR20261121026400008",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-22T06:30:01+09:00",
+    "category": "esg",
+    "coverage": 3
+   },
+   {
     "title": "부안군 지속가능발전협의회, 부안의 미래를 모색하는 탄소중립 정책간담회 개최",
     "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFAtQkdNVnZPVFNpNjEzNDhFc0FhMkRyQlJXbzA3OVZKeGxFSUhnYmU4bjRFZnFLaktWSEFqT1d0c1NFZ2R5Ni1HTjllTV80Y1EtcDRVbGdKMGdpUm9obmd4WlBXZnB2UWp5d0E?oc=5",
     "source": "전북도민일보",
     "published": "2026-11-21T19:49:00+09:00",
-    "category": "esg",
-    "coverage": 1
-   },
-   {
-    "title": "정희용 의원, 건물·도시 기후위기 대응 포럼 개최…탄소중립 정책 모색",
-    "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBUS2lzMExJYmtwY1JoMWtRTW9IVko2Mnl5V05ILXlaVGEtNjNZbDlxRG40VWMzdWMwOGF1SXdoZkNrd0hKekhhdm1GcldhZTVMallxSWpR?oc=5",
-    "source": "헤럴드경제",
-    "published": "2026-11-21T18:40:20+09:00",
     "category": "esg",
     "coverage": 1
    }
@@ -443,12 +443,12 @@
     "coverage": 2
    },
    {
-    "title": "진주시의회, 25일간 정례회…2027년도 본예산안 심사",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5vdzhJcDdBcTNZaWd0YlhaZlJmU3lKWnRmNU5iaHhIeU1EQlZ6MVR2T01aQ25qUzdkSkE2TUpDN19DNUJLY0Y3WHhZQXJFcW5EY3lHSmM3Q29iWGlOSzRkX0pmZlVqNFBucEE?oc=5",
-    "source": "진주뉴스",
-    "published": "2026-11-21T12:35:22+09:00",
+    "title": "예산안 법정시한 열흘 앞…여야 미래대응기금 대립 : 정치",
+    "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFB2RlNrWlk5Um1xR191Umx1d2U2U0thTUVoUVB2X3FCdVlZLWtIRVo2NUtMSFhScmFZMERVUU85SzFXMXZFMmgzWWZwdw?oc=5",
+    "source": "재경일보",
+    "published": "2026-11-22T06:36:00+09:00",
     "category": "fiscal",
-    "coverage": 2
+    "coverage": 1
    }
   ],
   "산업·규제 정책": [
@@ -474,6 +474,16 @@
     "source": "진주인터넷뉴스",
     "published": "2026-11-21T18:31:31+09:00",
     "category": "policy",
+    "coverage": 1
+   }
+  ],
+  "전략·신사업": [
+   {
+    "title": "카카오 3년 사법리스크의 여파…AI 경쟁 속 사업 확장 차질",
+    "link": "https://www.yna.co.kr/view/AKR20261120151400017",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-22T06:33:00+09:00",
+    "category": "strategy",
     "coverage": 1
    }
   ],
@@ -515,15 +525,15 @@
   },
   "ipo": {
    "stories": 9,
-   "articles": 10
+   "articles": 11
   },
   "capital": {
-   "stories": 5,
-   "articles": 7
+   "stories": 4,
+   "articles": 6
   },
   "earnings": {
-   "stories": 10,
-   "articles": 12
+   "stories": 11,
+   "articles": 13
   },
   "accounting": {
    "stories": 2,
@@ -562,32 +572,32 @@
    "articles": 7
   },
   "startup": {
-   "stories": 14,
-   "articles": 17
+   "stories": 13,
+   "articles": 16
   },
   "global": {
-   "stories": 82,
-   "articles": 114
+   "stories": 84,
+   "articles": 118
   },
   "esg": {
-   "stories": 55,
-   "articles": 56
+   "stories": 57,
+   "articles": 60
   },
   "fiscal": {
-   "stories": 65,
+   "stories": 66,
    "articles": 82
   },
   "policy": {
-   "stories": 9,
-   "articles": 10
+   "stories": 10,
+   "articles": 11
   },
   "strategy": {
-   "stories": 0,
-   "articles": 0
+   "stories": 1,
+   "articles": 1
   },
   "macro": {
-   "stories": 26,
-   "articles": 34
+   "stories": 33,
+   "articles": 42
   }
  },
  "cards": [
@@ -609,16 +619,16 @@
    "theory": "pf_budget"
   },
   {
+   "title": "엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
+   "link": "https://www.mk.co.kr/news/stock/12215112",
+   "category": "글로벌 기업",
+   "theory": "generic_strategy"
+  },
+  {
    "title": "[다음주 경제] 숨 고르기 한 기준금리, 인상할까…한은 성장률 전망은",
    "link": "https://www.yna.co.kr/view/AKR20261121014700002",
    "category": "거시경제",
    "theory": "monetary_policy"
-  },
-  {
-   "title": "엔비디아 일주일 만에 23% 폭락…SEC 조사·8대 법적 리스크에 위기 더 커지나?",
-   "link": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBDY2h3VTJ3TTd6c0pJdWFIT0Q5U1pkS19SdndTX0t4R1ZKQU5Way1mNjhJU21JcEc3TUpGVXlBbTZMcGhDcV9pQ2Nn?oc=5",
-   "category": "글로벌 기업",
-   "theory": "generic_strategy"
   },
   {
    "title": "[IPO챗] 내주 엠비디 코스닥 입성…4개사 수요예측",
@@ -655,17 +665,17 @@
    "answer_label": "A"
   },
   {
-   "q": "기준금리를 올렸을 때 일반적으로 기대되는 효과가 아닌 것은?",
+   "q": "매출총이익률은 낮지만 재고와 자산 회전이 매우 빠른 유통기업이 주로 택한 전략은?",
    "choices": [
-    "원화 약세 압력",
-    "물가 상승 압력 완화",
-    "성장주 가치 하락 압력",
-    "대출 감소"
+    "비관련 다각화",
+    "차별화",
+    "수직계열화",
+    "원가우위"
    ],
-   "answer": 0,
-   "explain": "금리 인상은 원화 자산의 매력을 높여 원화 강세(환율 하락) 쪽 압력을 준다.",
-   "topic": "기준금리와 통화정책 전달 경로",
-   "answer_label": "A"
+   "answer": 3,
+   "explain": "적게 남기고 많이 파는 구조다. 듀퐁 분해로 보면 이익률보다 회전율이 ROE를 만든다.",
+   "topic": "본원적 경쟁전략(원가우위·차별화·집중)",
+   "answer_label": "D"
   },
   {
    "q": "포괄적 사업양도는 부가가치세법에서 어떻게 취급될까?",
