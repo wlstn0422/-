@@ -22,6 +22,12 @@ import requests
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://opendart.fss.or.kr/api/"
+
+
+def with_ext(endpoint: str) -> str:
+    """OpenDART 주소는 끝이 .json 또는 .xml이어야 한다(없으면 [101] 잘못된 URL 오류).
+    주요사항보고서·증권신고서 상세 API 이름(piicDecsn 등)은 확장자 없이 적어 두었으므로 여기서 붙인다."""
+    return endpoint if endpoint.endswith((".json", ".xml")) else f"{endpoint}.json"
 VIEWER_URL = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcept_no}"
 
 # 정상, 데이터 없음, 그리고 이번 실행을 멈춰야 하는 상태 코드
@@ -168,6 +174,7 @@ class DartClient:
         return self.cache_dir / "dart" / endpoint.replace(".", "_") / f"{digest}.json"
 
     def get_json(self, endpoint: str, params: dict, ttl_hours: float | None = None) -> dict:
+        endpoint = with_ext(endpoint)
         path = self._cache_path(endpoint, params) if ttl_hours else None
         if path and path.exists():
             try:

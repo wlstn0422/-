@@ -29,7 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      # 실행을 누른 시점이 아니라 지금의 최신 커밋에서 시작한다(앞선 실행이 만든 노트 위에 이어서 쓰기)
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-python@v7
         with:
@@ -84,7 +87,14 @@ jobs:
             exit 0
           fi
           git commit -m "케이스 노트 업데이트 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          # 그사이 다른 실행이 같은 날 노트를 올렸으면 이번 실행 결과를 우선해 합친다(-X theirs: 되짚는 내 커밋 쪽)
+          ok=0
           for i in 1 2 3; do
-            git pull --rebase --autostash && git push && break
+            if git pull --rebase -X theirs --autostash && git push; then ok=1; break; fi
+            git rebase --abort 2>/dev/null || true
             sleep 5
           done
+          if [ "$ok" != 1 ]; then
+            echo "::error::결과를 저장(push)하지 못했습니다. 잠시 뒤 다시 실행해 주세요."
+            exit 1
+          fi
