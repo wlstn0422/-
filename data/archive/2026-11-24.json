@@ -62,26 +62,26 @@
  "news": {
   "글로벌 기업": [
    {
-    "title": "젠슨 황 11일 만의 귀환…엔비디아 급등, 한국 증시에 가져온 건?｜빽투빽",
-    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53MHJhWmE2Y1NXQ25MNEFxMEdKX1NIXzJPODZXUklWeUxoa1AwZEZmOGtfODNDaVdCWl9NSWp6TEdITnpoOE82ZUZqMFhCQWM1VlE?oc=5",
-    "source": "JTBC",
-    "published": "2026-11-24T22:00:28+09:00",
-    "category": "global",
-    "coverage": 7
-   },
-   {
     "title": "'젠슨 황 엔비디아 복귀'에 5천피 회복...추세 반등?",
     "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE90SkR3MEtpS2VsMUU0LTFBUmk3M1RSeHhwcG5ZMUcxeW9qZzhzVnNBb2FPU05lbUplWUN2LTlpMmxidVNLUXpRV01wXzg3Mi1WWjh1cy1JWXFGQ1NVQlE?oc=5",
     "source": "YTN",
     "published": "2026-11-24T21:58:00+09:00",
     "category": "global",
-    "coverage": 6
+    "coverage": 12
    },
    {
-    "title": "환율, 엔비디아발 위험선호 회복에 하락…3.5원 내린 1,342.4원",
-    "link": "https://www.yna.co.kr/view/AKR20261124140400002",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T15:48:34+09:00",
+    "title": "엔비디아 개장 전 거래 반락…나스닥 선물 2.1%↓ [월가 업&다운]",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9EakI1VHhsM1FFMmdaUzIyeEg5bmVkdmViUV9nMmtpWHdtMWp4cGp5QjVELUpXMXduQi1WY3pnbGFyRTFhSmlLTHAwVmpXcUxnenRzS3k2SHJXZw?oc=5",
+    "source": "한국경제",
+    "published": "2026-11-24T22:40:07+09:00",
+    "category": "global",
+    "coverage": 1
+   },
+   {
+    "title": "'AI 중앙은행' 된 엔비디아…복귀한 젠슨 황, 오하이오서 첫 시험대 [김주완의 글로벌머니 X파일]",
+    "link": "https://www.hankyung.com/article/202611246927i",
+    "source": "한국경제 경제",
+    "published": "2026-11-24T17:00:04+09:00",
     "category": "global",
     "coverage": 3
    }
@@ -93,49 +93,49 @@
     "source": "진일보 | 전남일보",
     "published": "2026-11-24T15:57:19+09:00",
     "category": "fiscal",
-    "coverage": 5
+    "coverage": 6
    },
    {
-    "title": "KCGI운용, 전주사무소 개소…국민연금과 소통 강화",
-    "link": "https://www.hankyung.com/article/2026112464316",
-    "source": "한국경제 증권",
-    "published": "2026-11-24T10:55:09+09:00",
+    "title": "전북시민사회단체연대회의, 2027년도 전북도 본예산안 분석 결과 발표",
+    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8zbE9KSm9iZUlyUER0cUVXa0p4cDZSUjVJSk42Vi1iZFZFcjhteHVleTNSaEtKZjFFcnVCZE1pQW0tRl9wYWM0V3JUSEtwSUtiVGtmRmFKMmZmZlF0N1J6LV9NLS1yYjlPbGc4?oc=5",
+    "source": "전북도민일보",
+    "published": "2026-11-24T18:34:00+09:00",
     "category": "fiscal",
-    "coverage": 4
+    "coverage": 1
    },
    {
-    "title": "한국투자신탁운용 전주사무소 개소…국민연금과 협업 강화",
-    "link": "https://www.yna.co.kr/view/AKR20261124073400055",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T13:30:02+09:00",
+    "title": "\"SK하이닉스 세수 늘었지만…청주시, 세입 감소 대비해야\"",
+    "link": "https://www.yna.co.kr/view/AKR20261124159400064",
+    "source": "연합뉴스 산업",
+    "published": "2026-11-24T17:11:33+09:00",
     "category": "fiscal",
-    "coverage": 3
+    "coverage": 2
    }
   ],
   "ESG·에너지": [
-   {
-    "title": "DL, 한국ESG기준원 ESG 평가 6년 연속 통합 A등급",
-    "link": "https://www.yna.co.kr/view/AKR20261124121000003",
-    "source": "연합뉴스 산업",
-    "published": "2026-11-24T14:30:20+09:00",
-    "category": "esg",
-    "coverage": 8
-   },
-   {
-    "title": "대동, 한국ESG기준원 ‘2026 ESG 평가’ 2년 연속 통합 A등급 획득",
-    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE84TG4yY0ZRbmdWR1JDbTBBanM4Q3ZMcmJ1X0g2NDB3ZC1iVWdINlQ0bllOWXY0YUduQXpxYnhLTHdjdmFsa2RXTkhxQ0FoUzZTWmdhZ0dUWlVnZW5jQUYtM0RfZGVWRlRsVWhrUGF3?oc=5",
-    "source": "아시아투데이",
-    "published": "2026-11-24T16:23:19+09:00",
-    "category": "esg",
-    "coverage": 9
-   },
    {
     "title": "울산항만공사, 새 ESG 경영전략 확정…중장기 경영과 연계",
     "link": "https://www.yna.co.kr/view/AKR20261124144700057",
     "source": "연합뉴스 산업",
     "published": "2026-11-24T16:37:49+09:00",
     "category": "esg",
-    "coverage": 5
+    "coverage": 6
+   },
+   {
+    "title": "한·중·일 기후 석학·청년, 의정부서 넷제로 논의",
+    "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE04UGp1d2VfUWJ5dXJtM29qX3hRVFVtRzJ6Rk9YcVdiMDA5MDFfd2tZRFZ3RnpHNzZfZExScEtpdkM1cDRxVnZmY0Jmbl9BQmZ2bXZuOHVYYXZRT2tqOWJ5ctIBYEFVX3lxTE04UGp1d2VfUWJ5dXJtM29qX3hRVFVtRzJ6Rk9YcVdiMDA5MDFfd2tZRFZ3RnpHNzZfZExScEtpdkM1cDRxVnZmY0Jmbl9BQmZ2bXZuOHVYYXZRT2tqOWJ5cg?oc=5",
+    "source": "연합뉴스",
+    "published": "2026-11-24T15:02:48+09:00",
+    "category": "esg",
+    "coverage": 1
+   },
+   {
+    "title": "\"탄소가격 따른 영업익 변화까지 꼼꼼히 분석을\"",
+    "link": "https://www.mk.co.kr/news/stock/12217374",
+    "source": "매일경제 증권",
+    "published": "2026-11-24T17:30:20+09:00",
+    "category": "esg",
+    "coverage": 2
    }
   ],
   "자본정책·주주환원": [
@@ -171,15 +171,7 @@
     "source": "연합뉴스 산업",
     "published": "2026-11-24T16:17:32+09:00",
     "category": "hr",
-    "coverage": 4
-   },
-   {
-    "title": "[포토] 서울교통공사 올바른노조 임단협 최종 교섭",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9hV2dUYXhhdG0wbEJncEFoazlxTzhNb3ZxLUgtREpSMVRLMVV0R1pMWFNZdmI5WGlUNEhxR2d6d0VaQ2wtTGt2S2JuZkc0YjF6SzhwOVJ1dFQ2blN2NGZPMVBCRUlqWGNwOEE?oc=5",
-    "source": "천지일보",
-    "published": "2026-11-24T15:40:22+09:00",
-    "category": "hr",
-    "coverage": 6
+    "coverage": 3
    },
    {
     "title": "삼성전자 초기업노조, DX 성과급 통합 검토…4개 노조 의견 수렴",
@@ -187,33 +179,15 @@
     "source": "아이뉴스24",
     "published": "2026-11-24T18:27:21+09:00",
     "category": "hr",
-    "coverage": 4
-   }
-  ],
-  "스타트업·벤처투자": [
-   {
-    "title": "천안시, 제조기업·스타트업 기술협력 확대",
-    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8zS1JQMWQ2dHc2NDJHQ1hVY0NCVmE5S1Zia2R0ZzNWcFlCOEtCajNXQ05NZ0dNRXhLVXg3Q09NeGhhb2JiOTgwbE9SZ1NXdURSN1NETEtMRldSS0VQYXZmZHFWNXp4UndiMHM3RTFHR3hZUTQ?oc=5",
-    "source": "대한경제",
-    "published": "2026-11-24T18:04:20+09:00",
-    "category": "startup",
-    "coverage": 6
+    "coverage": 3
    },
    {
-    "title": "중기부, 베를린서 ‘초격차 글로벌 IR 데모데이’ 개최…유럽 투자 유치 본격화",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE0ybzFNZzRRdGZSV0pXR3ZURmtpZ2Q0TktoNkF2bHlNUHRSMkNuZER3ZHBpdFI3TmlVdzZ2QTNfZUxGNlJBQ0p4TUhyYVJubTZFSmtJMkRHZ2JGNGxlNTgwWUhHT25qMUdERnc?oc=5",
-    "source": "nbn 시사경제",
-    "published": "2026-11-24T14:51:01+09:00",
-    "category": "startup",
-    "coverage": 5
-   },
-   {
-    "title": "국내 초격차 스타트업, 아시아-베를린 서밋에서 유럽 시장 정조준",
-    "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5xWi1HZDVWUVNjWm1WVnFTUTh5by1iSmR5d19lX3d3RzhjWHRtT3RmclFyamRkRm8xTG85Z1FHU0RmV19lQWJzekVlVm9HZnduLW5QdjhHbzhfbU9iOVJB?oc=5",
-    "source": "헬로티",
-    "published": "2026-11-24T13:05:13+09:00",
-    "category": "startup",
-    "coverage": 5
+    "title": "삼성 초기업노조, DX 성과급 통합 의견 수렴…내년 교섭안 검토",
+    "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5fdHhKVVAyU18tU0JnSFZfbFVLR0VWVl96Y2lxSGZoMUhDX3czMnFOSEdyZXV1MzU5c0N1Rkg0b2RSRG9SX2pHaEQyR1Z2dk5iUWJyc21YYkJteV9QcHc3Tzh6VHY?oc=5",
+    "source": "매일일보",
+    "published": "2026-11-24T21:11:44+09:00",
+    "category": "hr",
+    "coverage": 2
    }
   ],
   "거시경제": [
@@ -226,20 +200,46 @@
     "coverage": 11
    },
    {
-    "title": "[외환] 원/달러 환율 3.5원 내린 1,342.4원(15:30 기준가)",
-    "link": "https://www.yna.co.kr/view/AKR20261124136800002",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T15:30:51+09:00",
-    "category": "macro",
-    "coverage": 13
-   },
-   {
-    "title": "국고채 금리 대체로 하락…3년물 연 3.640%",
-    "link": "https://www.yna.co.kr/view/AKR20261124153700008",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T16:41:15+09:00",
+    "title": "채권시장 참여자 54% \"11월 금통위서 기준금리 인상 예상\"",
+    "link": "https://www.yna.co.kr/view/AKR20261124086800008",
+    "source": "연합뉴스 마켓+",
+    "published": "2026-11-24T11:39:50+09:00",
     "category": "macro",
     "coverage": 3
+   },
+   {
+    "title": "국고채 금리 혼조세…코스피 상승 속 외인 선물 매수(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261124153751008",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-24T17:02:04+09:00",
+    "category": "macro",
+    "coverage": 2
+   }
+  ],
+  "스타트업·벤처투자": [
+   {
+    "title": "천안시, 제조기업·스타트업 기술협력 확대",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8zS1JQMWQ2dHc2NDJHQ1hVY0NCVmE5S1Zia2R0ZzNWcFlCOEtCajNXQ05NZ0dNRXhLVXg3Q09NeGhhb2JiOTgwbE9SZ1NXdURSN1NETEtMRldSS0VQYXZmZHFWNXp4UndiMHM3RTFHR3hZUTQ?oc=5",
+    "source": "대한경제",
+    "published": "2026-11-24T18:04:20+09:00",
+    "category": "startup",
+    "coverage": 6
+   },
+   {
+    "title": "어플라이드 CVC, 오픈이노 할 K-반도체 스타트업 찾는다",
+    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBvbDlHQzFLRm1scVRybXdxaDRoelJFZlRFQ1I0MHdKN19zQ1lFX210SXYtamdOYlp2Vk1ORU5vZ05najdVUm5xdWJMcmRPR1lTeUw3c3dsRXhvMEhSMFoweGtVQXpnRmNISUZacQ?oc=5",
+    "source": "유니콘팩토리",
+    "published": "2026-11-24T17:30:16+09:00",
+    "category": "startup",
+    "coverage": 1
+   },
+   {
+    "title": "국내 초격차 스타트업, 아시아-베를린 서밋에서 유럽 시장 정조준",
+    "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5xWi1HZDVWUVNjWm1WVnFTUTh5by1iSmR5d19lX3d3RzhjWHRtT3RmclFyamRkRm8xTG85Z1FHU0RmV19lQWJzekVlVm9HZnduLW5QdjhHbzhfbU9iOVJB?oc=5",
+    "source": "헬로티",
+    "published": "2026-11-24T13:05:13+09:00",
+    "category": "startup",
+    "coverage": 5
    }
   ],
   "M&A·지분거래": [
@@ -296,14 +296,6 @@
   ],
   "마케팅·브랜드": [
    {
-    "title": "삼양식품, '스핀들' 첫 광고 캠페인 모델로 소지섭 낙점",
-    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5XXzhlaVFabXJTUTZTaTFMWDM5NzZVZjZ2eXotUHlHZWZwdk9LcFBSZVhRcWUtVm9kaHNLUVNOLVkxMHlTeTM5R1RJQzEtMUpwS290RGNEME9aWnBVZGNwcnFBOWRid1I4c1pWS9IBcEFVX3lxTFBFV3hQRjNwTWdPVjhEUnR4STlUa3NvWGtDam1sdy1wVUxjeTFqNWZyLVlfYmQ4aEtIU1ZmZUt1WUljU1RrMG4xZXo1WEFQbnFETkpIMWdUQnFtRG5QLWhJWmQ5ZC1Zb3pTZXVLbzlQckQ?oc=5",
-    "source": "뉴스케이프",
-    "published": "2026-11-24T19:47:35+09:00",
-    "category": "marketing",
-    "coverage": 1
-   },
-   {
     "title": "벡스코, 마케팅본부장에 정영수 코트라 실장 선임",
     "link": "https://www.yna.co.kr/view/AKR20261124130800051",
     "source": "연합뉴스 경제",
@@ -312,12 +304,20 @@
     "coverage": 2
    },
    {
-    "title": "중기부, 'K-브랜드 글로우 위크' 개막…95개 기업 제품 전시",
-    "link": "https://www.yna.co.kr/view/AKR20261124115200030",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T15:00:01+09:00",
+    "title": "스위스 품목허가, 마케팅 무기로 활용…동국제약, 인사돌 신규 TV 광고 공개",
+    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE02a3kyRnNBSnNVREJoVkRfUFNFeUFRSEU1dVdZYVJlV3VUMXNYeHFRV1VvZlF6OUg0enpyTDgzNkZ3cmczUmcxX2VNOXE5VFZnZWFZZGQyUWJxc2M2V0JQYkg5RXBHTE5oMG40TVZ1Qnc0d9IBckFVX3lxTE02a3kyRnNBSnNVREJoVkRfUFNFeUFRSEU1dVdZYVJlV3VUMXNYeHFRV1VvZlF6OUg0enpyTDgzNkZ3cmczUmcxX2VNOXE5VFZnZWFZZGQyUWJxc2M2V0JQYkg5RXBHTE5oMG40TVZ1Qnc0dw?oc=5",
+    "source": "메가경제",
+    "published": "2026-11-24T18:18:17+09:00",
     "category": "marketing",
-    "coverage": 2
+    "coverage": 1
+   },
+   {
+    "title": "[글로벌 브랜드/커피] 쭝응우옌 레전드, 글로벌 커피 시장 공략 가속…한국 시장서 G7 브랜드 마케팅 강화",
+    "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5rT2QybEdVTDVCUXhnMjREY0sxZ0hpb1ZOYkJ5b09aUnh2U3NnZnA0UVMxa0JxcXFqeDk0ZDZmR3lXeGVzS0NSZG5rZ3pSdjIyemNfdGhzaUkzWlhHWFdaYTMzZThaVlptOXFJMnFLTmU?oc=5",
+    "source": "굿모닝베트남미디어",
+    "published": "2026-11-24T13:08:45+09:00",
+    "category": "marketing",
+    "coverage": 1
    }
   ],
   "IPO·상장": [
@@ -327,7 +327,7 @@
     "source": "전자신문",
     "published": "2026-11-24T11:23:24+09:00",
     "category": "ipo",
-    "coverage": 5
+    "coverage": 6
    },
    {
     "title": "공모가 27% 낮췄는데…엠비디, 코스닥 입성 첫날 21%대 하락",
@@ -346,28 +346,80 @@
     "coverage": 2
    }
   ],
+  "공급망·생산": [
+   {
+    "title": "에너지공급망 위기 속 빛난 LPG수급 안정···정부 “지원·가격안정 이어갈 것”‘",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE96YmFHUGJnSmFzUGswNy1LRHZUQi16V1VGRE9PSDVxbHZGZGRRVzFCckRVMndyaVQzWE9pcW1qMzFDRElzdXFhbHlYREhBV0lWZkZ4eG5jYzNVTm1pb1poQ09mTXpPSGNMenpzM1ZB0gFuQVVfeXFMT3piYUdQYmdKYXNQazA3LUtEdlRCLXpXVUZET09INXFsdkZkZFFXMUJyRFUyd3JpVDNYT2lxbWozMUNESXN1cWFseVhESEFXSVZmRnh4bmNjM1VObWlvWmhDT2ZNek9IY0x6enMzVkE?oc=5",
+    "source": "가스신문",
+    "published": "2026-11-24T13:44:03+09:00",
+    "category": "supply",
+    "coverage": 1
+   },
+   {
+    "title": "코발트 가격 하락에 민주콩고 수출 봉쇄…글로벌 공급망 긴장",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hR3RhRFhQTGdDTmY5c01uRFpNampLUjU5Q2Ztd2J6Zkw5WGswVVNjdzYwa1ZIZWJRazI1c1hUajBtUW9aRGxtQkNUQmZyeTdSdGtMX0VOWHoxUQ?oc=5",
+    "source": "한국경제",
+    "published": "2026-11-24T08:15:53+09:00",
+    "category": "supply",
+    "coverage": 1
+   },
+   {
+    "title": "콩고, 코발트 수출 전면 중단 선언…글로벌 배터리 공급망 '비상'",
+    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1QMnQxekdaMzBNaThPeUdtcXdHbU1NMWhyb1ZWWXlucjZHel85NGRHWFdfc0NBZlktcTU1QWZnZ2hiS1dUZTBBWmw1TTU4N1d0bWRJV3dkODdHTFA1eXRmN3B0dVhCUDg0?oc=5",
+    "source": "국제통상신문",
+    "published": "2026-11-24T02:29:00+09:00",
+    "category": "supply",
+    "coverage": 2
+   }
+  ],
+  "무역·통상": [
+   {
+    "title": "EU, 복합소재 세이프가드 조사…반덤핑관세 면했던 한국산 에폭시도 대상",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBHaFVqZ0FuUnk1c0tNS3QtNFg0ZUFwUEs3cEZPNkU2NS1ybGJZb0pWUzZvRWZjWjc2YlFzNGtJeGkwNmZlNV93TVFGcTlkd1dMR3gwWGFHYlVQdHVzemt1Uk5kQTNqY3hoLWc?oc=5",
+    "source": "임팩트온",
+    "published": "2026-11-24T11:41:00+09:00",
+    "category": "trade",
+    "coverage": 2
+   },
+   {
+    "title": "내달부터 EU행 한국산 하이브리드차 무관세 6만7천924대로 제한(종합)",
+    "link": "https://www.yna.co.kr/view/AKR20261124170651098",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-24T19:08:52+09:00",
+    "category": "trade",
+    "coverage": 2
+   },
+   {
+    "title": "\"美, 유럽·한국 디지털규제 301조 조사 검토\"…추가 관세 압박 우려",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5IalZqUVdCdG1nZG5PQzBRc0pUWGFHQlI3TDdabkplNkdBT3JvdU1PWVE4Q2FYc0dfQ2JQRXUwTnpIaWd1TlRpQ3lQYXFvQnhWZS1VVEhzWlhnbG01WV9WUV9CcmlUYnlkUmtzVFpB0gFzQVVfeXFMUENkUXU2cmtwVDZmZHpodG5leTluM0dxZ20wOWFtTmZCT1I0V1VldE5DNFFUbzF1SzJUNG42aVc0SnhDbTZwN3BDX0FWdWdVUWRNX0FlT1VFUFlJRGpIeXNOSjBkZWwyeVhodWZLZWdzQm04RQ?oc=5",
+    "source": "한국일보",
+    "published": "2026-11-24T14:09:00+09:00",
+    "category": "trade",
+    "coverage": 2
+   }
+  ],
   "산업·규제 정책": [
    {
-    "title": "행정수도 특별법·헌법 명문화 논의…한국법제연구원, 25일 입법정책포럼",
-    "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5JRnhpRy1Dd3pWcVFENk1DNURmOUhhVldOVDBXVGMtX1FkS1gwc0xLRlBLUnNCX2loY1hnWWZHcDRJSmctZkNCeWZpMGtFejdUdXl5SENR?oc=5",
-    "source": "피앤피뉴스",
-    "published": "2026-11-24T10:13:05+09:00",
+    "title": "트럼프 행정부, 한국 디지털 규제 겨냥하나…美, 무역법 301조 조사 검토",
+    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9ZRWF6WENDM2M3bEo4a1NwNVdsUTNzV2ZoU2lzTFRsdHlGQkNHc0thdXZha2EzODlIcXI0RUYyTXNNMnZZQnRuRkNwU1U0Wmh5ZjMwUy1wU2luT09SbkttU2lfam5ZcWEycjc0?oc=5",
+    "source": "독립신문",
+    "published": "2026-11-24T10:53:35+09:00",
+    "category": "policy",
+    "coverage": 3
+   },
+   {
+    "title": "EU 규제 완화 땐 배터리 수요 247GWh 감소…韓 기업, 현지생산·수출 유불리 갈려",
+    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE51V0pQcEhjYVdJdG0zN0hJc2tlQkhyVGdjQ0lUSmpxY2VocjE2bjdxaklDZ0dzbEhReWZDQmhIajRPc0RKLWp3R1pHbHktTEZtYjhXUU9CZ2JBNEhKWUpoVkhnYS1kRElnTWc?oc=5",
+    "source": "임팩트온",
+    "published": "2026-11-24T15:19:34+09:00",
     "category": "policy",
     "coverage": 1
    },
    {
-    "title": "최현덕 남양주시장, 팔당 규제 개선 위해 7개 시군 연대 이끌어…특별법 제정 촉구",
-    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTN0lMNTZMVnZiUTUxU3FmdEEyNVgzczN3WTJlQnNIR3pSaXNHOU5HTWVIQWZnN09haW1kUGE4czFLYmJVb3NjNHBRQjVIUVNVdWlrYTZ0WU9KMWNqNTd0REc5dExCNy1zYU00?oc=5",
-    "source": "비즈월드",
-    "published": "2026-11-23T23:33:00+09:00",
-    "category": "policy",
-    "coverage": 1
-   },
-   {
-    "title": "디지털자산업자, 해킹 피해 과실 없어도 배상…금융사 수준 규제",
-    "link": "https://www.yna.co.kr/view/AKR20261124124200002",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T15:00:00+09:00",
+    "title": "씨티·UBS, 美 증시 투자의견 하향…반도체 수출규제 여파",
+    "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9iTGxTMTIyZ1hXRXhReXBpNENUYUZ5TlJELWlQSXpVZUVvTEZybDhlRE9HN3VUeVBXRG9ad2RZX2NLeVJPWHBpdnNHeHdiTzEyRlHSAVNBVV95cUxPQ0RxSVdLRWRxWHZQdWNncFkwQ3JKbWZCX1JYNm5YME5DcU1FVXY3WWZ4NlJQWEhHdFBlVElZWGQ5TFpubFkzRTRINXNrR2M3Y29PWQ?oc=5",
+    "source": "서울경제",
+    "published": "2026-11-24T09:50:49+09:00",
     "category": "policy",
     "coverage": 1
    }
@@ -382,44 +434,44 @@
     "coverage": 3
    },
    {
-    "title": "같은 이자수익, 다른 영업이익…\"IFRS 18 일관된 기준 필요\" [제18회 국제회계포럼]",
-    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9GUmNUZTdabmpjQ3dVU1JBbmpjbFNlWVJUV0tNbGVpNnFxYjJUaFlUU3R5alBLZzFnbWo5SW5kUzlZLXo4REdJT0U2M3pidzByWE8ta0J2eVpOQQ?oc=5",
-    "source": "파이낸셜뉴스",
-    "published": "2026-11-24T11:39:49+09:00",
-    "category": "accounting",
-    "coverage": 2
-   },
-   {
     "title": "내년 회계사 최소선발인원 1100명…3년 연속 감축",
     "link": "https://www.mk.co.kr/news/stock/12217444",
     "source": "매일경제 증권",
     "published": "2026-11-24T18:28:11+09:00",
     "category": "accounting",
     "coverage": 2
+   },
+   {
+    "title": "누부루, 3분기 영업손실 1412만 달러…영업권 손상에 적자 폭 약 5.4배",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5jUXp1S3c3eGFJN3l1ZzhPR1pwQ0FaTXNET2xUQmg2MUVnV2pBS3NJOE4wZ2dFSWRPUmFXXzVnang0QXFabGJwbWlnTFdmb2htT0FKVWxRMHRTV0xqQWgwYjNGY054UWpqSEM0YzJvbTF4bWc?oc=5",
+    "source": "데이터투자",
+    "published": "2026-11-24T07:39:48+09:00",
+    "category": "accounting",
+    "coverage": 1
    }
   ],
   "세금·세법": [
-   {
-    "title": "성동구, 상속세·증여세 신고부터 절세까지 사례로 풀어",
-    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9McmJSV3lEeE10QVE0SFlXYm4xRHR0MFI1OEpPZUhYN2c3Qmt0MmhrRTZLSlBQdEd3NndMeEdQd3Z5Z25ISlV1RDFNVE5wM3cwWVQxUVltZm1EbmhTMHB5d3RGOExFWFVHbzNvedIBbEFVX3lxTE9McmJSV3lEeE10QVE0SFlXYm4xRHR0MFI1OEpPZUhYN2c3Qmt0MmhrRTZLSlBQdEd3NndMeEdQd3Z5Z25ISlV1RDFNVE5wM3cwWVQxUVltZm1EbmhTMHB5d3RGOExFWFVHbzNveQ?oc=5",
-    "source": "시사경제신문",
-    "published": "2026-11-24T10:45:11+09:00",
-    "category": "tax",
-    "coverage": 1
-   },
-   {
-    "title": "성동구, 상속·증여세 신고·절세 설명회…구민 10명 개별상담",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5TRWV0VjVlVUJJM1BGb2htcG9mRTlpZXpQMHgyeHQ2ZVFNNVVQNmNSd2pKQ1VHTkVtVDFXMHpaMV9QNGJDT01HWWJCRHB5OGJOdF9XZmhVQmJndW5RZVNBYmhPYXhpeE53c1E?oc=5",
-    "source": "뉴스티앤티",
-    "published": "2026-11-24T15:22:20+09:00",
-    "category": "tax",
-    "coverage": 2
-   },
    {
     "title": "전기차 추가 검토, 비거주 종부세 차등은 고수…정부 세제개편 '촉각'",
     "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFA5Q0JsY0xtTmJjV3RrUWFWcnlSZGZfOWl6V3RuWFRtN3E3SEViN0VObHJlWVZFdHpWa2JnaTEzakVINHk4ZGQ5Mng4TDJXNTdkeDBFUDhjeWJtZmpDYlZR?oc=5",
     "source": "조세일보",
     "published": "2026-11-24T17:48:35+09:00",
+    "category": "tax",
+    "coverage": 1
+   },
+   {
+    "title": "국세청장 후보자 \"대통령실과 세무조사 대상 선정 협의 안 해\"",
+    "link": "https://www.yna.co.kr/view/AKR20261124099000002",
+    "source": "연합뉴스 경제",
+    "published": "2026-11-24T13:17:53+09:00",
+    "category": "tax",
+    "coverage": 1
+   },
+   {
+    "title": "부동산 세법 개정안 확정 이후 달라지는 세금 체계와 핵심 변화점",
+    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5femdhNzJpcEJHamlWVll0ZURNQlVmNWh2M1lhQ09sam13bXgxTS1JcHdiT0UtdWpjR1lmaXlkckM4Z3RSaHFVQkl0X1JpcXZHRzZuSEhhNjlaZw?oc=5",
+    "source": "블로그차트",
+    "published": "2026-11-24T06:12:41+09:00",
     "category": "tax",
     "coverage": 1
    }
@@ -434,31 +486,23 @@
     "coverage": 3
    },
    {
+    "title": "공정위 국고채 담합 과징금, 금융권 반발에도 제재 기조 강화",
+    "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQT3dGVmlqS3JPVW01WFJuS1QtVnhtTGt0ZkhySmRxeS1DdmQwYmpSa3QycE1TMXRqUzI0bGtVdUFFTHU2VzNEMk1raHlRcHRrVjRxRXJqM09YRGtHa3N3TktHVGhkLTR6NzlFQnlyZlFha011Q2JLUDBSYWtUUnZMY2l3ZEJleG5jRkI1ZWw0dnl3aHM5NU84Y09CdFM?oc=5",
+    "source": "Traders Union",
+    "published": "2026-11-24T10:49:29+09:00",
+    "category": "competition",
+    "coverage": 1
+   },
+   {
     "title": "태평양, 민혜영 前 공정위 기업집단정책과장 영입..공정거래 자문 강화 [로펌소식]",
     "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE54cE9JdHMxcVg3VDBMZFhpdkpkVmtpaURBUkNBTHhFX2NQdlUwWVZYVEZuRUZyVG9XUmF5Uk1hakZOOTZfeWZkZUlaV1Y2OHl4MXBIVk4zbFdwQQ?oc=5",
     "source": "파이낸셜뉴스",
     "published": "2026-11-24T10:21:38+09:00",
     "category": "competition",
     "coverage": 1
-   },
-   {
-    "title": "법무법인 태평양, 공정위 20년 근무 민혜영 전 기업집단정책과장 영입",
-    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9ab1R4S1B0SFY0VFQzazBOdVZWNzl3TWJ4bXdwMWwwNVVoSU4yUnlrYndIQWlkemhJa0RDNEJXZWFNVTRENjJKNFU5SS1FVW8wS001VnJOeGpRLW5HalQtd0JtNm4wdG52ZlE?oc=5",
-    "source": "Daily NTN",
-    "published": "2026-11-24T17:16:17+09:00",
-    "category": "competition",
-    "coverage": 1
    }
   ],
   "전략·신사업": [
-   {
-    "title": "금투협, 일본 시장 진출 지원 협력 본격화…日협회와 간담회",
-    "link": "https://www.yna.co.kr/view/AKR20261124091600008",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T11:41:27+09:00",
-    "category": "strategy",
-    "coverage": 2
-   },
    {
     "title": "쿠콘, 3분기 영업익 역대 최대…내년 AI·디지털자산 신사업 시동",
     "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE82VlItRlpaVTU2MHRVWVFVTXdQWkpnSkl2V19mVVUwN3Q2ZkdqQmVmdHdLYUQwaTk3VU8zLWVXWXl5ZHNhdmNsTkwta01MSDMxcDBYZnln?oc=5",
@@ -473,6 +517,40 @@
     "source": "매일경제 경제",
     "published": "2026-11-24T17:33:25+09:00",
     "category": "strategy",
+    "coverage": 1
+   },
+   {
+    "title": "김범수 사법리스크 완화에 숨통 튼 카카오…AI·신사업 재편 본격화",
+    "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBhcW1uX3pkOVBxdlQtWjdpdkE4eXZCTEpjTENraUNJMjBpUjRuWGI5UzNWN2tCZndFUE5MRGRCWlBJbEljemVCSDgzcjR1dTVXOTJwWVpPU1NTYVE5RGlUWlhXa1JBbjZHMzB4TVJlWnZUeEXSAXdBVV95cUxOejJhQkp3OFl6SU9rRl9aek9SU0NOTVlKb0tfS3ZVMFZIb2JjYmdPV1ZJOTN3M2x3YmViTFF2LVJ2OVhyVVNudnI4V2o3Nm45V1JLR1RMMm1MQXBHRFBqTExyVDRRQ0FwNzZHejVJNk9xcDV6dHk0SQ?oc=5",
+    "source": "핀포인트뉴스",
+    "published": "2026-11-24T08:25:00+09:00",
+    "category": "strategy",
+    "coverage": 1
+   }
+  ],
+  "가격·소비": [
+   {
+    "title": "이마트 계열 브랜드서 최대 10% 할인 받아요",
+    "link": "https://www.hankyung.com/article/2026112459761",
+    "source": "한국경제 경제",
+    "published": "2026-11-24T16:14:27+09:00",
+    "category": "pricing",
+    "coverage": 1
+   },
+   {
+    "title": "쌀국수 한 그릇이나 밥 한 접시를 할인된 가격에 사려면, 꼭 노점상에게만 의존할 필요는 없습니다.",
+    "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOM2F2bDNtSl9UR0FnSVdCTVBlbkgzTXNKc1VUVS1nTDQ1c2tTc1FfNU5wZ2tMdF9BVGFCc0M5bUJzZTRmTDd6SVhNV2lJMjRGZTFRdUhGTzRmSWlEUG9iUE40czhrMVZwYXhEZldCVXQ1N01kZjVEcFh1NWZMRFBvdXZHUTdycTNRaF9MMEJuZVk?oc=5",
+    "source": "Vietnam.vn",
+    "published": "2026-11-24T12:36:36+09:00",
+    "category": "pricing",
+    "coverage": 2
+   },
+   {
+    "title": "해상풍력, 가격 인하보다 구조적 리스크 해소가 우선",
+    "link": "https://news.google.com/rss/articles/CBMiREFVX3lxTE80S0RJbDZOMzJGWXN1d0NBcXlmYVZnb3VmNkFYVUVHbjNsRlpkWUZFQ2V4OEQzZElrV2tkVUVKSDlCaEhP?oc=5",
+    "source": "산업일보",
+    "published": "2026-11-24T15:57:34+09:00",
+    "category": "pricing",
     "coverage": 1
    }
   ],
@@ -501,7 +579,7 @@
     "source": "연합뉴스 경제",
     "published": "2026-11-24T16:11:10+09:00",
     "category": "governance",
-    "coverage": 4
+    "coverage": 3
    },
    {
     "title": "과점주주 몫 사외이사 임기만료, 우리금융 이사회 구성 바뀌나",
@@ -509,84 +587,6 @@
     "source": "스마트투데이",
     "published": "2026-11-24T17:01:00+09:00",
     "category": "governance",
-    "coverage": 1
-   }
-  ],
-  "무역·통상": [
-   {
-    "title": "내달부터 EU행 한국산 하이브리드차 무관세 6만7천924대로 제한(종합)",
-    "link": "https://www.yna.co.kr/view/AKR20261124170651098",
-    "source": "연합뉴스 경제",
-    "published": "2026-11-24T19:08:52+09:00",
-    "category": "trade",
-    "coverage": 2
-   },
-   {
-    "title": "한국산 EU행 하이브리드차 6만7924대까지…내달부터 무관세 제한",
-    "link": "https://www.mk.co.kr/news/economy/12217527",
-    "source": "매일경제 경제",
-    "published": "2026-11-24T21:55:14+09:00",
-    "category": "trade",
-    "coverage": 1
-   },
-   {
-    "title": "美, 이르면 이번주 새 관세 발표...과잉생산에 칼 빼든 美",
-    "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBTNmYyODQtRTdUcmZVRENsQkNULTZscllSUTVZREJXcmI5LVE4bzFudXprQXBfX2tPZE03U3dGaENrbWdhU2toWnRDc3JwamRZbks0SzVaWTJ6dw?oc=5",
-    "source": "파이낸셜뉴스",
-    "published": "2026-11-24T22:42:40+09:00",
-    "category": "trade",
-    "coverage": 1
-   }
-  ],
-  "공급망·생산": [
-   {
-    "title": "SB선보, LNG 기반 해상부유식 전력 생산·공급망 진출",
-    "link": "https://www.yna.co.kr/view/AKR20261124030400051",
-    "source": "연합뉴스 산업",
-    "published": "2026-11-24T15:00:05+09:00",
-    "category": "supply",
-    "coverage": 1
-   },
-   {
-    "title": "휴렛팩커드 \"메모리 공급난 2028년 하반기까지 계속\"",
-    "link": "https://www.yna.co.kr/view/AKR20261124120300009",
-    "source": "연합뉴스 마켓+",
-    "published": "2026-11-24T14:28:40+09:00",
-    "category": "supply",
-    "coverage": 1
-   },
-   {
-    "title": "연료 가격 하락은 원자재 가격 하락과 시장 안정화의 여지를 열어줍니다.",
-    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPeVVEWEgxYkxoWmxhTEZrLU9TRzZaSW9hZFRLX082dmt4dUM0Z0pyeWtZSXdQY05ET3dJMDBVSWJBek1CNWxFNVVxd0ZyM0VTV1FfRGJUQWNjbnEtUnRiYmxUU3JSdFJmemhVVXRnWS1udEVCOEE1MklIUlBYd3hTSURQLV9vMFBJbml2RjVZbVFOQQ?oc=5",
-    "source": "Vietnam.vn",
-    "published": "2026-11-24T22:32:21+09:00",
-    "category": "supply",
-    "coverage": 1
-   }
-  ],
-  "가격·소비": [
-   {
-    "title": "[영상] 부동산 규제에도 알짜 부동산! 가성비 甲 부동산을 찾아라! [재건축-재개발]",
-    "link": "https://www.mk.co.kr/news/economy/12217034",
-    "source": "매일경제 경제",
-    "published": "2026-11-24T17:00:00+09:00",
-    "category": "pricing",
-    "coverage": 2
-   },
-   {
-    "title": "이마트 계열 브랜드서 최대 10% 할인 받아요",
-    "link": "https://www.hankyung.com/article/2026112459761",
-    "source": "한국경제 경제",
-    "published": "2026-11-24T16:14:27+09:00",
-    "category": "pricing",
-    "coverage": 1
-   },
-   {
-    "title": "쌀국수 한 그릇이나 밥 한 접시를 할인된 가격에 사려면, 꼭 노점상에게만 의존할 필요는 없습니다.",
-    "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOM2F2bDNtSl9UR0FnSVdCTVBlbkgzTXNKc1VUVS1nTDQ1c2tTc1FfNU5wZ2tMdF9BVGFCc0M5bUJzZTRmTDd6SVhNV2lJMjRGZTFRdUhGTzRmSWlEUG9iUE40czhrMVZwYXhEZldCVXQ1N01kZjVEcFh1NWZMRFBvdXZHUTdycTNRaF9MMEJuZVk?oc=5",
-    "source": "Vietnam.vn",
-    "published": "2026-11-24T12:36:36+09:00",
-    "category": "pricing",
     "coverage": 1
    }
   ]
@@ -597,16 +597,16 @@
    "articles": 5
   },
   "ma": {
-   "stories": 46,
-   "articles": 57
+   "stories": 47,
+   "articles": 58
   },
   "ipo": {
-   "stories": 12,
-   "articles": 18
+   "stories": 15,
+   "articles": 22
   },
   "capital": {
    "stories": 37,
-   "articles": 91
+   "articles": 92
   },
   "earnings": {
    "stories": 35,
@@ -618,46 +618,46 @@
   },
   "governance": {
    "stories": 2,
-   "articles": 5
+   "articles": 4
   },
   "tax": {
    "stories": 8,
    "articles": 9
   },
   "competition": {
-   "stories": 6,
-   "articles": 8
+   "stories": 7,
+   "articles": 9
   },
   "hr": {
-   "stories": 56,
-   "articles": 87
+   "stories": 55,
+   "articles": 90
   },
   "supply": {
-   "stories": 4,
-   "articles": 4
+   "stories": 18,
+   "articles": 20
   },
   "trade": {
-   "stories": 4,
-   "articles": 5
+   "stories": 10,
+   "articles": 16
   },
   "pricing": {
-   "stories": 3,
-   "articles": 4
+   "stories": 4,
+   "articles": 6
   },
   "marketing": {
-   "stories": 23,
-   "articles": 25
+   "stories": 24,
+   "articles": 26
   },
   "startup": {
    "stories": 50,
    "articles": 75
   },
   "global": {
-   "stories": 91,
-   "articles": 124
+   "stories": 90,
+   "articles": 125
   },
   "esg": {
-   "stories": 70,
+   "stories": 75,
    "articles": 109
   },
   "fiscal": {
@@ -666,15 +666,15 @@
   },
   "policy": {
    "stories": 13,
-   "articles": 13
+   "articles": 15
   },
   "strategy": {
    "stories": 4,
    "articles": 7
   },
   "macro": {
-   "stories": 42,
-   "articles": 75
+   "stories": 46,
+   "articles": 81
   }
  },
  "cards": [
@@ -690,28 +690,28 @@
  ],
  "news_cases": [
   {
-   "title": "[단독] 다올투자증권 M&A 매물로…이병철 회장 지분 매각 추진",
-   "link": "https://www.hankyung.com/article/202611247145i",
-   "category": "M&A·지분거래",
-   "theory": "ma_synergy"
-  },
-  {
    "title": "골드만삭스 “내년 한은 기준금리 3.5%가 상단…달러당 원화값은 1280원”",
    "link": "https://www.mk.co.kr/news/stock/12217095",
    "category": "거시경제",
    "theory": "business_cycle"
   },
   {
-   "title": "반도체 중심 삼성 초기업노조, DX부문 성과급 통합 의견 수렴",
-   "link": "https://www.yna.co.kr/view/AKR20261124145800003",
-   "category": "인사·조직·노동",
-   "theory": "restructuring_labor"
-  },
-  {
    "title": "이 대통령 “예산안 시한 임박…민생 위해 초당적 지혜 발휘해야”",
    "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE52N3R6SF93Nm9fUjN5YjdZUW1NeW11YVhpS3VyWWJITFVLcG5ZMWlldl9IQkgzQWdyRUdqVm1Na1lDdHZhUE16Slc4RlRLUWJsR0UyU3NJSW5lY3pCQ0J1MmpMbWJYS1pXdW5IbjdpZw?oc=5",
    "category": "재정·예산·복지",
    "theory": "pf_budget"
+  },
+  {
+   "title": "[단독] 다올투자증권 M&A 매물로…이병철 회장 지분 매각 추진",
+   "link": "https://www.hankyung.com/article/202611247145i",
+   "category": "M&A·지분거래",
+   "theory": "ma_synergy"
+  },
+  {
+   "title": "'젠슨 황 엔비디아 복귀'에 5천피 회복...추세 반등?",
+   "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE90SkR3MEtpS2VsMUU0LTFBUmk3M1RSeHhwcG5ZMUcxeW9qZzhzVnNBb2FPU05lbUplWUN2LTlpMmxidVNLUXpRV01wXzg3Mi1WWjh1cy1JWXFGQ1NVQlE?oc=5",
+   "category": "글로벌 기업",
+   "theory": "generic_strategy"
   }
  ],
  "quiz": [
@@ -742,17 +742,17 @@
    "answer_label": "D"
   },
   {
-   "q": "근로기준법상 경영상 해고(정리해고)의 요건이 아닌 것은?",
+   "q": "헌법상 국회가 다음 연도 예산안을 의결해야 하는 시한은?",
    "choices": [
-    "주주총회 특별결의",
-    "해고를 피하려는 노력",
-    "긴박한 경영상의 필요",
-    "합리적이고 공정한 해고 기준"
+    "12월 31일",
+    "11월 30일",
+    "9월 3일",
+    "12월 2일"
    ],
-   "answer": 0,
-   "explain": "근로기준법 제24조의 요건은 앞의 세 가지와 근로자대표와의 성실한 협의다.",
-   "topic": "구조조정·변화관리·노사관계",
-   "answer_label": "A"
+   "answer": 3,
+   "explain": "헌법 제54조에 따라 회계연도 시작 30일 전인 12월 2일까지 의결해야 한다.",
+   "topic": "정부 예산의 구조와 편성 절차",
+   "answer_label": "D"
   },
   {
    "q": "법인세법상 적격합병이 되려면 합병대가 중 주식 비중이 최소 얼마여야 할까?",
@@ -798,8 +798,13 @@
  "brief": [
   {
    "tag": "거시경제",
-   "text": "원/달러 환율 3.5원 내린 1,342.4원",
-   "link": "https://www.yna.co.kr/view/AKR20261124136800002"
+   "text": "골드만삭스 “내년 한은 기준금리 3.5%가 상단…달러당 원화값은 1280원",
+   "link": "https://www.mk.co.kr/news/stock/12217095"
+  },
+  {
+   "tag": "글로벌 기업",
+   "text": "젠슨 황 엔비디아 복귀'에 5천피 회복",
+   "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE90SkR3MEtpS2VsMUU0LTFBUmk3M1RSeHhwcG5ZMUcxeW9qZzhzVnNBb2FPU05lbUplWUN2LTlpMmxidVNLUXpRV01wXzg3Mi1WWjh1cy1JWXFGQ1NVQlE?oc=5"
   },
   {
    "tag": "자본정책·주주환원",
@@ -807,13 +812,8 @@
    "link": "https://www.yna.co.kr/view/AKR20261124044200003"
   },
   {
-   "tag": "ESG·에너지",
-   "text": "대동, 한국ESG기준원 ‘2026 ESG 평가’ 2년 연속 통합 A등급 획득",
-   "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE84TG4yY0ZRbmdWR1JDbTBBanM4Q3ZMcmJ1X0g2NDB3ZC1iVWdINlQ0bllOWXY0YUduQXpxYnhLTHdjdmFsa2RXTkhxQ0FoUzZTWmdhZ0dUWlVnZW5jQUYtM0RfZGVWRlRsVWhrUGF3?oc=5"
-  },
-  {
    "tag": "공시",
-   "text": "SK아이이테크놀로지 합병(상대회사 자산 105.6조원)",
+   "text": "배터리 제조 기업 SK아이이테크놀로지가 SK이노베이션(석유 정제품 제조업)과 합병한다.",
    "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261123000288"
   }
  ]
