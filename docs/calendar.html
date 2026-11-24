@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>노트 캘린더</title>
+<style>
+:root {
+  --bg: #fbfaf7; --surface: #ffffff; --text: #1d1f23; --muted: #5d636e; --line: #e4e1da;
+  --accent: #1f5f8b; --accent-soft: #e8f0f6; --warn-bg: #fff6e0; --warn-line: #e8c46a; --code: #f2f0eb;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171b; --surface: #1c1f24; --text: #e6e6e3; --muted: #a2a7b0; --line: #2e3238;
+    --accent: #7db7e0; --accent-soft: #1f2c37; --warn-bg: #2d2717; --warn-line: #8a7230; --code: #24282e;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171b; --surface: #1c1f24; --text: #e6e6e3; --muted: #a2a7b0; --line: #2e3238;
+  --accent: #7db7e0; --accent-soft: #1f2c37; --warn-bg: #2d2717; --warn-line: #8a7230; --code: #24282e;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  font-size: 16px; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere;
+}
+header.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+header.top .wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+header.top a { color: var(--text); text-decoration: none; font-weight: 600; }
+header.top nav a { font-weight: 500; color: var(--muted); margin-right: 14px; }
+.wrap { max-width: 880px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+main { padding-top: 8px; padding-bottom: 64px; }
+h1 { font-size: 1.6rem; line-height: 1.35; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 40px 0 12px; padding-top: 12px; border-top: 2px solid var(--line); }
+h3 { font-size: 1.08rem; margin: 28px 0 8px; }
+p, ul, ol { margin: 8px 0 12px; }
+a { color: var(--accent); }
+blockquote { margin: 12px 0; padding: 10px 14px; background: var(--warn-bg); border-left: 3px solid var(--warn-line); border-radius: 4px; }
+blockquote p { margin: 4px 0; }
+.table-wrap { overflow-x: auto; margin: 10px 0 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: var(--accent-soft); font-weight: 600; white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+details { margin: 8px 0 16px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+hr { border: none; border-top: 1px solid var(--line); margin: 32px 0 16px; }
+footer { color: var(--muted); font-size: 0.85rem; }
+.brief { background: var(--accent-soft); border-radius: 10px; padding: 4px 16px 4px 12px; margin: 8px 0 12px; }
+.brief ol { padding-left: 22px; margin: 10px 0; }
+.brief li { margin: 8px 0; }
+.jump { color: var(--muted); font-size: 0.88rem; }
+.jump p { margin: 4px 0 8px; }
+.off { color: var(--muted); opacity: 0.6; }
+@media (max-width: 600px) { body { font-size: 15px; } h1 { font-size: 1.35rem; } th, td { padding: 6px 8px; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a href="today.html">매일 경영·경제 케이스 노트</a>
+  <nav><a href="today.html">오늘의 노트</a><a href="calendar.html">캘린더</a><a href="scale.html">규모 지도</a></nav>
+</div></header>
+<main class="wrap">
+<h1>노트 캘린더</h1>
+<p>날짜를 누르면 그날의 노트가 열린다. 굵게 표시된 날짜가 가장 최근 노트이고, 토요일의 '복습'은 한 주를 정리한 주간 복습 노트이다.</p>
+<h2>2026년 11월</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center;">일</th>
+<th style="text-align: center;">월</th>
+<th style="text-align: center;">화</th>
+<th style="text-align: center;">수</th>
+<th style="text-align: center;">목</th>
+<th style="text-align: center;">금</th>
+<th style="text-align: center;">토</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="off">1</span></td>
+<td style="text-align: center;"><span class="off">2</span></td>
+<td style="text-align: center;"><span class="off">3</span></td>
+<td style="text-align: center;"><span class="off">4</span></td>
+<td style="text-align: center;"><span class="off">5</span></td>
+<td style="text-align: center;"><span class="off">6</span></td>
+<td style="text-align: center;"><span class="off">7</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="off">8</span></td>
+<td style="text-align: center;"><span class="off">9</span></td>
+<td style="text-align: center;"><span class="off">10</span></td>
+<td style="text-align: center;"><span class="off">11</span></td>
+<td style="text-align: center;"><span class="off">12</span></td>
+<td style="text-align: center;"><span class="off">13</span></td>
+<td style="text-align: center;"><span class="off">14</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="off">15</span></td>
+<td style="text-align: center;"><span class="off">16</span></td>
+<td style="text-align: center;"><span class="off">17</span></td>
+<td style="text-align: center;"><span class="off">18</span></td>
+<td style="text-align: center;"><span class="off">19</span></td>
+<td style="text-align: center;"><a href="daily/2026/2026-11-20.html">20</a></td>
+<td style="text-align: center;"><a href="daily/2026/2026-11-21.html">21</a><br><a href="weekly/2026-W47.html">복습</a></td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="daily/2026/2026-11-22.html">22</a></td>
+<td style="text-align: center;"><a href="daily/2026/2026-11-23.html">23</a></td>
+<td style="text-align: center;"><strong><a href="daily/2026/2026-11-24.html">24</a></strong></td>
+<td style="text-align: center;"><span class="off">25</span></td>
+<td style="text-align: center;"><span class="off">26</span></td>
+<td style="text-align: center;"><span class="off">27</span></td>
+<td style="text-align: center;"><span class="off">28</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="off">29</span></td>
+<td style="text-align: center;"><span class="off">30</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>11월 노트 한 줄 요약</summary>
+<ul>
+<li><a href="daily/2026/2026-11-24.html">24일(화)</a>: 원/달러 환율 3.5원 내린 1,342.4원</li>
+<li><a href="daily/2026/2026-11-23.html">23일(월)</a>: 경주시, 내년 본예산안 2조2200억 편성… 역대 최대 규모</li>
+<li><a href="daily/2026/2026-11-22.html">22일(일)</a>: 울진군, 2027년도 예산안 7,840억 원 편성…전년 대비 10.7% 증가</li>
+<li><a href="daily/2026/2026-11-21.html">21일(토)</a>: 울진군, 2027년도 예산안 7,840억 원 편성…전년 대비 10.7% 증가</li>
+<li><a href="daily/2026/2026-11-20.html">20일(금)</a>: 평택시, 반도체 세수 증가에 2027년 본예산안 첫 4조원대 편성</li>
+</ul>
+</details>
+<h2>주간 복습</h2>
+<ul>
+<li><a href="weekly/2026-W47.html">2026-W47</a></li>
+</ul>
+<h2>이론·제도 사전</h2>
+<p>노트에 나온 이론과 회계·세법·상법·재정학 카드를 모두 모은 <a href="theories.html">이론·제도 사전</a>이다.</p>
+</main>
+</body>
+</html>
