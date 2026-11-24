@@ -227,6 +227,39 @@ def is_local(item: NewsItem, cat_key: str | None) -> bool:
     return bool(subject) and subject not in _NOT_LOCAL and bool(_LOCAL.match(subject))
 
 
+# 경제 전체에 영향을 주는 주체·지표가 제목에 나오면 그날의 큰 이슈일 가능성이 크다.
+BIG_KEYWORDS = (
+    "대통령", "정부", "국회", "한은", "한국은행", "기준금리", "연준", "FOMC", "재정경제부", "기획예산처", "금융위",
+    "금감원", "공정위", "국세청", "트럼프", "관세", "수출", "물가", "성장률", "GDP", "코스피", "나스닥", "S&P",
+    "반도체", "삼성전자", "SK하이닉스", "현대차", "엔비디아", "애플", "테슬라", "예산안", "세법", "상법",
+    "부동산", "가계부채", "고용", "실업",
+)
+# 기업 홍보성 기사(수상·인증·협약·행사)는 여러 매체가 받아써도 그날의 이슈로 보지 않는다.
+_PR = re.compile(r"(수상|등급\s?획득|[A-Z]\+?등급|인증\s?획득|인증을 획득|에 선정|선정돼|선정됐|업무협약|MOU|협약 체결|"
+                 r"기부|봉사|후원|성금|기탁|나눔|발대식|캠페인|개최|개막|간담회|설명회|세미나|포럼|박람회|데모데이|시상식)")
+# 매일 같은 형식으로 나오는 시세 기사(환율·채권 마감 등)
+_ROUTINE = re.compile(r"^\s*\[(외환|채권|마감시황|시황|오늘의 증시|코스피|코스닥|국고채|환율|증시|장중시황|개장시황)\]|"
+                      r"기준가\)|장 초반|(상승|하락) 출발|(상승|하락|보합) 마감|국고채 금리 .*\d년물")
+_MEDIA = re.compile(r"^\s*\[(포토|영상|사진|카드뉴스|그래픽)\]")
+
+
+def quality_adjust(item: NewsItem, cat_key: str | None) -> float:
+    """그날의 주요 이슈인지에 따른 가감점: 큰 주체·지표 +3, 홍보성 -6, 시세 기사 -5, 사진·영상 -10, 지자체 -6."""
+    title = item.title or ""
+    adj = 0.0
+    if any(k in title for k in BIG_KEYWORDS):
+        adj += 3
+    if _PR.search(title):
+        adj -= 6
+    if _ROUTINE.search(title):
+        adj -= 5
+    if _MEDIA.search(title):
+        adj -= 10
+    if is_local(item, cat_key):
+        adj -= 6
+    return adj
+
+
 def categorize(items: list[NewsItem], categories: list[dict], per_category: int,
                counts: dict[str, dict] | None = None) -> dict[str, list[NewsItem]]:
     """기사를 분류하고 분류마다 점수 높은 순으로 per_category건만 남긴다.
@@ -252,10 +285,8 @@ def categorize(items: list[NewsItem], categories: list[dict], per_category: int,
         buckets[key].append(it)
     for key in buckets:
         for it in buckets[key]:
-            # 여러 곳이 다룬 기사, 전국 단위 언론이 다룬 기사를 앞세우고 지자체 소식은 뒤로 미룬다
-            it.score += min(it.coverage, 6) * 1.2 + min(major_count(it), 3) * 0.8
-            if is_local(it, key):
-                it.score -= 6
+            # 여러 곳이 다룬 기사, 전국 단위 언론이 다룬 기사, 큰 주제를 앞세우고 홍보성·시세·지자체 기사는 뒤로
+            it.score += min(it.coverage, 6) * 1.2 + min(major_count(it), 3) * 0.8 + quality_adjust(it, key)
     for key in buckets:
         if counts is not None:
             counts[key] = {"stories": len(buckets[key]), "articles": sum(it.coverage for it in buckets[key])}

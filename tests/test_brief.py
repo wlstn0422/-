@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 from casenote import brief as br
 from casenote import report
-from casenote.news import NewsItem, is_local
+from casenote.news import NewsItem, is_local, quality_adjust
 from casenote.site import build_site, rebase_md_links
 
 CATS = [{"key": "macro", "label": "거시경제"}, {"key": "fiscal", "label": "재정·예산·복지"},
@@ -29,6 +29,19 @@ def test_headline_cleanup_and_text_choice():
     assert br.story_text(rate) == "다음 주(11월 23∼27일)에는 한국은행 금융통화위원회가 기준금리를 결정한다."
 
 
+def test_topic_quality():
+    # 큰 주제는 가산, 홍보성·시세·사진 기사는 감점
+    assert quality_adjust(item("골드만삭스 \u201c내년 한은 기준금리 3.5%가 상단\u201d"), "macro") == 3
+    assert quality_adjust(item("대동, 한국ESG기준원 ESG 평가 2년 연속 통합 A등급 획득"), "esg") == -6
+    assert quality_adjust(item("[외환] 원/달러 환율 3.5원 내린 1,342.4원(15:30 기준가)"), "macro") == -5
+    assert quality_adjust(item("[포토] 서울교통공사 임단협 최종 교섭"), "hr") == -10
+    assert br.clean_headline("젠슨 황 11일 만의 귀환…엔비디아 급등, 한국 증시에 가져온 건?｜빽투빽") == \
+        "젠슨 황 11일 만의 귀환…엔비디아 급등, 한국 증시에 가져온 건?"
+    assert br.drop_question("젠슨 황 11일 만의 귀환…엔비디아 급등, 한국 증시에 가져온 건?") == "젠슨 황 11일 만의 귀환…엔비디아 급등"
+    assert br.drop_question("엔비디아 일주일 만에 23% 폭락…SEC 조사에 위기 더 커지나?") == "엔비디아 일주일 만에 23% 폭락"
+    assert br.drop_question("기준금리 동결") == "기준금리 동결"
+
+
 def test_local_news_is_pushed_back():
     assert is_local(item("울진군, 2027년도 예산안 7,840억 원 편성"), "fiscal")
     assert not is_local(item("울진군, 2027년도 예산안 7,840억 원 편성"), "macro")  # 분야가 다르면 따지지 않는다
@@ -37,27 +50,31 @@ def test_local_news_is_pushed_back():
 
 def test_pick_brief_prefers_big_national_issues():
     local = item("울진군, 2027년도 예산안 7,840억 원 편성", coverage=9, source="드림저널")
+    pr = item("대동, 한국ESG기준원 ESG 평가 2년 연속 통합 A등급 획득", coverage=9, source="연합뉴스",
+              also=["뉴스1", "뉴시스", "아시아경제"])  # 여러 곳이 받아썼어도 홍보성 기사
     budget = item("국회, 728조 내년 예산안 처리 착수", coverage=4, source="연합뉴스", also=["한국경제", "매일경제"])
     rate = item("한은, 기준금리 연 2.25% 동결", coverage=6, source="연합뉴스", also=["서울경제"])
     rate2 = item("한은, 기준금리 연 2.25% 동결…물가 경계", coverage=2, source="뉴스1")  # 같은 이슈
     nvda = item("엔비디아 시가총액 6조달러 돌파", coverage=5, source="조선비즈")
     ad = item("모의식품 리브랜딩 캠페인", coverage=1, source="모의일보")  # 한 곳만 다룬 기사는 빼다
-    buckets = {"fiscal": [local, budget], "macro": [rate, rate2], "global": [nvda], "marketing": [ad]}
+    buckets = {"fiscal": [local, budget], "macro": [rate, rate2], "global": [nvda], "marketing": [ad, pr]}
     news_cases = [{"item": nvda}]
     ev = SimpleNamespace(corp_name="테스트전자", rule=SimpleNamespace(label="합병"), amount=3e11,
                          amount_label="합병가액", fin={"assets": 1e12}, url="https://dart.example/1")
     small = SimpleNamespace(corp_name="작은회사", rule=SimpleNamespace(label="자사주 취득"), amount=5e9,
                             amount_label="취득금액", fin={"assets": 1e11}, url="https://dart.example/2")
-    out = br.pick_brief(buckets, CATS, news_cases, [{"ev": small}, {"ev": ev}], TH, limit=3)
+    easy = {"what": "전자부품 제조 기업 테스트전자가 모의부품과 합병한다. (앞서 제출한 공시를 정정한 공시이다.)"}
+    out = br.pick_brief(buckets, CATS, news_cases, [{"ev": small}, {"ev": ev, "easy": easy}], TH, limit=3)
     texts = [o["text"] for o in out]
     assert texts[0] == "한은, 기준금리 연 2.25% 동결"  # 거시경제·여러 언론
     assert "국회, 728조 내년 예산안 처리 착수" in texts and not any("울진군" in t for t in texts)
     assert sum("기준금리" in t for t in texts) == 1  # 같은 이슈는 한 번만
-    assert not any("리브랜딩" in t for t in texts)
+    assert not any("리브랜딩" in t or "A등급" in t for t in texts)
     nv = next(o for o in out if "엔비디아" in o["text"])
     assert nv["anchor"] == "n1" and nv["tag"] == "글로벌 기업"  # 아래 뉴스 사례로 이어진다
-    assert out[-1] == {"text": "테스트전자 합병(합병가액 3,000억원)", "tag": "공시", "link": "https://dart.example/1",
-                       "anchor": "c2"}  # 대형 공시 1건만
+    assert out[-1] == {"text": "전자부품 제조 기업 테스트전자가 모의부품과 합병한다.", "tag": "공시",
+                       "link": "https://dart.example/1", "anchor": "c2"}  # 대형 공시 1건만, 해설 첫 문장으로
+    assert br.case_text({"ev": ev}) == "테스트전자 합병(합병가액 3,000억원)"  # 해설이 없을 때
     assert len(out) == 4
 
 

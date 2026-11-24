@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 
 from . import explain as ex
-from .news import NewsItem, _subject_and_tokens, is_local, major_count
+from .news import NewsItem, _subject_and_tokens, major_count, quality_adjust
 from .util import fmt_krw
 
 # 경제 전체에 영향을 주는 분야일수록 앞세운다. 목록에 없는 분야는 0.
@@ -21,22 +21,36 @@ CATEGORY_WEIGHT = {
 
 _LEAD_TAGS = re.compile(r"^(\s*[\[\(【<][^\]\)】>]{0,20}[\]\)】>]\s*)+")
 _TRAIL_TAGS = re.compile(r"(\s*[\[\(【<][^\]\)】>]{0,20}[\]\)】>]\s*)+$")
+_TRAIL_SHOW = re.compile(r"\s*[|｜]\s*[^|｜]{1,20}$")  # '…｜빽투빽' 같은 프로그램·코너 이름
 _MAGNITUDE = re.compile(r"\d[\d,.]*\s*(?:%p|%|％|조|억|만|원|달러|엔|위안|유로|배|명|건|곳|개|척|대|톤|bp|포인트)")
 
 
 def importance(item: NewsItem, cat_key: str | None) -> float:
-    score = min(item.coverage, 12) + 2.0 * min(major_count(item), 4) + CATEGORY_WEIGHT.get(cat_key or "", 0)
-    if is_local(item, cat_key):
-        score -= 8
-    return score
+    """보도량(8곳까지) + 전국 단위 언론 수 + 분야 가중치 + 주제 가감점(큰 주제 +, 홍보성·시세·지자체 -)."""
+    return (min(item.coverage, 8) + 2.0 * min(major_count(item), 4) + CATEGORY_WEIGHT.get(cat_key or "", 0)
+            + quality_adjust(item, cat_key))
 
 
 def clean_headline(title: str) -> str:
     """'[다음주 경제] 숨 고르기 한 기준금리…' → '숨 고르기 한 기준금리…'.
     앞뒤 말머리([단독], [월가월부], (종합) 등)와 따옴표만 정리한다."""
-    t = _TRAIL_TAGS.sub("", _LEAD_TAGS.sub("", title or "")).strip()
+    t = _TRAIL_TAGS.sub("", _TRAIL_SHOW.sub("", _LEAD_TAGS.sub("", title or ""))).strip()
     t = re.sub(r"\s*(\.\.\.|…)\s*", "…", t)
     return t.strip(" '\"‘’“”")
+
+
+def drop_question(head: str) -> str:
+    """'…엔비디아 급등, 한국 증시에 가져온 건?' → '…엔비디아 급등'. 물음으로 끝나는 마지막 토막만 덜어 낸다."""
+    if not head.endswith("?"):
+        return head
+    parts = head.split("…")
+    last = parts[-1]
+    if "," in last and len(last.rsplit(",", 1)[0].strip()) >= 2:
+        parts[-1] = last.rsplit(",", 1)[0].strip()
+        return "…".join(parts)
+    if len(parts) > 1 and len("…".join(parts[:-1])) >= 8:
+        return "…".join(parts[:-1])
+    return head
 
 
 def has_magnitude(text: str) -> bool:
@@ -51,7 +65,7 @@ def story_text(item: NewsItem) -> str:
         lead = ""
     if lead and (has_magnitude(lead) or not has_magnitude(head) or head.endswith("?")):
         return lead
-    return head
+    return drop_question(head)
 
 
 def _overlaps(a: NewsItem, b: NewsItem) -> bool:
@@ -69,6 +83,17 @@ def notable_case(block: dict, th: dict) -> bool:
     ev = block["ev"]
     assets = (ev.fin or {}).get("assets") or 0
     return (ev.amount or 0) >= 1e11 or assets >= th.get("disclosure_group_assets", 5e12)
+
+
+def case_text(block: dict) -> str:
+    """공시 사례의 첫 문장(예: '배터리 제조 기업 ○○가 △△과 합병한다.'). 해설이 없으면 '회사 유형(금액)'."""
+    what = re.sub(r"\s*\(앞서 제출한 공시를 정정한 공시이다\.\)", "", (block.get("easy") or {}).get("what") or "").strip()
+    first = re.match(r"(.+?다\.)(\s|$)", what)
+    if first:
+        return first.group(1)
+    ev = block["ev"]
+    size = f"({ev.amount_label or '금액'} {fmt_krw(ev.amount)})" if ev.amount else ""
+    return f"{ev.corp_name} {ev.rule.label}{size}"
 
 
 def pick_brief(buckets: dict[str, list[NewsItem]], categories: list[dict], news_cases: list[dict],
@@ -101,8 +126,6 @@ def pick_brief(buckets: dict[str, list[NewsItem]], categories: list[dict], news_
     } for key, it in picked]
     for i, b in enumerate(case_blocks, 1):
         if notable_case(b, th):
-            ev = b["ev"]
-            size = f"({ev.amount_label or '금액'} {fmt_krw(ev.amount)})" if ev.amount else ""
-            out.append({"text": f"{ev.corp_name} {ev.rule.label}{size}", "tag": "공시", "link": ev.url, "anchor": f"c{i}"})
+            out.append({"text": case_text(b), "tag": "공시", "link": b["ev"].url, "anchor": f"c{i}"})
             break
     return out
