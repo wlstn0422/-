@@ -804,10 +804,15 @@ def write_calendar(settings: Settings, has_theories: bool = True) -> Path:
         if d:
             days[d] = p.relative_to(rd).as_posix()
     weekly: dict[date, str] = {}
-    for p in rd.glob("weekly/*.md"):
+    weekly_list = []
+    for p in sorted(rd.glob("weekly/*.md"), reverse=True):
         m = re.fullmatch(r"(\d{4})-W(\d{2})", p.stem)
         if m:
-            weekly[date.fromisocalendar(int(m.group(1)), int(m.group(2)), 6)] = p.relative_to(rd).as_posix()
+            sat = date.fromisocalendar(int(m.group(1)), int(m.group(2)), 6)  # 복습 노트는 토요일에 나온다
+            weekly[sat] = p.relative_to(rd).as_posix()
+            weekly_list.append({"path": weekly[sat], "name": f"{sat.year}년 {sat.month}월 {sat.day}일 주간 복습"})
+        else:
+            weekly_list.append({"path": p.relative_to(rd).as_posix(), "name": p.stem})
     latest = max(days) if days else None
     keys = sorted({(d.year, d.month) for d in [*days, *weekly]}, reverse=True)
     if not keys:
@@ -825,7 +830,7 @@ def write_calendar(settings: Settings, has_theories: bool = True) -> Path:
     md = render(
         "calendar.md.j2",
         months=months,
-        weeklies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem} for p in sorted(rd.glob("weekly/*.md"), reverse=True)],
+        weeklies=weekly_list,
         companies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem.split("_", 1)[-1]}
                    for p in sorted(rd.glob("company/*.md"))],
         has_theories=has_theories,

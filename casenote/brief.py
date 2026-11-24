@@ -33,10 +33,9 @@ def importance(item: NewsItem, cat_key: str | None) -> float:
 
 def clean_headline(title: str) -> str:
     """'[다음주 경제] 숨 고르기 한 기준금리…' → '숨 고르기 한 기준금리…'.
-    앞뒤 말머리([단독], [월가월부], (종합) 등)와 따옴표만 정리한다."""
+    앞뒤 말머리([단독], [월가월부], (종합) 등)와 코너 이름만 뗀다."""
     t = _TRAIL_TAGS.sub("", _TRAIL_SHOW.sub("", _LEAD_TAGS.sub("", title or ""))).strip()
-    t = re.sub(r"\s*(\.\.\.|…)\s*", "…", t)
-    return t.strip(" '\"‘’“”")
+    return re.sub(r"\s*(\.\.\.|…)\s*", "…", t).strip()  # 따옴표는 짝이 깨지지 않게 그대로 둔다
 
 
 def drop_question(head: str) -> str:

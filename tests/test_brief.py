@@ -20,6 +20,10 @@ def test_headline_cleanup_and_text_choice():
     assert br.clean_headline("젠슨 황의 귀환에 뒤집힌 월가...엔비디아 31%·나스닥 6.5% 폭등 [월가월부]") == \
         "젠슨 황의 귀환에 뒤집힌 월가…엔비디아 31%·나스닥 6.5% 폭등"
     assert br.clean_headline("[다음주 경제] 기준금리 결정 주간(종합)") == "기준금리 결정 주간"
+    # 따옴표는 짝이 맞게 그대로 남긴다
+    assert br.clean_headline("골드만삭스 \u201c내년 기준금리 3.5%가 상단\u201d") == "골드만삭스 \u201c내년 기준금리 3.5%가 상단\u201d"
+    assert br.drop_question(br.clean_headline("'젠슨 황 엔비디아 복귀'에 5천피 회복...추세 반등?")) == \
+        "'젠슨 황 엔비디아 복귀'에 5천피 회복"
     # 핵심 숫자가 제목에만 있으면 제목을, 첫 문장에도 숫자가 있으면 첫 문장을 쓴다
     nasdaq = item("엔비디아 호실적도 못 막았다…나스닥, 기술주 매도에 5.3% 폭락",
                   summary="20일(현지시간) 미국 뉴욕증시 주요 지수가 일제히 급락했다. 다우지수는")
@@ -95,6 +99,7 @@ def test_calendar_and_today_page(settings):
     assert "**[24](daily/2026/2026-11-24.md)**" in cal  # 가장 최근 노트는 굵게
     assert "[20](daily/2026/2026-11-20.md)" in cal and '<span class="off">25</span>' in cal
     assert "<br>[복습](weekly/2026-W47.md)" in cal  # 2026년 47주 토요일(11월 21일) 칸
+    assert "- [2026년 11월 21일 주간 복습](weekly/2026-W47.md)" in cal
     assert "[24일(화)](daily/2026/2026-11-24.md): 한은, 기준금리 동결" in cal
     build_site(settings)
     today = (settings.docs_dir / "today.html").read_text(encoding="utf-8")
