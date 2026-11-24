@@ -70,13 +70,13 @@ class NoteSource(
                     Page(body, mime)
                 }
                 res.code == 304 && cached != null -> Page(cached, mime)
-                !isHtml -> Page(ByteArray(0), mime)
+                !isHtml -> Page(cached ?: ByteArray(0), mime)
                 cached != null -> Page(NoteUrls.withBanner(cached, ErrorPages.bannerFor(res.code, config), settingsLink = true), mime)
                 else -> Page(ErrorPages.forStatus(res.code, rel, config).toByteArray(Charsets.UTF_8), "text/html")
             }
         } catch (e: IOException) {
             when {
-                !isHtml -> Page(ByteArray(0), mime)
+                !isHtml -> Page(cached ?: ByteArray(0), mime)  // 스타일 파일 등은 저장본을 그대로
                 cached != null -> Page(NoteUrls.withBanner(cached, "인터넷에 연결되어 있지 않아 저장해 둔 노트를 표시합니다."), mime)
                 else -> Page(ErrorPages.offline().toByteArray(Charsets.UTF_8), "text/html")
             }

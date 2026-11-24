@@ -3,6 +3,7 @@
 
 report:
   title: "매일 경영·경제 케이스 노트"
+  brief_items: 3            # 노트 맨 위 '오늘 아침 이것만은'에 올릴 뉴스 이슈 수(대형 공시는 1건까지 따로 추가)
   key_cases: 3              # 핵심 사례(공시)로 깊게 볼 건수
   news_cases: 4             # 이론·제도와 함께 읽을 뉴스 사례 수(재무·경영·경제·제도 분야에서 하나씩)
   theory_lessons: 1         # '오늘의 이론 수업'(경영·경제)에서 자세히 다룰 이론 수
@@ -10,7 +11,7 @@ report:
   subject_rotation: [재무회계, 원가관리회계, 세법, 상법, 재정학]   # 월~금 전공 과목 순서
   theory_repeat_days: 21    # 같은 수업이 다시 나오기까지 최소 간격(일)
   accounting_cards: 2       # 퀴즈에 쓸 회계·세무 카드 수
-  news_per_category: 3      # 분야별 헤드라인에서 분야마다 보여줄 기사 수
+  news_per_category: 3      # '기사가 많았던 분야'에서 분야마다 보여줄 기사 수
   filings_per_type: 12      # 공시 유형별로 목록에 보여줄 최대 건수
   markets: [Y, K]           # 공시 수집 대상 시장. Y 유가증권시장, K 코스닥(IPO는 비상장사도 포함)
   max_window_days: 7        # 리포트를 며칠 건너뛰었을 때 한 번에 모아볼 최대 일수

@@ -198,6 +198,35 @@ def same_story(a: NewsItem, b: NewsItem) -> bool:
     return len((ta & tb) - {sa, sb}) >= 2
 
 
+# 전국 단위 통신사·종합지·경제지·방송. 이들이 함께 다룬 기사일수록 그날의 주요 이슈일 가능성이 크다.
+MAJOR_OUTLETS = (
+    "연합뉴스", "연합인포맥스", "뉴스1", "뉴시스", "한국경제", "매일경제", "서울경제", "머니투데이", "이데일리",
+    "아시아경제", "헤럴드경제", "파이낸셜뉴스", "조선비즈", "조선일보", "중앙일보", "동아일보", "한겨레",
+    "경향신문", "한국일보", "국민일보", "세계일보", "문화일보", "서울신문", "KBS", "MBC", "SBS", "YTN",
+    "JTBC", "MBN", "채널A", "TV조선", "한국경제TV", "비즈니스워치", "뉴스핌", "아주경제", "이투데이",
+    "디지털타임스", "전자신문", "더벨", "대한경제", "머니S", "데일리안", "노컷뉴스",
+)
+
+# 지자체 예산·정책 기사는 전국 단위 이슈보다 뒤로 미룬다(지역 매체가 일제히 받아써 보도량이 부풀려지는 경우가 많다).
+_LOCAL = re.compile(r"^(?:[가-힣]{1,4}(?:시|군|구)|(?:경기|강원|충북|충남|충청북|충청남|전북|전남|전라북|전라남|경북|경남|"
+                    r"경상북|경상남|제주)(?:특별자치)?도)(?:청|의회|교육청)?$")
+_NOT_LOCAL = {"증시", "당시", "동시", "임시", "즉시", "수시", "상시", "전시", "개시", "공시", "게시", "지시", "제시", "표시",
+              "감시", "도시", "역시", "다시", "연구", "지구", "요구", "가구", "인구", "기구", "도구", "창구", "출구", "추구",
+              "해군", "육군", "공군"}
+_LOCAL_CATEGORIES = {"fiscal", "policy", "esg", "hr"}
+
+def major_count(item: NewsItem) -> int:
+    names = [item.source, *item.also]
+    return sum(1 for n in names if n and any(o in n for o in MAJOR_OUTLETS))
+
+
+def is_local(item: NewsItem, cat_key: str | None) -> bool:
+    if cat_key not in _LOCAL_CATEGORIES:
+        return False
+    subject, _ = _subject_and_tokens(item.title)
+    return bool(subject) and subject not in _NOT_LOCAL and bool(_LOCAL.match(subject))
+
+
 def categorize(items: list[NewsItem], categories: list[dict], per_category: int,
                counts: dict[str, dict] | None = None) -> dict[str, list[NewsItem]]:
     """기사를 분류하고 분류마다 점수 높은 순으로 per_category건만 남긴다.
@@ -223,7 +252,10 @@ def categorize(items: list[NewsItem], categories: list[dict], per_category: int,
         buckets[key].append(it)
     for key in buckets:
         for it in buckets[key]:
-            it.score += min(it.coverage, 6) * 1.2
+            # 여러 곳이 다룬 기사, 전국 단위 언론이 다룬 기사를 앞세우고 지자체 소식은 뒤로 미룬다
+            it.score += min(it.coverage, 6) * 1.2 + min(major_count(it), 3) * 0.8
+            if is_local(it, key):
+                it.score -= 6
     for key in buckets:
         if counts is not None:
             counts[key] = {"stories": len(buckets[key]), "articles": sum(it.coverage for it in buckets[key])}

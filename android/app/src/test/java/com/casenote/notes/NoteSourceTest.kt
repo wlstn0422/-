@@ -101,6 +101,38 @@ class NoteSourceTest {
     }
 
     @Test
+    fun tabsOpenTodayCalendarAndScalePages() {
+        assertEquals("today.html", NoteUrls.relativePath(java.net.URI(NoteUrls.TODAY).path))
+        assertEquals("calendar.html", NoteUrls.relativePath(java.net.URI(NoteUrls.CALENDAR).path))
+        assertEquals("scale.html", NoteUrls.relativePath(java.net.URI(NoteUrls.SCALE).path))
+        assertEquals(NoteUrls.TODAY, NoteUrls.HOME)
+    }
+
+    @Test
+    fun appHidesSiteHeaderOnce() {
+        val html = "<html><head><title>t</title></head><body><header class=\"top\">메뉴</header><main>노트</main></body></html>"
+        val once = String(NoteUrls.forApp(html.toByteArray()), Charsets.UTF_8)
+        assertTrue(once.contains("header.top{display:none}"))
+        assertTrue(once.indexOf("header.top{display:none}") < once.indexOf("</head>"))
+        assertEquals(once, String(NoteUrls.forApp(once.toByteArray()), Charsets.UTF_8))
+        val noHead = "<p>오류</p>"
+        assertEquals(noHead, String(NoteUrls.forApp(noHead.toByteArray()), Charsets.UTF_8))
+    }
+
+    @Test
+    fun stylesheetComesFromCacheWhenOffline() {
+        val dir = Files.createTempDirectory("notes").toFile()
+        var online = true
+        val source = NoteSource(dir, Cfg(token = ""), Fetcher {
+            if (!online) throw IOException("offline")
+            HttpResponse(200, "body{color:red}".toByteArray(), "\"c1\"")
+        })
+        assertEquals("body{color:red}", String(source.load("style.css").body))
+        online = false
+        assertEquals("body{color:red}", String(source.load("style.css").body))
+    }
+
+    @Test
     fun explainsMissingTokenForPrivateRepo() {
         val dir = Files.createTempDirectory("notes").toFile()
         val source = NoteSource(dir, Cfg(token = ""), Fetcher { HttpResponse(404, ByteArray(0), null) })

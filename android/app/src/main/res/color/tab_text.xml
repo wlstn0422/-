@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 고른 탭은 흰색, 나머지는 반투명 흰색 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#FFFFFFFF" android:state_selected="true" />
+    <item android:color="#B3FFFFFF" />
+</selector>

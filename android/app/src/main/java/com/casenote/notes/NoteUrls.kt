@@ -6,7 +6,12 @@ object NoteUrls {
     /** 안드로이드가 앱 내부 콘텐츠용으로 정해 둔 주소. 실제 인터넷으로 나가지 않는다. */
     const val HOST = "appassets.androidplatform.net"
     const val BASE = "https://$HOST/notes/"
-    const val HOME = BASE + "index.html"
+
+    /** 위쪽 탭 세 개가 여는 첫 화면. today.html은 가장 최근 노트를 늘 같은 주소로 보여 준다. */
+    const val TODAY = BASE + "today.html"
+    const val CALENDAR = BASE + "calendar.html"
+    const val SCALE = BASE + "scale.html"
+    const val HOME = TODAY
     const val SETTINGS_LINK = "casenote://settings"
     const val TOKEN_PAGE = "https://github.com/settings/personal-access-tokens/new"
 
@@ -68,6 +73,16 @@ object NoteUrls {
 
     fun escape(s: String): String = s
         .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
+
+    /** 앱에서는 위쪽 탭이 이동을 맡으므로 웹페이지 머리말(사이트 이름과 메뉴)을 숨긴다. */
+    private const val APP_STYLE = "<style>header.top{display:none}main{padding-top:0}</style>"
+
+    fun forApp(html: ByteArray): ByteArray {
+        val text = String(html, Charsets.UTF_8)
+        val at = text.indexOf("</head>", ignoreCase = true)
+        if (at < 0 || text.contains(APP_STYLE)) return html
+        return (text.substring(0, at) + APP_STYLE + text.substring(at)).toByteArray(Charsets.UTF_8)
+    }
 
     /** 저장해 둔 노트를 보여 줄 때 맨 위에 안내 띠를 붙인다. */
     fun withBanner(html: ByteArray, message: String, settingsLink: Boolean = false): ByteArray {

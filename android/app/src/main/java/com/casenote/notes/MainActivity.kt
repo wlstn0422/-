@@ -26,24 +26,40 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import java.io.ByteArrayInputStream
 import java.io.File
 
-/** 케이스 노트 뷰어. GitHub 저장소의 docs/ 페이지를 그대로 보여 주는 얇은 앱이다. */
+/** 매일 경영·경제 케이스 노트 뷰어. 위쪽 탭(오늘의 노트·캘린더·규모지도)으로 GitHub의 docs/ 페이지를 보여 준다. */
 class MainActivity : AppCompatActivity() {
+
+    private enum class Tab(val url: String) {
+        TODAY(NoteUrls.TODAY),
+        CALENDAR(NoteUrls.CALENDAR),
+        SCALE(NoteUrls.SCALE),
+    }
 
     private lateinit var webView: WebView
     private lateinit var swipe: SwipeRefreshLayout
     private lateinit var progress: ProgressBar
     private lateinit var prefs: AppPrefs
     private lateinit var source: NoteSource
+    private lateinit var tabViews: Map<Tab, TextView>
+    private var current = Tab.TODAY
+    private var clearHistoryOnLoad = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.elevation = 0f  // 제목 줄과 탭 줄이 한 덩어리로 보이게
 
         prefs = AppPrefs(this)
         source = NoteSource(File(filesDir, "notes"), prefs)
         webView = findViewById(R.id.web)
         swipe = findViewById(R.id.swipe)
         progress = findViewById(R.id.progress)
+        tabViews = mapOf(
+            Tab.TODAY to findViewById(R.id.tab_today),
+            Tab.CALENDAR to findViewById(R.id.tab_calendar),
+            Tab.SCALE to findViewById(R.id.tab_scale),
+        )
+        tabViews.forEach { (tab, view) -> view.setOnClickListener { openTab(tab) } }
 
         webView.settings.apply {
             javaScriptEnabled = false
@@ -60,30 +76,44 @@ class MainActivity : AppCompatActivity() {
                 progress.progress = newProgress
                 progress.visibility = if (newProgress in 1..99) View.VISIBLE else View.GONE
             }
-
-            override fun onReceivedTitle(view: WebView, title: String?) {
-                if (!title.isNullOrBlank() && !title.startsWith("http")) {
-                    supportActionBar?.title = title
-                }
-            }
         }
         swipe.setOnRefreshListener { webView.reload() }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (webView.canGoBack()) webView.goBack() else finish()
+                when {
+                    webView.canGoBack() -> webView.goBack()
+                    current != Tab.TODAY -> openTab(Tab.TODAY)  // 다른 탭에서는 먼저 오늘의 노트로
+                    else -> finish()
+                }
             }
         })
 
+        val savedTab = savedInstanceState?.getString(STATE_TAB)?.let { name -> Tab.values().firstOrNull { it.name == name } }
         val restored = savedInstanceState != null && webView.restoreState(savedInstanceState) != null
-        if (!restored) {
-            webView.loadUrl(NoteUrls.HOME)
-        }
+        if (restored && savedTab != null) markTab(savedTab) else openTab(Tab.TODAY)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         webView.saveState(outState)
+        outState.putString(STATE_TAB, current.name)
+    }
+
+    /** 탭을 누르면 그 탭의 첫 화면을 연다. 이미 첫 화면이면 맨 위로 올린다. */
+    private fun openTab(tab: Tab) {
+        markTab(tab)
+        if (webView.url == tab.url) {
+            webView.scrollTo(0, 0)
+            return
+        }
+        clearHistoryOnLoad = true  // 탭을 바꾸면 뒤로 가기는 그 탭 안에서만 움직인다
+        webView.loadUrl(tab.url)
+    }
+
+    private fun markTab(tab: Tab) {
+        current = tab
+        tabViews.forEach { (t, v) -> v.isSelected = t == tab }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -92,10 +122,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.action_home -> {
-            webView.loadUrl(NoteUrls.HOME)
-            true
-        }
         R.id.action_refresh -> {
             webView.reload()
             true
@@ -115,10 +141,11 @@ class MainActivity : AppCompatActivity() {
             val rel = NoteUrls.relativePath(url.path)
                 ?: return WebResourceResponse("text/plain", "utf-8", 404, "Not Found", emptyMap(), ByteArrayInputStream(ByteArray(0)))
             val page = source.load(rel)
+            val body = if (page.mime == "text/html") NoteUrls.forApp(page.body) else page.body
             return WebResourceResponse(
                 page.mime, "utf-8", 200, "OK",
                 mapOf("Cache-Control" to "no-store"),
-                ByteArrayInputStream(page.body),
+                ByteArrayInputStream(body),
             )
         }
 
@@ -133,8 +160,17 @@ class MainActivity : AppCompatActivity() {
             return true
         }
 
+        /** 뒤로 가기로 탭의 첫 화면에 돌아오면 그 탭에 표시를 옮긴다. */
+        override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
+            Tab.values().firstOrNull { it.url == url }?.let { markTab(it) }
+        }
+
         override fun onPageFinished(view: WebView, url: String?) {
             swipe.isRefreshing = false
+            if (clearHistoryOnLoad) {
+                clearHistoryOnLoad = false
+                view.clearHistory()
+            }
         }
     }
 
@@ -188,10 +224,15 @@ class MainActivity : AppCompatActivity() {
             .setView(ScrollView(this).apply { addView(box) })
             .setPositiveButton(R.string.save) { _, _ ->
                 prefs.save(token.text.toString(), owner.text.toString(), repo.text.toString(), branch.text.toString())
-                webView.loadUrl(NoteUrls.HOME)
+                clearHistoryOnLoad = true
+                webView.loadUrl(current.url)
             }
             .setNeutralButton(R.string.make_token) { _, _ -> openExternal(Uri.parse(NoteUrls.TOKEN_PAGE)) }
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private companion object {
+        const val STATE_TAB = "tab"
     }
 }

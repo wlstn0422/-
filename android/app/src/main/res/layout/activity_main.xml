@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
+    <!-- 위쪽 탭: 오늘의 노트 · 캘린더 · 규모지도 -->
+    <LinearLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="48dp"
+        android:background="@color/accent"
+        android:elevation="4dp"
+        android:orientation="horizontal">
 
-        <WebView
-            android:id="@+id/web"
+        <TextView
+            android:id="@+id/tab_today"
+            style="@style/CaseNoteTab"
+            android:text="@string/tab_today" />
+
+        <TextView
+            android:id="@+id/tab_calendar"
+            style="@style/CaseNoteTab"
+            android:text="@string/tab_calendar" />
+
+        <TextView
+            android:id="@+id/tab_scale"
+            style="@style/CaseNoteTab"
+            android:text="@string/tab_scale" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_gravity="top"
-        android:indeterminate="false"
-        android:max="100"
-        android:visibility="gone" />
-</FrameLayout>
+            <WebView
+                android:id="@+id/web"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="top"
+            android:indeterminate="false"
+            android:max="100"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

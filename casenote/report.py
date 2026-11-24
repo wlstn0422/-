@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+import calendar as calmod
 import json
 import logging
 import random
+import re
 from datetime import date, timedelta
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from . import ai as ai_mod
+from . import brief as brief_mod
 from . import explain as ex_mod
 from . import theory as th_mod
 from .dart import CorpIndex, DartClient, DartError, DartFatalError, viewer_url
@@ -82,7 +85,8 @@ def jinja_env() -> Environment:
     )
     env.filters.update(krw=fmt_krw, pct=fmt_pct, cell=md_cell, times=fmt_times, intf=fmt_int, linktext=md_link_text,
                        paras=md_paragraphs, first_para=first_paragraph, htmltext=html_text)
-    env.globals.update(josa=josa)
+    # 마크다운 제목 끝에 {#id}를 붙여 노트 안 바로가기를 만든다. 진자 주석 기호({#)와 겹치지 않게 함수로 넣는다.
+    env.globals.update(josa=josa, anchor=lambda name: "{#" + str(name) + "}")
     return env
 
 
@@ -437,10 +441,15 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
             cnt = news_counts.get(cat["key"], {})
             news_sections.append({"key": cat["key"], "label": cat["label"], "entries": items,
                                   "stories": cnt.get("stories", len(items)), "articles": cnt.get("articles", len(items))})
-    busiest = sorted(news_sections, key=lambda x: x["articles"], reverse=True)[:3]
+    news_sections.sort(key=lambda x: x["articles"], reverse=True)  # 기사가 많았던 분야부터
+    busiest = news_sections[:3]
 
-    lesson_where = {b["theory"]["id"]: "3장 '오늘의 이론 수업'" for b in lesson_blocks}
-    lesson_where.update({b["theory"]["id"]: "4장 '오늘의 전공 수업'" for b in subject_blocks})
+    # 오늘 아침 이것만은: 여러 언론이 함께 다룬 이슈를 분야가 겹치지 않게 몇 개만, 대형 공시는 1건까지
+    brief = brief_mod.pick_brief(buckets, categories, news_cases, case_blocks, settings.benchmarks["thresholds"],
+                                 limit=int(rc.get("brief_items", 3)))
+
+    lesson_where = {b["theory"]["id"]: "4장 '오늘의 이론 수업'" for b in lesson_blocks}
+    lesson_where.update({b["theory"]["id"]: "5장 '오늘의 전공 수업'" for b in subject_blocks})
     ctx = {
         "title": rc.get("title", "매일 경영·경제 케이스 노트"),
         "day": day,
@@ -464,6 +473,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
         "company": company_ctx,
         "news_sections": news_sections,
         "busiest": busiest,
+        "brief": brief,
         "news_total": len(news_items),
         "cards": cards,
         "quiz": quiz,
@@ -493,6 +503,7 @@ def run_daily(settings: Settings, day: date | None = None, *, use_news: bool = T
                             "theory": nc["theory"]["id"]} for nc in news_cases],
             "quiz": quiz,
             "company": company_ctx["name"] if company_ctx else None,
+            "brief": [{"tag": b["tag"], "text": b["text"], "link": b["link"]} for b in brief],
         }
         archive_path(settings, day).write_text(json.dumps(archive, ensure_ascii=False, indent=1), encoding="utf-8")
         write_reports_index(settings)
@@ -759,6 +770,67 @@ def write_reports_index(settings: Settings) -> Path:
     )
     out = rd / "README.md"
     rd.mkdir(parents=True, exist_ok=True)
+    out.write_text(md, encoding="utf-8")
+    write_calendar(settings, has_theories)
+    return out
+
+
+def _day_line(settings: Settings, d: date) -> str:
+    """캘린더의 '한 줄 요약'. 그날 아침 요약의 첫 이슈, 없으면 첫 뉴스 사례나 공시 사례."""
+    p = archive_path(settings, d)
+    if not p.exists():
+        return ""
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except ValueError:
+        return ""
+    for b in data.get("brief") or []:
+        if b.get("text"):
+            return b["text"]
+    for n in data.get("news_cases") or []:
+        if n.get("title"):
+            return n["title"]
+    for c in data.get("key_cases") or []:
+        return f"{c.get('corp_name', '')} {c.get('label', '')}".strip()
+    return ""
+
+
+def write_calendar(settings: Settings, has_theories: bool = True) -> Path:
+    """달력(reports/calendar.md). 날짜마다 그날 노트로, 토요일에는 주간 복습으로 이어진다. 최근 달이 위."""
+    rd = settings.reports_dir
+    days: dict[date, str] = {}
+    for p in rd.glob("daily/*/*.md"):
+        d = parse_ymd(p.stem)
+        if d:
+            days[d] = p.relative_to(rd).as_posix()
+    weekly: dict[date, str] = {}
+    for p in rd.glob("weekly/*.md"):
+        m = re.fullmatch(r"(\d{4})-W(\d{2})", p.stem)
+        if m:
+            weekly[date.fromisocalendar(int(m.group(1)), int(m.group(2)), 6)] = p.relative_to(rd).as_posix()
+    latest = max(days) if days else None
+    keys = sorted({(d.year, d.month) for d in [*days, *weekly]}, reverse=True)
+    if not keys:
+        t = today_kst()
+        keys = [(t.year, t.month)]
+    cal = calmod.Calendar(firstweekday=6)  # 일요일부터
+    months = []
+    for y, mth in keys:
+        weeks = [[{"day": d.day, "link": days.get(d), "weekly": weekly.get(d), "latest": d == latest}
+                  if d.month == mth else None for d in week]
+                 for week in cal.monthdatescalendar(y, mth)]
+        notes = [{"label": f"{d.day}일({'월화수목금토일'[d.weekday()]})", "link": days[d], "line": _day_line(settings, d)}
+                 for d in sorted((d for d in days if (d.year, d.month) == (y, mth)), reverse=True)]
+        months.append({"year": y, "month": mth, "weeks": weeks, "notes": notes})
+    md = render(
+        "calendar.md.j2",
+        months=months,
+        weeklies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem} for p in sorted(rd.glob("weekly/*.md"), reverse=True)],
+        companies=[{"path": p.relative_to(rd).as_posix(), "name": p.stem.split("_", 1)[-1]}
+                   for p in sorted(rd.glob("company/*.md"))],
+        has_theories=has_theories,
+    )
+    out = rd / "calendar.md"
     out.write_text(md, encoding="utf-8")
     return out
 

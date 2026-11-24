@@ -25,30 +25,33 @@ def test_daily_end_to_end(settings):
     out = report.run_daily(settings, DAY, client=client, news_fetcher=_news)
     md = out.read_text(encoding="utf-8")
     # 핵심 사례와 각 섹션
-    assert "## 1. 오늘의 공시 사례" in md
-    assert "## 2. 뉴스로 보는 경영·경제 사례" in md
-    assert "## 3. 오늘의 이론 수업" in md
+    # 순서: 아침 요약 → 뉴스 사례 → 오늘의 기업 → 기사가 많았던 분야 → 이론 수업 → 전공 수업 → 공시 사례 → 퀴즈
+    order = ["## 오늘 아침 이것만은", "## 1. 뉴스로 보는 경영·경제 사례", "## 2. 오늘의 기업", "## 3. 기사가 많았던 분야",
+             "## 4. 오늘의 이론 수업", "## 5. 오늘의 전공 수업", "## 6. 오늘의 공시 사례", "## 7. 오늘의 퀴즈"]
+    pos = [md.index(h) for h in order]
+    assert pos == sorted(pos)
+    assert md.index("## 오늘 아침 이것만은") < md.index("\n## 1.")  # 맨 위에 요약
+    brief = md[md.index("## 오늘 아침 이것만은"):md.index("## 1. 뉴스로")]
+    assert "\n1. \\[" in brief and ("[자세히](#n" in brief or "[기사](" in brief)
+    assert "[공시 사례](#s6)" in md and "{#s6}" in md and "{#n1}" in md
     # 사례마다 쉬운 풀이와 이론 대입이 먼저, 원문 항목과 회계·세무·법은 접어 둔 '더 깊게 보기'에
     assert "**사례 개요**" in md and "- 사실관계: " in md and "- 거래의 성격: " in md
     assert "**이론 적용: [" in md and "../../theories.md#" in md and "이론의 요지: " in md and "예시: " in md
     assert "심화 학습: 공시 원문 항목" in md and "이론 심화: " in md
     assert "**용어 해설**" in md
     assert "분석의 관점: " in md
-    assert "## 4. 오늘의 전공 수업(재정학)" in md  # 2026-11-20은 금요일
-    assert "전공 수업(금요일 재정학)" in md
+    assert "## 5. 오늘의 전공 수업(재정학)" in md  # 2026-11-20은 금요일
     assert "회계·세무·법으로 읽기" in md and "전공으로 더 깊게" in md
-    assert "## 7. 분야별 헤드라인" in md and "<details markdown=\"1\"><summary>" in md
+    assert "## 3. 기사가 많았던 분야" in md and "<details markdown=\"1\"><summary>" in md
     assert "테스트전자 합병" in md
     assert "샘플화학 분할" in md or "샘플화학 자사주 취득" in md
     assert "물적분할" in md
     assert "숫자로 보기" in md
     assert "dart.fss.or.kr/dsaf001/main.do?rcpNo=" in md
-    assert "## 5. 오늘의 기업" in md
     assert "이 업종이 돈 버는 구조" in md
     assert "듀퐁 분해" in md
     assert "유효세율" in md
-    assert "## 6. 오늘의 퀴즈" in md and "<details" in md
-    assert "## 8. 공시 목록" in md
+    assert "<details markdown=\"1\"><summary>전체 공시 목록" in md
     assert (settings.reports_dir / "theories.md").exists()
     assert arch_lessons(settings)
     arch0 = json.loads((settings.archive_dir / "2026-11-20.json").read_text(encoding="utf-8"))
@@ -79,16 +82,17 @@ def test_daily_without_keys(settings):
     out = report.run_daily(settings, DAY, news_fetcher=lambda: ([], ["피드 실패"]))
     md = out.read_text(encoding="utf-8")
     assert "DART_API_KEY가 없어" in md
-    assert "## 3. 오늘의 이론 수업" in md
-    assert "## 4. 오늘의 전공 수업(재정학)" in md
-    assert "## 6. 오늘의 퀴즈" in md
+    assert "## 4. 오늘의 이론 수업" in md
+    assert "## 5. 오늘의 전공 수업(재정학)" in md
+    assert "## 7. 오늘의 퀴즈" in md
+    assert "전날 기사와 공시를 가져오지 못해 오늘은 요약이 없다." in md
 
 
 def test_daily_tax_day_has_legislative_story(settings):
     # 수요일은 세법. 합병·분할 공시가 있으면 과세이연 카드가 골라지고 입법 이야기가 나온다
     out = report.run_daily(settings, date(2026, 11, 18), client=FakeDart(), news_fetcher=_news)
     md = out.read_text(encoding="utf-8")
-    assert "## 4. 오늘의 전공 수업(세법): 합병·분할 과세이연" in md
+    assert "## 5. 오늘의 전공 수업(세법): 합병·분할 과세이연" in md
     assert "### 입법 이야기" in md
     assert "왜 만들었나(입법 취지)" in md and "만들 당시 무슨 일이 있었나(입법 배경)" in md
     assert "실제로 어떤 효과가 있었나" in md

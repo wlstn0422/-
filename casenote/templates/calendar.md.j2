@@ -1,0 +1,46 @@
+# 노트 캘린더
+
+날짜를 누르면 그날의 노트가 열린다. 굵게 표시된 날짜가 가장 최근 노트이고, 토요일의 '복습'은 한 주를 정리한 주간 복습 노트이다.
+
+{% for m in months %}
+## {{ m.year }}년 {{ m.month }}월
+
+| 일 | 월 | 화 | 수 | 목 | 금 | 토 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+{% for week in m.weeks %}
+|{% for c in week %} {% if not c %} {% elif c.link and c.latest %}**[{{ c.day }}]({{ c.link }})**{% elif c.link %}[{{ c.day }}]({{ c.link }}){% else %}<span class="off">{{ c.day }}</span>{% endif %}{% if c and c.weekly %}<br>[복습]({{ c.weekly }}){% endif %} |{% endfor +%}
+{% endfor %}
+
+{% if m.notes %}
+<details markdown="1"><summary>{{ m.month }}월 노트 한 줄 요약</summary>
+
+{% for n in m.notes %}
+- [{{ n.label }}]({{ n.link }}){% if n.line %}: {{ n.line|cell }}{% endif +%}
+{% endfor %}
+
+</details>
+
+{% endif %}
+{% endfor %}
+{% if weeklies %}
+## 주간 복습
+
+{% for w in weeklies %}
+- [{{ w.name }}]({{ w.path }})
+{% endfor %}
+
+{% endif %}
+{% if companies %}
+## 기업 분석
+
+{% for c in companies %}
+- [{{ c.name }}]({{ c.path }})
+{% endfor %}
+
+{% endif %}
+{% if has_theories %}
+## 이론·제도 사전
+
+노트에 나온 이론과 회계·세법·상법·재정학 카드를 모두 모은 [이론·제도 사전](theories.md)이다.
+
+{% endif %}

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">케이스 노트</string>
-    <string name="menu_home">전체 노트</string>
+    <string name="app_name">매일 경영·경제 케이스 노트</string>
+    <string name="tab_today">오늘의 노트</string>
+    <string name="tab_calendar">캘린더</string>
+    <string name="tab_scale">규모지도</string>
     <string name="menu_refresh">새로고침</string>
     <string name="menu_settings">설정</string>
     <string name="settings_title">설정</string>
