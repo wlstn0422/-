@@ -9,11 +9,12 @@
 | <span class="off">1</span> | <span class="off">2</span> | <span class="off">3</span> | <span class="off">4</span> | <span class="off">5</span> | <span class="off">6</span> | <span class="off">7</span> |
 | <span class="off">8</span> | <span class="off">9</span> | <span class="off">10</span> | <span class="off">11</span> | <span class="off">12</span> | <span class="off">13</span> | <span class="off">14</span> |
 | <span class="off">15</span> | <span class="off">16</span> | <span class="off">17</span> | <span class="off">18</span> | <span class="off">19</span> | [20](daily/2026/2026-11-20.md) | [21](daily/2026/2026-11-21.md)<br>[복습](weekly/2026-W47.md) |
-| [22](daily/2026/2026-11-22.md) | [23](daily/2026/2026-11-23.md) | **[24](daily/2026/2026-11-24.md)** | <span class="off">25</span> | <span class="off">26</span> | <span class="off">27</span> | <span class="off">28</span> |
+| [22](daily/2026/2026-11-22.md) | [23](daily/2026/2026-11-23.md) | [24](daily/2026/2026-11-24.md) | **[25](daily/2026/2026-11-25.md)** | <span class="off">26</span> | <span class="off">27</span> | <span class="off">28</span> |
 | <span class="off">29</span> | <span class="off">30</span> |   |   |   |   |   |
 
 <details markdown="1"><summary>11월 노트 한 줄 요약</summary>
 
+- [25일(수)](daily/2026/2026-11-25.md): 골드만삭스 “내년 한은 기준금리 3.5%가 상단…달러당 원화값은 1280원”
 - [24일(화)](daily/2026/2026-11-24.md): 골드만삭스 “내년 한은 기준금리 3.5%가 상단…달러당 원화값은 1280원”
 - [23일(월)](daily/2026/2026-11-23.md): 경주시, 내년 본예산안 2조2200억 편성… 역대 최대 규모
 - [22일(일)](daily/2026/2026-11-22.md): 울진군, 2027년도 예산안 7,840억 원 편성…전년 대비 10.7% 증가
