@@ -9,7 +9,7 @@
 | <span class="off">1</span> | <span class="off">2</span> | <span class="off">3</span> | <span class="off">4</span> | <span class="off">5</span> | <span class="off">6</span> | <span class="off">7</span> |
 | <span class="off">8</span> | <span class="off">9</span> | <span class="off">10</span> | <span class="off">11</span> | <span class="off">12</span> | <span class="off">13</span> | <span class="off">14</span> |
 | <span class="off">15</span> | <span class="off">16</span> | <span class="off">17</span> | <span class="off">18</span> | <span class="off">19</span> | [20](daily/2026/2026-11-20.md) | [21](daily/2026/2026-11-21.md)<br>[복습](weekly/2026-W47.md) |
-| [22](daily/2026/2026-11-22.md) | [23](daily/2026/2026-11-23.md) | [24](daily/2026/2026-11-24.md) | [25](daily/2026/2026-11-25.md) | [26](daily/2026/2026-11-26.md) | **[27](daily/2026/2026-11-27.md)** | <span class="off">28</span> |
+| [22](daily/2026/2026-11-22.md) | [23](daily/2026/2026-11-23.md) | [24](daily/2026/2026-11-24.md) | [25](daily/2026/2026-11-25.md) | [26](daily/2026/2026-11-26.md) | **[27](daily/2026/2026-11-27.md)** | <span class="off">28</span><br>[복습](weekly/2026-W48.md) |
 | <span class="off">29</span> | <span class="off">30</span> |   |   |   |   |   |
 
 <details markdown="1"><summary>11월 노트 한 줄 요약</summary>
@@ -27,6 +27,7 @@
 
 ## 주간 복습
 
+- [2026년 11월 28일 주간 복습](weekly/2026-W48.md)
 - [2026년 11월 21일 주간 복습](weekly/2026-W47.md)
 
 ## 이론·제도 사전
